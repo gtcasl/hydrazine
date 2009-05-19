@@ -154,7 +154,8 @@ namespace hydrazine
 		std::stringstream secondStream( string + '\n' );
 		
 		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << b << "\n";
+		secondStream << regularPrefix << "value = " << std::boolalpha 
+			<< b << "\n";
 	
 		arguments << identifier << secondStream.str() << "\n";
 	}
@@ -180,7 +181,8 @@ namespace hydrazine
 		std::stringstream secondStream( string + '\n' );
 		
 		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << b << "\n";
+		secondStream << regularPrefix << "value = " << std::boolalpha 
+			<< b << "\n";
 	
 		arguments << identifier << secondStream.str() << "\n";
 	}
