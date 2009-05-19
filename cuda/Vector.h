@@ -148,7 +148,8 @@ namespace cuda
 
 				T* pointer;
 
-				cudaCheck( cudaMalloc( (void**) &pointer, sizeof(T) * size() ) );
+				cudaCheck( cudaMalloc( (void**) &pointer, 
+					sizeof(T) * size() ) );
 				cudaCheck( cudaMemcpy( _begin, c._begin, sizeof(T) * size(), 
 					cudaMemcpyDeviceToDevice ) );
 				
