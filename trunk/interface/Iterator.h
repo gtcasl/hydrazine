@@ -14,37 +14,37 @@ namespace hydrazine
 	/*!
 		\brief Concept for STL input iteratorss
 	*/
-	class InputIteratorConcept {};
+	class input_iterator_tag {};
 	
 	/*!
 		\brief Concept for STL output iterators
 	*/
-	class OutputIteratorConcept {};
+	class output_iterator_tag {};
 
 	/*!
 		\brief Concept for STL ranodm access iterators
 	*/
-	class ForwardIteratorConcept : public InputIteratorConcept {};
+	class forward_iterator_tag : public input_iterator_tag {};
 	
 	/*!
 		\brief Concept for STL bidirectional iterators
 	*/
-	class BidirectionalIteratorConcept : public ForwardIteratorConcept {};
+	class bidirectional_iterator_tag : public forward_iterator_tag {};
 
 	/*!
 		\brief Concept for STL ranodm access iterators
 	*/
-	class RandomAccessIteratorConcept : public BidirectionalIteratorConcept {};
+	class random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	/*!
 		\brief Define typedefs for iterator classes
 	*/
-	template< typename Concept, typename T, typename Distance, 
+	template< typename Category, typename T, typename Distance, 
 		typename Pointer, typename Reference >
 	struct Iterator
 	{
 		//! Concept
-		typedef Concept concept;
+		typedef Category iterator_category;
 		//! The type "pointed to" by the iterator.
 		typedef T value_type;
 		//! Distance between iterators is represented as this type.
@@ -71,7 +71,7 @@ namespace hydrazine
 	template< typename T >
 	struct IteratorTraits< T* >
 	{
-		typedef RandomAccessIteratorConcept concept;
+		typedef random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
@@ -81,7 +81,7 @@ namespace hydrazine
 	template< typename T >
 	struct IteratorTraits< const T* >
 	{
-		typedef RandomAccessIteratorConcept concept;
+		typedef random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef const T* pointer;
@@ -103,7 +103,8 @@ namespace hydrazine
 		
 		public:
 			typedef Type iterator_type;
-			typedef typename IteratorTraits< Type >::concept concept;
+			typedef typename IteratorTraits< Type >::iterator_category 
+				iterator_category;
 			typedef typename IteratorTraits< Type >::value_type value_type;
 			typedef typename IteratorTraits< Type >::difference_type 
 				difference_type;
@@ -198,77 +199,77 @@ namespace hydrazine
 
 	template<typename Pointer, typename Container>
 	inline bool operator==(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() == right.base(); 
 	}
 
 	template<typename TypeL, typename TypeR, typename Container>
 	inline bool operator!=(const PointerIterator<TypeL, Container>& left,
-	const PointerIterator<TypeR, Container>& right)
+		const PointerIterator<TypeR, Container>& right)
 	{
 		return left.base() != right.base(); 
 	}
 
 	template<typename Pointer, typename Container>
 	inline bool operator!=(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() != right.base(); 
 	}
 
 	template<typename TypeL, typename TypeR, typename Container>
 	inline bool operator<(const PointerIterator<TypeL, Container>& left,
-	const PointerIterator<TypeR, Container>& right)
+		const PointerIterator<TypeR, Container>& right)
 	{
 		return left.base() < right.base(); 
 	}
 
 	template<typename Pointer, typename Container>
 	inline bool operator<(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() < right.base(); 
 	}
 
 	template<typename TypeL, typename TypeR, typename Container>
 	inline bool operator>(const PointerIterator<TypeL, Container>& left,
-	const PointerIterator<TypeR, Container>& right)
+		const PointerIterator<TypeR, Container>& right)
 	{
 		return left.base() > right.base(); 
 	}
 
 	template<typename Pointer, typename Container>
 	inline bool operator>(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() > right.base(); 
 	}
 
 	template<typename TypeL, typename TypeR, typename Container>
 	inline bool operator<=(const PointerIterator<TypeL, Container>& left,
-	const PointerIterator<TypeR, Container>& right)
+		const PointerIterator<TypeR, Container>& right)
 	{
 		return left.base() <= right.base(); 
 	}
 
 	template<typename Pointer, typename Container>
 	inline bool operator<=(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() <= right.base(); 
 	}
 
 	template<typename TypeL, typename TypeR, typename Container>
 	inline bool operator>=(const PointerIterator<TypeL, Container>& left,
-	const PointerIterator<TypeR, Container>& right)
+		const PointerIterator<TypeR, Container>& right)
 	{
 		return left.base() >= right.base(); 
 	}
 
 	template<typename Pointer, typename Container>
 	inline bool operator>=(const PointerIterator<Pointer, Container>& left,
-	const PointerIterator<Pointer, Container>& right)
+		const PointerIterator<Pointer, Container>& right)
 	{
 		return left.base() >= right.base(); 
 	}

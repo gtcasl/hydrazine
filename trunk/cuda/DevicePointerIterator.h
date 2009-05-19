@@ -30,7 +30,8 @@ namespace cuda
 	{
 		public:
 			typedef Type iterator_type;
-			typedef typename hydrazine::IteratorTraits< Type >::concept concept;
+			typedef typename hydrazine::IteratorTraits< 
+				Type >::iterator_category iterator_category;
 			typedef typename hydrazine::IteratorTraits< Type >::value_type 
 				value_type;
 			typedef typename hydrazine::IteratorTraits< Type >::difference_type 

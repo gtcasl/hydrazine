@@ -12,7 +12,7 @@ bin_PROGRAMS =
 check_PROGRAMS = TestActiveTimer TestArgumentParser TestCudaVector \
 	TestMath TestPackage TestSerializableArchive \
 	TestSerializationBuffer TestThread TestTimer TestXmlArgumentParser \
-	TestXmlParser
+	TestXmlParser TestBTree
 lib_LIBRARIES = libhydralize.a
 ################################################################################
 
@@ -61,6 +61,14 @@ TestArgumentParser_CXXFLAGS = -I source -Wall -ansi -pedantic -Werror -std=c++0x
 TestArgumentParser_SOURCES = test/TestArgumentParser.cpp
 TestArgumentParser_LDADD = libhydralize.a
 TestArgumentParser_LDFLAGS = $(LIBRT)
+################################################################################
+
+################################################################################
+## TestBTree
+TestBTree_CXXFLAGS = -I source -Wall -ansi -pedantic -Werror -std=c++0x
+TestBTree_SOURCES = test/TestBTree.cpp
+TestBTree_LDADD = libhydralize.a
+TestBTree_LDFLAGS = $(LIBRT)
 ################################################################################
 
 ################################################################################
