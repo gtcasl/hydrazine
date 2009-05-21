@@ -9,6 +9,9 @@
 #define TEST_B_TREE_H_INCLUDED
 
 #include <interface/Test.h>
+#include <implementation/BTree.h>
+#include <vector>
+#include <map>
 
 #define PAGE_SIZE 4
 
@@ -37,6 +40,17 @@ namespace test
 	class TestBTree : public Test
 	{
 		private:
+			typedef hydrazine::BTree< unsigned int, unsigned int, 
+				std::less<unsigned int>, hydrazine::MmapAllocator< 
+				std::pair< const unsigned int, unsigned int > >, 
+				PAGE_SIZE > Tree;
+			typedef std::vector< unsigned int > Vector;
+			typedef std::map< unsigned int, unsigned int > Map;
+		
+		private:
+			void _init( Vector& v );
+		
+		private:
 			bool testRandom();
 			bool testClear();
 			bool testComparisons();
@@ -46,6 +60,7 @@ namespace test
 		public:
 			bool benchmark;
 			unsigned int elements;
+			unsigned int iterations;
 			std::string path;
 		
 		public:

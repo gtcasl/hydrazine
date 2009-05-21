@@ -10,6 +10,7 @@
 
 #include <implementation/MmapAllocator.h>
 #include <implementation/debug.h>
+#include <implementation/macros.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE
@@ -188,7 +189,7 @@ namespace hydrazine
 						begin->second.leaf->index = 0;
 					}
 
-					Node( ) : end( begin )
+					Node( ) : end( begin ), body( false )
 					{
 						
 					}
@@ -306,11 +307,25 @@ namespace hydrazine
 					{
 						position._leaf->erase( position );
 						Leaf* left = position._leaf->left();
-						Leaf* right = position._leaf->right();
-						if( left->size() + right->size() <= PageSize )
+						if( left != position._leaf 
+							&& left->size() + position._leaf->size() 
+							< PageSize )
 						{
-							left->recombine( position );
+							left->parent->recombine( left, position, 0 );
 						}
+						else
+						{
+							Leaf* right = position._leaf->right();
+							if( right != position._leaf )
+							{
+								if( right->size() + position._leaf->size() 
+									< PageSize )
+								{
+									right->parent->recombine( 0, 
+										position, right );
+								}
+							}
+						}						
 					}
 					
 					void erase( iterator& begin, iterator& end )
@@ -331,22 +346,26 @@ namespace hydrazine
 					Node* left()
 					{
 						assert( parent != 0 );
-						size_type leftIndex = index & ( -2 );
-						return parent->begin[ leftIndex ].second.leaf;
+						size_type leftIndex = index;
+						if( leftIndex != 0 )
+						{
+							--leftIndex;
+						}
+						return parent->begin[ leftIndex ].second.node;
 					}
 			
 					Node* right()
 					{
 						assert( parent != 0 );
-						size_type rightIndex = index | 1;
-						rightIndex = MAX( rightIndex, parent->size() - 1 );
-						return parent->begin[ rightIndex ].second.leaf;	
+						size_type rightIndex = index + 1;
+						rightIndex = MIN( rightIndex, parent->size() - 1 );
+						return parent->begin[ rightIndex ].second.node;	
 					}
 					
 					void split( )
 					{
 						reportE( REPORT_NODE, "Splitting node " 
-							<< begin[0].first );
+							<< index  );
 						assert( size() == PageSize );
 						
 						if( parent == 0 )
@@ -359,6 +378,7 @@ namespace hydrazine
 							root->parent = 0;
 							root->body = true;
 							root->tree = tree;
+							root->index = 0;
 							parent = root;
 							index = 0;
 							root->end->second.node = this;
@@ -379,9 +399,10 @@ namespace hydrazine
 						reportE( REPORT_NODE, " Created new right node " 
 							<< right );
 				
-						right->end += median;
+						right->end += ( PageSize - median );
+						size_type moved = ( PageSize - median );
 						memcpy( right->begin, begin + median, 
-							( PageSize - median ) * sizeof( NodeValueType ) );
+							moved * sizeof( NodeValueType ) );
 						right->parent = parent;
 						right->index = index + 1;
 						right->tree = tree;
@@ -432,75 +453,252 @@ namespace hydrazine
 						}
 					}
 
-					void recombine( iterator& position )
+					void recombine( Leaf* leftLeaf, iterator& position, 
+						Leaf* rightLeaf )
 					{
 					
-						Leaf* leftLeaf = position->_leaf->left();
-						Leaf* rightLeaf = position->_leaf->right();
+						leftLeaf = leftLeaf == 0 ? position._leaf : leftLeaf;
+						rightLeaf = rightLeaf == 0 ? position._leaf : rightLeaf;
 						assert( leftLeaf != rightLeaf );
 						assert( leftLeaf->parent == this );
+						assert( rightLeaf->parent == this );
+						assert( leftLeaf->size() + rightLeaf->size() > 0 );
+
+						reportE( REPORT_NODE, "Joining left leaf " << leftLeaf 
+							<< " (" << leftLeaf->index << ") with right leaf " 
+							<< rightLeaf << " (" << rightLeaf->index << ")" );
 					
-						size_type newSize = leftLeaf->size() 
-							+ rightLeaf->size();
+						if( position._leaf == rightLeaf )
+						{
+							position._leaf = leftLeaf;
+							position._current += leftLeaf->size();
+						}
+					
+						size_type leftSize = leftLeaf->size();
+						size_type newSize = leftSize + rightLeaf->size();
+						reportE( REPORT_NODE, " Left size is " 
+							<< leftLeaf->size() );
+						reportE( REPORT_NODE, " Right size is " 
+							<< rightLeaf->size() );
 					
 						assert( newSize < PageSize );
+						assert( rightLeaf->index < size() );
+						assert( leftLeaf->index < size() );
+						assert( leftLeaf->index < rightLeaf->index );
 
 						memcpy( leftLeaf->end, rightLeaf->begin, 
 							rightLeaf->size() * sizeof( value_type ) );
 						leftLeaf->end = leftLeaf->begin + newSize;
 										
-						memmove( begin + leftLeaf->index + 1,
-							begin + leftLeaf->index + 2, 
-							( size() - leftLeaf->index - 2 ) 
+						memmove( begin + rightLeaf->index,
+							begin + rightLeaf->index + 1, 
+							( size() - rightLeaf->index - 1 ) 
 							* sizeof( Node::ValueType ) );
 						--end;
 					
 						for( Node::ValueType* fi = begin 
-							+ leftLeaf->index + 1; fi != end; ++fi )
+							+ rightLeaf->index; fi != end; ++fi )
 						{
-							fi->second.leaf->index -= 1;
+							fi->second.leaf->index = fi - begin;
+							reportE( REPORT_NODE, 
+								"  Setting index of leaf " << fi->second.leaf
+								<< " to " << fi->second.leaf->index );
 						}
 					
-						position._leaf = leftLeaf;
+						tree->_leafAllocator.destroy( rightLeaf );
 						tree->_leafAllocator.deallocate( rightLeaf, 1 );
-				
-						if( left()->size() + right()->size() < PageSize )
+						
+						if( tree->_end._leaf == rightLeaf )
 						{
-							parent->recombine( left(), right() );
+							reportE( REPORT_NODE, 
+								" Setting end from right leaf." );
+							tree->_end._leaf = leftLeaf;
+							tree->_end._current = leftLeaf->end;
+						}
+						else if( tree->_end._leaf == leftLeaf )
+						{
+							reportE( REPORT_NODE, 
+								" Setting end from left leaf." );
+							tree->_end._current = leftLeaf->end;							
+						}
+												
+						if( parent == 0 )
+						{
+							return;
+						}
+						
+						Node* left = this;
+						Node* right = this->right();
+				
+						if( left != right && left->body == right->body
+							&& left->size() + right->size() < PageSize )
+						{
+							report( " Propagated join up the tree to "
+								<< "the right." );
+							parent->recombine( left, right );
+						}
+						else
+						{
+							left = this->left();
+							right = this;
+							if( left != right && left->body == right->body
+								&& left->size() + right->size() < PageSize )
+							{
+								report( " Propagated join up the tree to the" 
+									<< " left." );
+								parent->recombine( left, right );
+							}
 						}
 					}
 
 					void recombine( Node* left, Node* right )
 					{
-					
+						reportE( REPORT_NODE, "Joining left node " << left 
+							<< " (" << left->index << ") with right node " 
+							<< right << " (" << right->index << ")" );
 						assert( left != right );
 						assert( left->parent == this );
+						assert( right->parent == this );
+						assert( left->body == right->body );
 					
-						size_type newSize = left->size() + right->size();
-					
+						size_type leftSize = left->size();
+						size_type newSize = leftSize + right->size();
+						reportE( REPORT_NODE, " Left size is " 
+							<< left->size() );
+						reportE( REPORT_NODE, " Right size is "
+							<< left->size() );
 						assert( newSize < PageSize );
 
 						memcpy( left->end, right->begin, 
 							right->size() * sizeof( Node::ValueType ) );
 						left->end = left->begin + newSize;
-										
-						memmove( begin + left->index + 1,
-							begin + left->index + 2, 
-							( size() - left->index - 2 ) 
-							* sizeof( Node::ValueType ) );
+
+						for( Node::ValueType* fi = left->begin + leftSize; 
+							fi != left->end; ++fi )
+						{
+							if( left->body )
+							{
+								fi->second.node->index = fi - left->begin;
+								fi->second.node->parent = left;
+								reportE( REPORT_NODE, 
+									"  Setting index of node " 
+									<< fi->second.node
+									<< " to " << fi->second.node->index );
+							}
+							else
+							{
+								fi->second.leaf->index = fi - left->begin;
+								fi->second.leaf->parent = left;
+								reportE( REPORT_NODE, 
+									"  Setting index of leaf " 
+									<< fi->second.leaf
+									<< " to " << fi->second.leaf->index );
+							}
+						}
+						
+						size_type moved = size() - right->index - 1;
+						report( " Parent shifting down "
+							 << moved << " nodes." );
+						memmove( begin + right->index,
+							begin + right->index + 1, 
+							moved * sizeof( Node::ValueType ) );
 						--end;
+						assert( right->index <= size() );
 					
 						for( Node::ValueType* fi = begin 
-							+ left->index + 1; fi != end; ++fi )
+							+ right->index; fi != end; ++fi )
 						{
-							fi->second.node->index -= 1;
+							fi->second.node->index = fi - begin;
+							reportE( REPORT_NODE, 
+								"  Setting index of node " << fi->second.node
+								<< " to " << fi->second.node->index );
 						}
 					
-						tree->_leafAllocator.deallocate( right, 1 );
-				
-						if( left()->size() + right()->size() < PageSize )
+						tree->_nodeAllocator.deallocate( right, 1 );
+												
+						if( parent == 0 )
 						{
-							recombine( left(), right() );
+							reportE( REPORT_NODE, " This is the root, cannot"
+								<< " propagate further." );
+							
+							if( size() == 1 )
+							{
+								assert( left == begin->second.node );
+								reportE( REPORT_NODE, 
+									" Bumping up left node." );
+								body = left->body;
+								size_type leftSize = left->size();
+								memcpy( begin, left->begin, leftSize 
+									* sizeof( NodeValueType ) );
+								end = begin + leftSize;
+								if( body )
+								{
+									for( Pointer fi = begin; fi != end; ++fi )
+									{
+										fi->second.node->parent = this;
+									}
+								}
+								else
+								{
+									for( Pointer fi = begin; fi != end; ++fi )
+									{
+										fi->second.leaf->parent = this;
+									}								
+								}
+								tree->_nodeAllocator.deallocate( left, 1 );
+							}	
+								
+							return;
+						}
+						
+						Node* myLeft = this;
+						Node* myRight = this->right();
+				
+						if( myLeft != myRight && myLeft->body == myRight->body
+							&& myLeft->size() + myRight->size() < PageSize )
+						{
+							report( " Propagated join up the tree to "
+								<< "the right." );
+							parent->recombine( myLeft, myRight );
+						}
+						else
+						{
+							myLeft = this->left();
+							myRight = this;
+							if( myLeft != myRight 
+								&& myLeft->body == myRight->body
+								&& myLeft->size() + myRight->size() < PageSize )
+							{
+								report( " Propagated join up the tree to the" 
+									<< " left." );
+								parent->recombine( myLeft, myRight );
+							}
+							else if( size() == 1 )
+							{
+								assert( left == begin->second.node );
+								reportE( REPORT_NODE, 
+									" Bumping up left node." );
+								body = left->body;
+								size_type leftSize = left->size();
+								memcpy( begin, left->begin, leftSize 
+									* sizeof( NodeValueType ) );
+								end = begin + leftSize;
+								if( body )
+								{
+									for( Pointer fi = begin; fi != end; ++fi )
+									{
+										fi->second.node->parent = this;
+									}
+								}
+								else
+								{
+									for( Pointer fi = begin; fi != end; ++fi )
+									{
+										fi->second.leaf->parent = this;
+									}								
+								}
+								tree->_nodeAllocator.deallocate( left, 1 );
+							}
 						}
 					}
 					
@@ -520,13 +718,39 @@ namespace hydrazine
 						{
 							assert( !node->empty() );
 							Pointer bound = std::lower_bound( node->begin, 
-								node->end - 1, key, tree->_nodeCompare );
+								node->end, key, tree->_nodeCompare );
+							if( bound != node->end )
+							{
+								if( bound != node->begin 
+									&& tree->_nodeCompare( key, *bound ) )
+								{
+									--bound;
+								}
+							}
+							else if( bound != node->begin )
+							{
+								--bound;
+							}
+							assert( bound != node->end );
 							node = bound->second.node;
 						}
 						
 						assert( !node->empty() );
 						Pointer bound = std::lower_bound( node->begin, 
-							node->end - 1, key, tree->_nodeCompare );
+							node->end, key, tree->_nodeCompare );
+						if( bound != node->end )
+						{
+							if( bound != node->begin 
+								&& tree->_nodeCompare( key, *bound ) )
+							{
+								--bound;
+							}
+						}
+						else if( bound != node->begin )
+						{
+							--bound;
+						}
+						assert( bound != node->end );
 						Leaf* leaf = bound->second.leaf;
 						
 						pointer value = std::lower_bound( leaf->begin, 
@@ -583,6 +807,26 @@ namespace hydrazine
 						return end - begin;
 					}
 					
+					void erase( iterator& it )
+					{
+						reportE( REPORT_LEAF, "Erasing " << it->first << "," 
+							<< it->second << " from leaf " << this << " size " 
+							<< size() );
+						assert( it._leaf == this );
+						assert( it._current < end && it._current >= begin );
+						size_type shifted = end - it._current - 1;
+						memmove( it._current, it._current + 1, 
+							shifted * sizeof( value_type ) );						
+						--end;
+						if( it._leaf == parent->tree->_end._leaf )
+						{
+							reportE( REPORT_LEAF, " Setting end." );							
+							parent->tree->_end._current = end;
+						}
+						reportE( REPORT_LEAF, " New size is " << size() );
+					}
+
+				public:					
 					Leaf* next() const
 					{
 						size_type depth = 0;
@@ -666,14 +910,18 @@ namespace hydrazine
 					
 					Leaf* left()
 					{
-						size_type leftIndex = index & ( -2 );
+						size_type leftIndex = index;
+						if( leftIndex != 0 )
+						{
+							--leftIndex;
+						}
 						return parent->begin[ leftIndex ].second.leaf;
 					}
 			
 					Leaf* right()
 					{
-						size_type rightIndex = index | 1;
-						rightIndex = MAX( rightIndex, parent->size() - 1 );
+						size_type rightIndex = index + 1;
+						rightIndex = MIN( rightIndex, parent->size() - 1 );
 						return parent->begin[ rightIndex ].second.leaf;	
 					}
 			
@@ -690,8 +938,9 @@ namespace hydrazine
 							<< " which is element " << begin[median].first 
 							<< "," << begin[median].second  );
 						reportE( REPORT_LEAF, " Created new leaf " << right 
-							<< " to the right." );
-						right->end += median;
+							<< " to the right with " << ( PageSize - median ) 
+							<< " elements at index " << ( index + 1 ) << "." );
+						right->end += ( PageSize - median );
 						memcpy( right->begin, begin + median, 
 							( PageSize - median ) * sizeof( value_type ) );
 						right->parent = parent;
@@ -701,7 +950,7 @@ namespace hydrazine
 				
 						size_type parentResize =  parent->size() - index;
 						memmove( parent->begin + right->index + 1, 
-							parent->begin + index + 1, 
+							parent->begin + right->index, 
 							parentResize * sizeof( NodeValueType ) );
 						parent->begin[ right->index ].first = 
 							right->begin->first;
@@ -711,16 +960,25 @@ namespace hydrazine
 						for( NodeValueType* fi = parent->begin 
 							+ right->index + 1; fi != parent->end; ++fi )
 						{
-							fi->second.node->index += 1;
+							fi->second.leaf->index += 1;
 						}
 				
 						if( position._current >= end )
 						{
 							reportE( REPORT_LEAF, 
-								" Iterator was on the right side." );
+								" Iterator was element " 
+								<< ( position._current - begin - median ) 
+								<< " on the right side." );
 							position._current = right->begin 
 								+ ( position._current - begin - median );
 							position._leaf = right;
+						}
+				
+						if( parent->tree->_end._leaf == this 
+							&& parent->tree->_end._current >= end )
+						{
+							parent->tree->_end._leaf = right;
+							parent->tree->_end._current = right->end;							
 						}
 				
 						if( parent->size() == PageSize )
@@ -733,37 +991,69 @@ namespace hydrazine
 						const value_type& value )
 					{
 						reportE( REPORT_LEAF, "Inserting " << value.first 
-							<< "," << value.second << " into leaf " << this 
+							<< "," << value.second << " into leaf " 
+							<< index
+							<< " (" << this << ")"
 							<< " with " << size() << " elements" );
 						assert( size() < PageSize );
+						assert( parent->begin[index].second.leaf == this );
 						iterator result = position;
 						assert( result._current <= end );
 						size_type moved = end - position._current;						
-						bool wasEnd = result._current == end;
 						
-						report( " Displaced " << moved << " tuples." );
+						if( begin == end )
+						{
+							parent->begin[ index ].first = value.first;
+						}
+						else if( parent->tree->_keyCompare( value.first, 
+							parent->begin[ index ].first ) )
+						{
+							parent->begin[ index ].first = value.first;
+							Node* p = parent->parent;
+							while( p != 0 )
+							{
+								if( parent->tree->_keyCompare( value.first, 
+									p->begin[ index ].first ) )
+								{
+									p->begin[ index ].first = value.first;
+									p = p->parent;
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+						
+						report( " Displaced " << moved 
+							<< " tuples to add to index " 
+							<< ( result._current - begin ) << "." );
 						
 						memmove( result._current + 1, result._current, 
 							moved * sizeof( value_type ) );
 						++end;
-						*result._current = value;
 						
+						*result._current = value;
 						if( size() == PageSize )
 						{
 							reportE( REPORT_LEAF, " Triggered a split." );
 							split( result );
 						}
-						if( wasEnd )
+						else
 						{
-							reportE( REPORT_LEAF, " Updating end." );
-							parent->tree->_end = result;
+							if( parent->tree->_compare( value, 
+								*parent->tree->begin() ) )
+							{
+								reportE( REPORT_LEAF, " Updating begin." );
+								parent->tree->_begin = result;							
+							}
+							if( parent->tree->_end._leaf == this )
+							{
+								reportE( REPORT_LEAF, " Updating end." );
+								parent->tree->_end._current = end;
+							}
 						}
-						if( parent->tree->_compare( value, 
-							*parent->tree->begin() ) )
-						{
-							reportE( REPORT_LEAF, " Updating begin." );
-							parent->tree->_begin = result;							
-						}
+						
 						return result;
 					}
 
@@ -1097,7 +1387,8 @@ namespace hydrazine
 		public:
 			std::pair< iterator, bool > insert( const value_type& x )
 			{
-				std::pair< iterator, bool > fi( lower_bound( x.first ), false );
+				std::pair< iterator, bool > fi( _root->lower_bound( x.first ), 
+					false );
 				
 				reportE( REPORT_TREE, "Inserting " << x.first << "," 
 					<< x.second );
@@ -1113,11 +1404,11 @@ namespace hydrazine
 				{
 					if( _compare( *fi.first, x ) || _compare( x, *fi.first ) )
 					{
+						reportE( REPORT_TREE, 
+							" Lower bound is " << fi.first->first << "," 
+							<< fi.first->second << "." );
 						fi.first = _root->insert( fi.first, x );
 						fi.second = true;
-						reportE( REPORT_TREE, 
-							" Lower bound is, " << fi.first->first << "," 
-							<< fi.first->second << "." );
 					}
 				}
 				
@@ -1141,7 +1432,7 @@ namespace hydrazine
 			
 			void erase( iterator position )
 			{
-				position._node->erase( position );
+				_root->erase( position );
 			}
 			
 			size_type erase( const key_type& x )
@@ -1149,7 +1440,7 @@ namespace hydrazine
 				iterator position = find( x );
 				if( x != end() )
 				{
-					position._node->erase( position );
+					_root->erase( position );
 					return 1;
 				}
 				return 0;
@@ -1201,26 +1492,36 @@ namespace hydrazine
 			iterator find( const key_type& x )
 			{
 				iterator result = lower_bound( x );
+				reportE( REPORT_TREE, "Finding key " << x );
 				if( result != end() )
 				{
-					if( !_compareKey( x, result->first ) )
+					if( !_keyCompare( x, result->first ) )
 					{
+						reportE( REPORT_TREE, " Found value " 
+							<< result->second );
 						return result;
 					}
 				}
+				reportE( REPORT_TREE && result == end(), 
+					" Could not find value for key." );
 				return end();
 			}
 			
 			const_iterator find( const key_type& x ) const
 			{
 				const_iterator result = lower_bound( x );
+				reportE( REPORT_TREE, "Finding key " << x );
 				if( result != end() )
 				{
 					if( !_compareKey( x, result->first ) )
 					{
+						reportE( REPORT_TREE, " Found value " 
+							<< result->second );
 						return result;
 					}
 				}
+				reportE( REPORT_TREE && result == end(), 
+					" Could not find value for key." );
 				return end();
 			}
 			
@@ -1231,7 +1532,15 @@ namespace hydrazine
 			
 			iterator lower_bound( const key_type& x )
 			{
-				return _root->lower_bound( x );
+				iterator result = _root->lower_bound( x );
+				if( result._leaf->end == result._current )
+				{
+					return end();
+				}
+				else
+				{
+					return result;
+				}
 			}
 			
 			const_iterator lower_bound( const key_type& x ) const
@@ -1309,14 +1618,22 @@ namespace hydrazine
 				stack.push( _root );
 
 				out << "digraph BTree_" << this << " {\n";
-				out << "\trankdir=LR;\n";
 				out << "\tnode [ shape = record ];\n\n";
 				while( !stack.empty() )
 				{
 					const Node* node = stack.top();
 					stack.pop();
-					out << "\tnode_" << node << " [ label = \"";
-					out << "<head> node_" << node << " | {";
+					out << "\tnode_" << node << " [ ";
+					if( node->body )
+					{
+						out << " color = red, ";					
+					} 
+					else
+					{
+						out << " color = black, ";
+					}					
+					out << "label = \"{";
+					out << "<head> node_" << node->index << " | {";
 					for( const NodeValueType* fi = node->begin; 
 						fi != node->end; ++fi )
 					{
@@ -1327,7 +1644,7 @@ namespace hydrazine
 						out << "<key_" << ( fi - node->begin ) 
 							<< "> " << fi->first;
 					}
-					out << "}\"];\n";
+					out << "} }\"];\n";
 
 					if( node->body )
 					{
@@ -1356,8 +1673,8 @@ namespace hydrazine
 					{
 						const Leaf* leaf = leafs.top();
 						leafs.pop();
-						out << "\tleaf_" << leaf << " [ label = \"";
-						out << "<head> leaf_" << leaf << " | {";
+						out << "\tleaf_" << leaf << " [ label = \" { ";
+						out << "<head> leaf_" << leaf->index << " | {";
 						for( BTree::const_pointer fi = leaf->begin; 
 							fi != leaf->end; ++fi )
 						{
@@ -1368,7 +1685,7 @@ namespace hydrazine
 							out << "{" << fi->first << " | " 
 								<< fi->second << "} ";
 						}
-						out << "}\"];\n\n";
+						out << "} }\"];\n\n";
 					}
 				}	
 				out << "}" ;
