@@ -180,7 +180,7 @@ namespace hydrazine
 	#ifdef DONT_STRIP_REPORT_PATH
 
 	#define reportE(x, y) \
-		if(REPORT_BASE >= REPORT_ERROR_LEVEL && x >= REPORT_ERROR_LEVEL)\
+		if(REPORT_BASE >= REPORT_ERROR_LEVEL && (x) >= REPORT_ERROR_LEVEL)\
 		{ \
 			{\
 			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
@@ -188,7 +188,7 @@ namespace hydrazine
 			}\
 		 \
 		}\
-		else if( x >= EXIT_ERROR_LEVEL)\
+		else if( (x) >= EXIT_ERROR_LEVEL)\
 		{ \
 			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
 				<< __FILE__ << ":" << __LINE__ << ": This error level " \
@@ -199,7 +199,7 @@ namespace hydrazine
 	#else
 	
 		#define reportE(x, y) \
-			if(REPORT_BASE >= REPORT_ERROR_LEVEL && x >= REPORT_ERROR_LEVEL)\
+			if(REPORT_BASE >= REPORT_ERROR_LEVEL && (x) >= REPORT_ERROR_LEVEL)\
 			{ \
 				{\
 				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
@@ -208,7 +208,7 @@ namespace hydrazine
 				}\
 			 \
 			}\
-			else if( x >= EXIT_ERROR_LEVEL)\
+			else if( (x) >= EXIT_ERROR_LEVEL)\
 			{ \
 				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
 					<< hydrazine::stripReportPath<'/'>(__FILE__)\
