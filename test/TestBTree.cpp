@@ -9,14 +9,20 @@
 #define TEST_B_TREE_CPP_INCLUDED
 
 #include <test/TestBTree.h>
-#include <implementation/BTree.h>
 #include <implementation/Exception.h>
 #include <implementation/ArgumentParser.h>
-#include <vector>
 #include <fstream>
 
 namespace test
 {
+
+	void TestBTree::_init( Vector& v )
+	{
+		for( Vector::iterator fi = v.begin(); fi != v.end(); ++fi )
+		{
+			*fi = random() % elements;
+		}
+	}
 
 	bool TestBTree::testRandom()
 	{
@@ -35,34 +41,46 @@ namespace test
 	
 	void TestBTree::doBenchmark()
 	{
-		typedef hydrazine::BTree< unsigned int, unsigned int, 
-			std::less<unsigned int>, hydrazine::MmapAllocator< 
-			std::pair< const unsigned int, unsigned int > >, PAGE_SIZE > Tree;
-		typedef std::vector< unsigned int > Vector;
-		
 		Tree tree;
 		Vector vector( elements );
-		
-		unsigned int count = 0;
+		_init( vector );
+				
 		for( Vector::iterator fi = vector.begin(); fi != vector.end(); ++fi )
 		{
-			*fi = count++;
-		}
-		
-		for( Vector::iterator fi = vector.begin(); fi != vector.end(); ++fi )
-		{
-			tree.insert( std::make_pair( *fi, *fi ) );
-			std::stringstream stream;
-			stream << path << "/tree_" << *fi << ".dot";
-			std::ofstream out( stream.str().c_str() );
-			if( !out.is_open() )
+			std::pair< Tree::iterator, bool > insertion 
+				= tree.insert( std::make_pair( *fi, fi - vector.begin() ) );
+			if( insertion.second )
 			{
-				throw hydrazine::Exception( "Could not open file " 
-					+ stream.str() );
+				std::stringstream stream;
+				stream << path << "/tree_" << (fi - vector.begin()) << ".dot";
+				std::ofstream out( stream.str().c_str() );
+				if( !out.is_open() )
+				{
+					throw hydrazine::Exception( "Could not open file " 
+						+ stream.str() );
+				}
+				tree.toGraphViz( out );
 			}
-			tree.toGraphViz( out );
 		}
-	
+		
+		for( Vector::iterator fi = vector.begin(); fi != vector.end(); ++fi )
+		{
+			Tree::iterator ti = tree.find( *fi );
+			if( ti != tree.end() )
+			{
+				tree.erase( ti );
+				std::stringstream stream;
+				stream << path << "/tree_" << (fi - vector.begin() + elements) 
+					<< ".dot";
+				std::ofstream out( stream.str().c_str() );
+				if( !out.is_open() )
+				{
+					throw hydrazine::Exception( "Could not open file " 
+						+ stream.str() );
+				}
+				tree.toGraphViz( out );
+			}
+		}	
 	}
 
 	bool TestBTree::doTest()
@@ -110,6 +128,8 @@ int main( int argc, char** argv )
 		"Rather than testing, print out the tree after several changes." );
 	parser.parse( "-e", "--elements", test.elements, 10,
 		"The number of elements to add to the tree." );
+	parser.parse( "-i", "--iterations", test.iterations, 1000,
+		"The number of iterations to perform tests." );
 	parser.parse( "-p", "--path", test.path, "temp",
 		"Relative path to store graphviz representations of the tree." );
 	parser.parse();
