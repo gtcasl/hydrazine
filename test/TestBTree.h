@@ -10,10 +10,13 @@
 
 #include <interface/Test.h>
 #include <implementation/BTree.h>
+#include <implementation/MmapAllocator.h>
 #include <vector>
 #include <map>
 
 #define PAGE_SIZE 4
+#define ALLOCATOR hydrazine::MmapAllocator< std::pair< const unsigned int, unsigned int > >
+//#define ALLOCATOR std::allocator< std::pair< const unsigned int, unsigned int > >
 
 namespace test
 {
@@ -41,8 +44,7 @@ namespace test
 	{
 		private:
 			typedef hydrazine::BTree< unsigned int, unsigned int, 
-				std::less<unsigned int>, hydrazine::MmapAllocator< 
-				std::pair< const unsigned int, unsigned int > >, 
+				std::less<unsigned int>, ALLOCATOR, 
 				PAGE_SIZE > Tree;
 			typedef std::vector< unsigned int > Vector;
 			typedef std::map< unsigned int, unsigned int > Map;

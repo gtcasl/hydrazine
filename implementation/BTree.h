@@ -8,7 +8,6 @@
 #ifndef BTREE_H_INCLUDED
 #define BTREE_H_INCLUDED
 
-#include <implementation/MmapAllocator.h>
 #include <implementation/debug.h>
 #include <implementation/macros.h>
 
@@ -32,7 +31,7 @@ namespace hydrazine
 		\brief A Btree data structure providing the STL map interface.
 	*/
 	template< typename Key, typename Value, typename Compare = std::less<Key>, 
-		typename _Allocator = hydrazine::MmapAllocator< std::pair< const Key, 
+		typename _Allocator = std::allocator< std::pair< const Key, 
 		Value > >, size_t PageSize = 1024 >
 	class BTree
 	{
@@ -1388,15 +1387,22 @@ namespace hydrazine
 			std::pair< iterator, bool > insert( const value_type& x )
 			{
 				std::pair< iterator, bool > fi( _root->lower_bound( x.first ), 
-					false );
-				
+					false );				
 				reportE( REPORT_TREE, "Inserting " << x.first << "," 
 					<< x.second );
-				
 				if( fi.first == end() )
 				{
 					reportE( REPORT_TREE, 
 						" Lower bound is the end, inserting at the end." );
+					fi.first = _root->insert( fi.first, x );
+					fi.second = true;					
+				}
+				else if( fi.first._leaf->end == fi.first._current )
+				{
+					reportE( REPORT_TREE, 
+						" Lower bound is the end of an intermediate leaf, " 
+						<< "inserting at the end of leaf " << fi.first._leaf 
+						<< "." );
 					fi.first = _root->insert( fi.first, x );
 					fi.second = true;					
 				}
@@ -1409,6 +1415,12 @@ namespace hydrazine
 							<< fi.first->second << "." );
 						fi.first = _root->insert( fi.first, x );
 						fi.second = true;
+					}
+					else
+					{
+						reportE( REPORT_TREE, 
+							" Found " << fi.first->first << "," 
+							<< fi.first->second << ", insertion invalid." );					
 					}
 				}
 				

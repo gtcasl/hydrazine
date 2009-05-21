@@ -26,7 +26,192 @@ namespace test
 
 	bool TestBTree::testRandom()
 	{
-		return false;
+		typedef std::pair< Map::iterator, bool > MapInsertion;
+		typedef std::pair< Tree::iterator, bool > TreeInsertion;
+
+		status << "Running Test Random\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 3 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					MapInsertion mapInsertion = map.insert( 
+						std::make_pair( vector[ index ], i ) );
+					TreeInsertion treeInsertion = tree.insert( 
+						std::make_pair( vector[ index ], i ) );
+					if( mapInsertion.second != treeInsertion.second )
+					{
+						status << "At index " << i << std::boolalpha 
+							<< " map insertion " 
+							<< mapInsertion.second 
+							<< " did not match tree insertion " 
+							<< treeInsertion.second << "\n";
+						std::stringstream stream;
+						stream << path << "/tree_random.dot";
+						std::ofstream out( stream.str().c_str() );
+						if( !out.is_open() )
+						{
+							throw hydrazine::Exception( 
+								"Could not open file " + stream.str() );
+						}
+						tree.toGraphViz( out );
+						return false;
+					}
+					
+					if( mapInsertion.first->first 
+						!= treeInsertion.first->first )
+					{
+						status << "At index " << i << " map key " 
+							<< mapInsertion.first->first 
+							<< " did not match tree key " 
+							<< treeInsertion.first->first << "\n";
+						std::stringstream stream;
+						stream << path << "/tree_random.dot";
+						std::ofstream out( stream.str().c_str() );
+						if( !out.is_open() )
+						{
+							throw hydrazine::Exception( 
+								"Could not open file " + stream.str() );
+						}
+						tree.toGraphViz( out );
+						return false;
+					}
+
+					if( mapInsertion.first->second 
+						!= treeInsertion.first->second )
+					{
+						status << "At index " << i << " map value " 
+							<< mapInsertion.first->second 
+							<< " did not match tree value " 
+							<< treeInsertion.first->second << "\n";
+						std::stringstream stream;
+						stream << path << "/tree_random.dot";
+						std::ofstream out( stream.str().c_str() );
+						if( !out.is_open() )
+						{
+							throw hydrazine::Exception( 
+								"Could not open file " + stream.str() );
+						}
+						tree.toGraphViz( out );
+						return false;
+					}
+					
+					break;
+				}
+				
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::const_iterator mi = map.find( vector[ index ] );
+					Tree::const_iterator ti = tree.find( vector[ index ] );
+					bool mapEnd = mi == map.end();
+					bool treeEnd = ti == tree.end();
+										
+					if( mapEnd || treeEnd )
+					{
+						if( mapEnd != treeEnd )
+						{
+							status << "At index " << i << std::boolalpha 
+								<< " for key " << vector[ index ] << " map end "
+								<< mapEnd << " did not match tree end " 
+								<< treeEnd << "\n";
+							std::stringstream stream;
+							stream << path << "/tree_random.dot";
+							std::ofstream out( stream.str().c_str() );
+							if( !out.is_open() )
+							{
+								throw hydrazine::Exception( 
+									"Could not open file " + stream.str() );
+							}
+							tree.toGraphViz( out );
+							return false;						
+						}
+					}
+					else
+					{
+						if( mi->first != ti->first )
+						{
+							status << "At index " << i << " map key " 
+								<< mi->first << " did not match tree key " 
+								<< ti->first << "\n";
+							std::stringstream stream;
+							stream << path << "/tree_random.dot";
+							std::ofstream out( stream.str().c_str() );
+							if( !out.is_open() )
+							{
+								throw hydrazine::Exception( 
+									"Could not open file " + stream.str() );
+							}
+							tree.toGraphViz( out );
+							return false;
+						}
+
+						if( mi->second != ti->second )
+						{
+							status << "At index " << i << " map value " 
+								<< mi->second << " did not match tree value " 
+								<< ti->second << "\n";
+							std::stringstream stream;
+							stream << path << "/tree_random.dot";
+							std::ofstream out( stream.str().c_str() );
+							if( !out.is_open() )
+							{
+								throw hydrazine::Exception( 
+									"Could not open file " + stream.str() );
+							}
+							tree.toGraphViz( out );
+							return false;
+						}
+					}
+				}
+				
+				case 2:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					bool mapEnd = mi == map.end();
+					bool treeEnd = ti == tree.end();
+										
+					if( mapEnd || treeEnd )
+					{
+						if( mapEnd != treeEnd )
+						{
+							status << "At index " << i << std::boolalpha 
+								<< " for key " << vector[ index ] << " map end "
+								<< mapEnd << " did not match tree end " 
+								<< treeEnd << "\n";
+							std::stringstream stream;
+							stream << path << "/tree_random.dot";
+							std::ofstream out( stream.str().c_str() );
+							if( !out.is_open() )
+							{
+								throw hydrazine::Exception( 
+									"Could not open file " + stream.str() );
+							}
+							tree.toGraphViz( out );
+							return false;	
+						}
+					}
+					else
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+				}
+			}
+		}
+		
+		status << "Test Random Passed\n";
+		return true;
 	}
 
 	bool TestBTree::testClear()
@@ -92,7 +277,7 @@ namespace test
 		}
 		else
 		{
-			return testClear() && testComparisons() && testRandom();
+			return testRandom() && testClear() && testComparisons();
 		}
 	}
 
@@ -137,7 +322,6 @@ int main( int argc, char** argv )
 	test.test();
 	
 	return test.passed();
-	
 }
 
 #endif
