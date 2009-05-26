@@ -15,8 +15,8 @@
 #include <map>
 
 #define PAGE_SIZE 4
-#define ALLOCATOR hydrazine::MmapAllocator< std::pair< const unsigned int, unsigned int > >
-//#define ALLOCATOR std::allocator< std::pair< const unsigned int, unsigned int > >
+//#define ALLOCATOR hydrazine::MmapAllocator< std::pair< const unsigned int, unsigned int > >
+#define ALLOCATOR std::allocator< std::pair< const unsigned int, unsigned int > >
 
 namespace test
 {
@@ -33,16 +33,18 @@ namespace test
 			2) Add elements and then clear the BTree.  Assert that there are
 				no elements after the clear and that the correct number is 
 				reported by size after each insertion.
-				
-			3) Test each of the comparison operators.
 			
-			4) Do not run any tests, simply add a sequence to the tree and 
+			3) Test iterating through the BTree.
+			
+			4) Test each of the comparison operators.
+			
+			5) Do not run any tests, simply add a sequence to the tree and 
 				write it out to graph viz files after each operaton.
 
 	*/
 	class TestBTree : public Test
 	{
-		private:
+		public:
 			typedef hydrazine::BTree< unsigned int, unsigned int, 
 				std::less<unsigned int>, ALLOCATOR, 
 				PAGE_SIZE > Tree;
@@ -55,7 +57,13 @@ namespace test
 		private:
 			bool testRandom();
 			bool testClear();
+			bool testIteration();
 			bool testComparisons();
+			bool testSearching();
+			bool testSwap();
+			bool testInsert();
+			bool testErase();
+			bool testCopy();
 			void doBenchmark();
 			bool doTest();
 		
