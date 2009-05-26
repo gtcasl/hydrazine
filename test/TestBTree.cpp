@@ -23,6 +23,20 @@ namespace test
 			*fi = random() % elements;
 		}
 	}
+	
+	static void dumpTree( TestBTree::Tree& tree, const std::string& path, 
+		const std::string& message = "failed" )
+	{
+		std::stringstream stream;
+		stream << path << "/tree_" + message + ".dot";
+		std::ofstream out( stream.str().c_str() );
+		if( !out.is_open() )
+		{
+			throw hydrazine::Exception( 
+				"Could not open file " + stream.str() );
+		}
+		tree.toGraphViz( out );
+	}
 
 	bool TestBTree::testRandom()
 	{
@@ -54,15 +68,7 @@ namespace test
 							<< mapInsertion.second 
 							<< " did not match tree insertion " 
 							<< treeInsertion.second << "\n";
-						std::stringstream stream;
-						stream << path << "/tree_random.dot";
-						std::ofstream out( stream.str().c_str() );
-						if( !out.is_open() )
-						{
-							throw hydrazine::Exception( 
-								"Could not open file " + stream.str() );
-						}
-						tree.toGraphViz( out );
+						dumpTree( tree, path );
 						return false;
 					}
 					
@@ -73,15 +79,7 @@ namespace test
 							<< mapInsertion.first->first 
 							<< " did not match tree key " 
 							<< treeInsertion.first->first << "\n";
-						std::stringstream stream;
-						stream << path << "/tree_random.dot";
-						std::ofstream out( stream.str().c_str() );
-						if( !out.is_open() )
-						{
-							throw hydrazine::Exception( 
-								"Could not open file " + stream.str() );
-						}
-						tree.toGraphViz( out );
+						dumpTree( tree, path );
 						return false;
 					}
 
@@ -92,15 +90,7 @@ namespace test
 							<< mapInsertion.first->second 
 							<< " did not match tree value " 
 							<< treeInsertion.first->second << "\n";
-						std::stringstream stream;
-						stream << path << "/tree_random.dot";
-						std::ofstream out( stream.str().c_str() );
-						if( !out.is_open() )
-						{
-							throw hydrazine::Exception( 
-								"Could not open file " + stream.str() );
-						}
-						tree.toGraphViz( out );
+						dumpTree( tree, path );
 						return false;
 					}
 					
@@ -123,15 +113,7 @@ namespace test
 								<< " for key " << vector[ index ] << " map end "
 								<< mapEnd << " did not match tree end " 
 								<< treeEnd << "\n";
-							std::stringstream stream;
-							stream << path << "/tree_random.dot";
-							std::ofstream out( stream.str().c_str() );
-							if( !out.is_open() )
-							{
-								throw hydrazine::Exception( 
-									"Could not open file " + stream.str() );
-							}
-							tree.toGraphViz( out );
+							dumpTree( tree, path );
 							return false;						
 						}
 					}
@@ -142,15 +124,7 @@ namespace test
 							status << "At index " << i << " map key " 
 								<< mi->first << " did not match tree key " 
 								<< ti->first << "\n";
-							std::stringstream stream;
-							stream << path << "/tree_random.dot";
-							std::ofstream out( stream.str().c_str() );
-							if( !out.is_open() )
-							{
-								throw hydrazine::Exception( 
-									"Could not open file " + stream.str() );
-							}
-							tree.toGraphViz( out );
+							dumpTree( tree, path );
 							return false;
 						}
 
@@ -159,15 +133,7 @@ namespace test
 							status << "At index " << i << " map value " 
 								<< mi->second << " did not match tree value " 
 								<< ti->second << "\n";
-							std::stringstream stream;
-							stream << path << "/tree_random.dot";
-							std::ofstream out( stream.str().c_str() );
-							if( !out.is_open() )
-							{
-								throw hydrazine::Exception( 
-									"Could not open file " + stream.str() );
-							}
-							tree.toGraphViz( out );
+							dumpTree( tree, path );
 							return false;
 						}
 					}
@@ -189,15 +155,7 @@ namespace test
 								<< " for key " << vector[ index ] << " map end "
 								<< mapEnd << " did not match tree end " 
 								<< treeEnd << "\n";
-							std::stringstream stream;
-							stream << path << "/tree_random.dot";
-							std::ofstream out( stream.str().c_str() );
-							if( !out.is_open() )
-							{
-								throw hydrazine::Exception( 
-									"Could not open file " + stream.str() );
-							}
-							tree.toGraphViz( out );
+							dumpTree( tree, path );
 							return false;	
 						}
 					}
@@ -216,10 +174,703 @@ namespace test
 
 	bool TestBTree::testClear()
 	{
-		return false;
+		status << "Running Test Clear\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );
+					
+					if( map.size() != tree.size() )
+					{
+						status << "Map size " << map.size() 
+							<< " does not match tree size " 
+							<< tree.size() << "\n";
+						dumpTree( tree, path );
+						return false;
+					}
+					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+						
+						if( map.size() != tree.size() )
+						{
+							status << "Map size " << map.size() 
+								<< " does not match tree size " 
+								<< tree.size() << "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					break;
+				}
+			}
+		}
+		
+		map.clear();
+		tree.clear();
+		
+		if( map.size() != tree.size() )
+		{
+			status << "Ater clear, map size " << map.size() 
+				<< " does not match tree size " 
+				<< tree.size() << "\n";
+			dumpTree( tree, path );
+			return false;
+		}
+		
+		if( !tree.empty() )
+		{
+			status << "Ater clear, tree reported not empty\n";
+			dumpTree( tree, path );
+			return false;
+		}
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );
+					
+					if( map.size() != tree.size() )
+					{
+						status << "Map size " << map.size() 
+							<< " does not match tree size " 
+							<< tree.size() << "\n";
+						dumpTree( tree, path );
+						return false;
+					}
+					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+						
+						if( map.size() != tree.size() )
+						{
+							status << "Map size " << map.size() 
+								<< " does not match tree size " 
+								<< tree.size() << "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					break;
+				}
+			}
+		}
+	
+		status << "Test Clear Passed\n";
+		return true;
+	}
+	
+	bool TestBTree::testIteration()
+	{
+		status << "Running Test Forward Iteration\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = tree.begin();
+	
+			for( ; mi != map.end() && ti != tree.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Forward iteration failed, map key " << mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Forward iteration failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+			
+			if( mi != map.end() )
+			{
+				status << "Forward iteration failed, map did not hit the end\n";
+				dumpTree( tree, path );
+				return false;
+			}
+		
+			if( ti != tree.end() )
+			{
+				status << "Forward iteration failed, tree did not hit end\n";
+				dumpTree( tree, path );
+				return false;
+			}		
+		}
+		
+		{
+			Map::const_iterator mi = map.begin();
+			Tree::const_iterator ti = tree.begin();
+	
+			for( ; mi != map.end() && ti != tree.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Forward const iteration failed, map key " 
+						<< mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Forward const iteration failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+			
+			if( mi != map.end() )
+			{
+				status << "Forward const iteration failed, map did " 
+					<< "not hit the end\n";
+				dumpTree( tree, path );
+				return false;
+			}
+		
+			if( ti != tree.end() )
+			{
+				status << "Forward const iteration failed, tree" 
+					<< " did not hit end\n";
+				dumpTree( tree, path );
+				return false;
+			}		
+		}
+		
+		{
+			Map::reverse_iterator mi = map.rbegin();
+			Tree::reverse_iterator ti = tree.rbegin();
+	
+			for( ; mi != map.rend() && ti != tree.rend(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Reverse iteration failed, map key " 
+						<< mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Reverse iteration failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+			
+			if( mi != map.rend() )
+			{
+				status << "Reverse iteration failed, map did " 
+					<< "not hit the end\n";
+				dumpTree( tree, path );
+				return false;
+			}
+		
+			if( ti != tree.rend() )
+			{
+				status << "Reverse iteration failed, tree" 
+					<< " did not hit end\n";
+				dumpTree( tree, path );
+				return false;
+			}		
+		}
+		
+		{
+			Map::const_reverse_iterator mi = map.rbegin();
+			Tree::const_reverse_iterator ti = tree.rbegin();
+	
+			for( ; mi != map.rend() && ti != tree.rend(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Reverse const iteration failed, map key " 
+						<< mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Reverse const iteration failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+			
+			if( mi != map.rend() )
+			{
+				status << "Reverse const iteration failed, map did " 
+					<< "not hit the end\n";
+				dumpTree( tree, path );
+				return false;
+			}
+		
+			if( ti != tree.rend() )
+			{
+				status << "Reverse const iteration failed, tree" 
+					<< " did not hit end\n";
+				dumpTree( tree, path );
+				return false;
+			}		
+		}
+		
+		status << "Test Iteration Passed\n";
+		return true;
+			
 	}
 	
 	bool TestBTree::testComparisons()
+	{
+		status << "Running Test Comparisons\n";
+
+		Map map, map1;
+		Tree tree, tree1;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map1.insert( std::make_pair( vector[ index ], i ) );
+					tree1.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map1.find( vector[ index ] );
+					Tree::iterator ti = tree1.find( vector[ index ] );
+					
+					if( mi != map1.end() )
+					{
+						map1.erase( mi );
+						tree1.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		bool mapResult;
+		bool treeResult;
+		
+		mapResult = map == map1;
+		treeResult = tree == tree1;
+		
+		if( mapResult != treeResult )
+		{
+			status << "For comparison ==, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+
+		mapResult = map != map1;
+		treeResult = tree != tree1;
+
+		if( mapResult != treeResult )
+		{
+			status << "For comparison !=, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+
+		mapResult = map < map1;
+		treeResult = tree < tree1;
+
+		if( mapResult != treeResult )
+		{
+			status << "For comparison <, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+
+		mapResult = map <= map1;
+		treeResult = tree <= tree1;
+
+		if( mapResult != treeResult )
+		{
+			status << "For comparison <=, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+
+		mapResult = map > map1;
+		treeResult = tree > tree1;
+
+		if( mapResult != treeResult )
+		{
+			status << "For comparison >, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+
+		mapResult = map >= map1;
+		treeResult = tree >= tree1;
+
+		if( mapResult != treeResult )
+		{
+			status << "For comparison >=, map result " << mapResult
+				<< " does not match tree result " << treeResult << "\n";
+			dumpTree( tree, path, "failed" );
+			dumpTree( tree1, path, "failed1" );
+			return false;
+		}
+	
+		status << "Test Comparison Passed\n";
+		return true;
+		
+	}
+
+	bool TestBTree::testSearching()
+	{
+		status << "Running Test Searching\n";
+
+		Map map, map1;
+		Tree tree, tree1;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 3 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+				
+				case 2:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						if( ti == tree.end() )
+						{
+							status << "Map found key " << mi->first
+								<< ", but it was not found in the tree.\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->first != ti->first )
+						{
+							status << "Find failed, map key " << mi->first
+								<< " does not match tree key " << ti->first 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->second != ti->second )
+						{
+							status << "Find failed, map value " << mi->second
+								<< " does not match tree value " << ti->second 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					
+					mi = map.lower_bound( vector[ index ] );
+					ti = tree.lower_bound( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						if( ti == tree.end() )
+						{
+							status << "Map lower_bound found key " << mi->first
+								<< ", but it was not found in the tree.\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->first != ti->first )
+						{
+							status << "Lower_bound failed, map key " 
+								<< mi->first
+								<< " does not match tree key " << ti->first 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->second != ti->second )
+						{
+							status << "Lower_bound failed, map value " 
+								<< mi->second
+								<< " does not match tree value " << ti->second 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					
+					mi = map.upper_bound( vector[ index ] );
+					ti = tree.upper_bound( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						if( ti == tree.end() )
+						{
+							status << "Map upper_bound found key " << mi->first
+								<< ", but it was not found in the tree.\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->first != ti->first )
+						{
+							status << "Upper_bound failed, map key " 
+								<< mi->first
+								<< " does not match tree key " << ti->first 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mi->second != ti->second )
+						{
+							status << "Upper_bound failed, map value " 
+								<< mi->second
+								<< " does not match tree value " << ti->second 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					
+					std::pair< Map::iterator, Map::iterator > 
+						mp = map.equal_range( vector[ index ] );
+					std::pair< Tree::iterator, Tree::iterator > 
+						tp = tree.equal_range( vector[ index ] );
+					
+					if( mp.first != map.end() )
+					{
+						if( tp.first == tree.end() )
+						{
+							status << "Map equal range lower key " 
+								<< mp.first->first
+								<< ", but it was not found in the tree.\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mp.first->first != tp.first->first )
+						{
+							status << "Equal_range failed, lower map key " 
+								<< mp.first->first
+								<< " does not match tree key " 
+								<< tp.first->first 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mp.first->second != tp.first->second )
+						{
+							status << "Equal_range failed, lower map value " 
+								<< mp.first->second
+								<< " does not match tree value " 
+								<< tp.first->second << "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					
+					if( mp.second != map.end() )
+					{
+						if( tp.second == tree.end() )
+						{			dumpTree( tree, path, "failed" );
+
+							status << "Map equal range upper key " 
+								<< mp.second->first
+								<< ", but it was not found in the tree.\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mp.second->first != tp.second->first )
+						{
+							status << "Equal_range failed, upper map key " 
+								<< mp.second->first
+								<< " does not match tree key " 
+								<< tp.second->first 
+								<< "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+						if( mp.second->second != tp.second->second )
+						{
+							status << "Equal_range failed, upper map value " 
+								<< mp.second->second
+								<< " does not match tree value " 
+								<< tp.second->second << "\n";
+							dumpTree( tree, path );
+							return false;
+						}
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		status << "Test Searching Passed.\n";
+		return true;
+	}
+
+	bool TestBTree::testSwap()
+	{
+		return false;
+	}
+	
+	bool TestBTree::testInsert()
+	{
+		return false;
+	}
+
+	bool TestBTree::testErase()
+	{
+		return false;
+	}
+
+	bool TestBTree::testCopy()
 	{
 		return false;
 	}
@@ -237,14 +888,8 @@ namespace test
 			if( insertion.second )
 			{
 				std::stringstream stream;
-				stream << path << "/tree_" << (fi - vector.begin()) << ".dot";
-				std::ofstream out( stream.str().c_str() );
-				if( !out.is_open() )
-				{
-					throw hydrazine::Exception( "Could not open file " 
-						+ stream.str() );
-				}
-				tree.toGraphViz( out );
+				stream << (fi - vector.begin());
+				dumpTree( tree, path, stream.str() );
 			}
 		}
 		
@@ -255,15 +900,8 @@ namespace test
 			{
 				tree.erase( ti );
 				std::stringstream stream;
-				stream << path << "/tree_" << (fi - vector.begin() + elements) 
-					<< ".dot";
-				std::ofstream out( stream.str().c_str() );
-				if( !out.is_open() )
-				{
-					throw hydrazine::Exception( "Could not open file " 
-						+ stream.str() );
-				}
-				tree.toGraphViz( out );
+				stream << (fi - vector.begin() + elements);
+				dumpTree( tree, path, stream.str() );
 			}
 		}	
 	}
@@ -277,7 +915,9 @@ namespace test
 		}
 		else
 		{
-			return testRandom() && testClear() && testComparisons();
+			return testRandom() && testClear() && testIteration() 
+				&& testComparisons() && testSearching() && testSwap() 
+				&& testInsert() && testErase() && testCopy();
 		}
 	}
 
@@ -291,8 +931,9 @@ namespace test
 		description += "same order. 2) Add elements and then clear the BTree. ";
 		description += " Assert that there are no elements after the clear and";
 		description += " that the correct number is reported by size after ";
-		description += "each insertion. 3) Test each of the comparison ";
-		description += "operators. 4) Do not run any tests, simply add a ";
+		description += "each insertion. 3) Test iteraion through the BTree.";
+		description += "4) Test each of the comparison ";
+		description += "operators. 5) Do not run any tests, simply add a ";
 		description += "sequence to the tree and write it out to graph viz ";
 		description += "files after each operaton.";
 	}

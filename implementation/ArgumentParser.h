@@ -13,6 +13,13 @@
 #include <sstream>
 #include "macros.h"
 #include <cassert>
+#include "debug.h"
+
+#ifdef REPORT_BASE
+#undef REPORT_BASE 
+#endif
+
+#define REPORT_BASE 0
 
 /*!
 	\brief a namespace for common classes and functions
@@ -151,7 +158,8 @@ namespace hydrazine
 				const std::string& longIdentifier, T& i, const V& starting, 
 				const std::string& string);
 			
-			/*!
+			/*!			    report( " Found " << identifier );
+
 				\brief Create a help message describing the program.
 				\return A help message stored in a string.
 			*/
@@ -176,29 +184,53 @@ namespace hydrazine
 		for(int i = 0; i < argc; i++)
 		{
 			str = argv[i];
+			if( str.size() > 0 )
+			{
+			    if( str[0] == '-' )
+			    {
+			        str = str.substr( 1 );
+           			if( str.size() > 0 )
+			        {
+			            if( str[0] == '-' )
+			            {
+			                str = str.substr( 1 );
+			            }
+			        }
+			    }
+			}
+			
+			report( "Searching for " << identifier << " in " << str );
+			
 			size_t pos = str.find(identifier);
 			if( pos == 0 )
 			{
+			    report( " Found " << identifier );
 				if( str.size() == identifier.size() )
 				{
 					if( i < argc - 1 )
 					{
-						found = true;
+        			    found = true;
 						str = argv[i+1];
+						report( "  Setting to next value " << str );
 						break;
 					}
 				}
 				else
 				{
 					pos = identifier.size();
-					if( str[pos] == '=' )
+					if( pos < str.size() )
 					{
-						++pos;
+					    if( str[pos] == '=' )
+				        {
+					        ++pos;
+				        }
 					}
 					if( pos < str.size() )
 					{
 						found = true;
 						str = str.substr( pos );
+						report( "  Setting to substring " << str );
+						break;					
 					}
 				}
 			}
@@ -222,7 +254,7 @@ namespace hydrazine
 		assert( _identifier[0] == '-' );
 
 		i = starting;
-		find( _identifier, i );
+		find( _identifier.substr(1), i );
 		
 		std::string identifier( ' ' + _identifier );
 
@@ -250,8 +282,8 @@ namespace hydrazine
 		assert( 0 == _longIdentifier.find( "--" ) );
 
 		i = starting;
-		find( _identifier, i );
-		find( _longIdentifier, i );
+		find( _identifier.substr(1), i );
+		find( _longIdentifier.substr(2), i );
 		
 		std::string identifier( ' ' + _identifier 
 			+ '(' + _longIdentifier + ')' );
