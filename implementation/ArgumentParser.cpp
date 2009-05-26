@@ -6,13 +6,6 @@
 #define ARGUMENT_PARSER_CPP_INCLUDED
 
 #include "ArgumentParser.h"
-#include "debug.h"
-
-#ifdef REPORT_BASE
-#undef REPORT_BASE 
-#endif
-
-#define REPORT_BASE 0
 
 namespace hydrazine
 {
