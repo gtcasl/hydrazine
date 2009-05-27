@@ -8,33 +8,11 @@
 #ifndef ITERATOR_H_INCLUDED
 #define ITERATOR_H_INCLUDED
 
+#include <iterator>
+
 namespace hydrazine
 {
-	
-	/*!
-		\brief Concept for STL input iteratorss
-	*/
-	class input_iterator_tag {};
-	
-	/*!
-		\brief Concept for STL output iterators
-	*/
-	class output_iterator_tag {};
 
-	/*!
-		\brief Concept for STL ranodm access iterators
-	*/
-	class forward_iterator_tag : public input_iterator_tag {};
-	
-	/*!
-		\brief Concept for STL bidirectional iterators
-	*/
-	class bidirectional_iterator_tag : public forward_iterator_tag {};
-
-	/*!
-		\brief Concept for STL ranodm access iterators
-	*/
-	class random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	/*!
 		\brief Define typedefs for iterator classes
@@ -71,7 +49,7 @@ namespace hydrazine
 	template< typename T >
 	struct IteratorTraits< T* >
 	{
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
@@ -81,7 +59,7 @@ namespace hydrazine
 	template< typename T >
 	struct IteratorTraits< const T* >
 	{
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef const T* pointer;
@@ -156,29 +134,29 @@ namespace hydrazine
 				return PointerIterator( _current-- );
 			}
 			
-			reference operator[]( const difference_type& n ) const
+			reference operator[]( const difference_type& n )
 			{
 				return _current[ n ];
 			}
 			
-			PointerIterator& operator+=( const difference_type& n ) const
+			PointerIterator& operator+=( const difference_type& n )
 			{
 				_current += n;
 				return *this;
 			}
 			
-			PointerIterator operator+( const difference_type& n ) const
+			PointerIterator operator+( const difference_type& n )
 			{
 				return PointerIterator( _current + n );
 			}
 			
-			PointerIterator& operator-=( const difference_type& n ) const
+			PointerIterator& operator-=( const difference_type& n )
 			{
 				_current -= n;
 				return *this;
 			}
 			
-			PointerIterator operator-( const difference_type& n ) const
+			PointerIterator operator-( const difference_type& n )
 			{
 				return PointerIterator( _current - n );
 			}
