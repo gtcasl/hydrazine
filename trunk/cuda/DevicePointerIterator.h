@@ -72,7 +72,7 @@ namespace cuda
 						value_type temp;
 						cudaCheck( cudaMemcpy( &temp, _pointer, 
 							sizeof( value_type ), cudaMemcpyDeviceToHost ) );
-						return std::move( temp );
+						return temp;
 					}
 					
 					pointer base()
@@ -136,7 +136,7 @@ namespace cuda
 				value_type temp;
 				cudaCheck( cudaMemcpy( &temp, _current + n, 
 					sizeof( value_type ), cudaMemcpyDeviceToHost ) );
-				return std::move( temp );
+				return temp;
 			}
 			
 			DevicePointerIterator& operator+=( const difference_type& n ) const
