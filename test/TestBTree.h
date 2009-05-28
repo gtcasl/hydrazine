@@ -21,8 +21,9 @@
 namespace test
 {
 
-	/*!
-		\brief A unit test for the BTree mapping data structure.
+		/*!
+		\brief A unit test for a BTree data structure implementing
+			the STL map interface.
 		
 		Test Points:
 		
@@ -38,8 +39,18 @@ namespace test
 			
 			4) Test each of the comparison operators.
 			
-			5) Do not run any tests, simply add a sequence to the tree and 
-				write it out to graph viz files after each operaton.
+			5) Test searching functions.
+			
+			6) Test swapping with another map
+			
+			7) Test all of the insert functions.
+			
+			8) Test all of the erase functions.
+			
+			9) Test assignment and copy constructors.
+			
+			10) Do not run any tests, simply add a sequence to the localMap 
+				and write it out to graph viz files after each operaton.
 
 	*/
 	class TestBTree : public Test

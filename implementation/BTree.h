@@ -10,15 +10,13 @@
 
 #include <implementation/debug.h>
 #include <implementation/macros.h>
+#include <interface/ValueCompare.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE
 #endif
 
 #define REPORT_BASE 1
-#define REPORT_NODE 1
-#define REPORT_TREE 1
-#define REPORT_LEAF 1
 
 #include <stack>
 #include <cstring>
@@ -35,6 +33,9 @@ namespace hydrazine
 		Value > >, size_t PageSize = 1024 >
 	class BTree
 	{
+		template< typename K, typename V, typename C, typename A, size_t P > 
+			friend std::ostream& operator<<( std::ostream&, 
+			const BTree< K, V, C, A, P >& );
 		public:
 			class Iterator;
 			class ConstIterator;
@@ -48,7 +49,8 @@ namespace hydrazine
 			typedef typename _Allocator::template rebind< value_type >::other
 				Allocator;
 
-		public:			
+		public:
+			typedef BTree type;	
 			typedef Compare key_compare;
 			typedef Allocator allocator_type;
 			typedef typename Allocator::reference reference;
@@ -63,36 +65,8 @@ namespace hydrazine
 			typedef std::reverse_iterator< const_iterator > 
 				const_reverse_iterator;
 			typedef std::pair< iterator, bool > insertion;
-				
-		public:
-			class value_compare : 
-				public std::binary_function< value_type, value_type, bool >
-			{
-				friend class BTree;
-				
-				protected:
-					Compare compare;
-				
-				protected:
-					value_compare( const Compare& c ) : compare( c ) {}
-				
-				public:
-					bool operator()( const_reference x, const_reference y )
-					{
-						return compare( x.first, y.first );
-					}
+			typedef ValueCompare< Key, Value, Compare, type > value_compare;
 
-					bool operator()( const key_type& x, const_reference y )
-					{
-						return compare( x, y.first );
-					}
-
-					bool operator()( const_reference x, const key_type& y )
-					{
-						return compare( x.first, y );
-					}
-			};
-			
 		private:
 			Allocator _allocator;
 			value_compare _compare;
@@ -102,6 +76,10 @@ namespace hydrazine
 			class Body;
 			class Node;
 			class Leaf;
+			
+		private:
+			typedef std::pair< Node*, size_type > StackElement;
+			typedef std::stack< StackElement > Stack;
 		
 		private:
 			static const size_type MaxNodes = MAX( 8, 
@@ -207,32 +185,6 @@ namespace hydrazine
 					{
 						return size <= MaxLeafs;
 					}
-					
-					inline std::pair< iterator, bool > 
-						insert( const value_type& value, 
-						value_compare& compare )
-					{
-						assert( !full() );
-						value_type* position = std::lower_bound( data, 
-							data + size, value, compare );
-						if( position != data + size )
-						{
-							if( !compare( value, *position ) )
-							{
-								report( " Insert failed." );
-								return std::make_pair( 
-									iterator( 0, 0 ), false );
-							}
-						}
-						
-						report( " Insert succeeded." );
-						std::copy_backward( position, data + size, 
-							data + size + 1 );
-						*position = value;
-						++size;
-						return std::make_pair( 
-							iterator( this, position - data ), true );
-					}
 			};
 
 		public:
@@ -242,6 +194,13 @@ namespace hydrazine
 				friend class BTree;
 				friend class Node;
 				friend class Leaf;
+				public:
+					typedef Iterator iterator_type;
+					typedef std::bidirectional_iterator_tag iterator_category;
+					typedef BTree::value_type value_type;
+					typedef BTree::pointer pointer;
+					typedef BTree::reference reference;
+					typedef BTree::difference_type difference_type;
 
 				private:
 					Leaf* _leaf;
@@ -253,12 +212,14 @@ namespace hydrazine
 					{}
 					
 				public:
+					inline Iterator( ) {}
 					inline Iterator( const Iterator& i ) : _leaf( i._leaf ), 
 						_current( i._current ) {}
 					inline Iterator& operator=( const Iterator& i )
 					{
 						_leaf = i._leaf;
 						_current = i._current;
+						return *this;
 					}
 					
 					inline reference operator*() const
@@ -343,6 +304,13 @@ namespace hydrazine
 				friend class BTree;
 				friend class Node;
 				friend class Leaf;
+				public:
+					typedef Iterator iterator_type;
+					typedef std::bidirectional_iterator_tag iterator_category;
+					typedef BTree::value_type value_type;
+					typedef BTree::const_pointer pointer;
+					typedef BTree::const_reference reference;
+					typedef BTree::difference_type difference_type;
 
 				private:
 					Leaf* _leaf;
@@ -505,48 +473,49 @@ namespace hydrazine
 			{
 				clear();
 				insert( tree.begin(), tree.end() );
+				return *this;
 			}
 			
 			/*!
 				\brief Iterators
 			*/
 		public:
-			iterator begin()
+			inline iterator begin()
 			{
 				return iterator( _begin, 0 );
 			}
 			
-			const_iterator begin() const
+			inline const_iterator begin() const
 			{
 				return const_iterator( _begin, 0 );
 			}
 			
-			iterator end()
+			inline iterator end()
 			{
 				return iterator( _end, _end != 0 ? _end->size : 0 );
 			}
 			
-			const_iterator end() const
+			inline const_iterator end() const
 			{
 				return const_iterator( _end, _end != 0 ? _end->size : 0 );
 			}
 			
-			reverse_iterator rbegin()
+			inline reverse_iterator rbegin()
 			{
 				return reverse_iterator( end() );
 			}
 			
-			const_reverse_iterator rbegin() const
+			inline const_reverse_iterator rbegin() const
 			{
 				return const_reverse_iterator( end() );
 			}
 			
-			reverse_iterator rend()
+			inline reverse_iterator rend()
 			{
 				return reverse_iterator( begin() );
 			}
 			
-			const_reverse_iterator rend() const
+			inline const_reverse_iterator rend() const
 			{
 				return const_reverse_iterator( begin() );
 			}
@@ -555,17 +524,17 @@ namespace hydrazine
 				\brief Capacity
 			*/
 		public:
-			bool empty() const
+			inline bool empty() const
 			{
 				return size() == 0;
 			}
 			
-			size_type size() const
+			inline size_type size() const
 			{
 				return _stats.elements;
 			}
 			
-			size_type max_size() const
+			inline size_type max_size() const
 			{
 				return _allocator.max_size();
 			}
@@ -574,7 +543,7 @@ namespace hydrazine
 				\brief Element access
 			*/
 		public:
-			reference operator[]( const key_type& key )
+			inline reference operator[]( const key_type& key )
 			{
 				iterator fi = lower_bound( key );
 				
@@ -599,19 +568,24 @@ namespace hydrazine
 				\brief Modifiers
 			*/
 		public:
-			std::pair< iterator, bool > insert( const value_type& x )
+			inline insertion insert( const_reference x )
 			{
 				report( "Inserting " << x.first << "," << x.second );
 				if( _root != 0 )
 				{
-					Leaf* leaf = _findInsertLeaf( x.first );
-					std::pair< iterator, bool > result 
-						= leaf->insert( x, _compare );
-					if( result.second && leaf->full() )
+					Stack stack;
+					stack.push( StackElement( _root, 0 ) );
+					
+					_findInsertLeaf( stack, x );					
+					insertion result( _insertLeaf( stack.top().first, x ) );
+
+					if( result.first._leaf->full() )
 					{
+						assert( result.second );
 						report( " Insert caused a split." );
-						_split( result.first );
+						_split( stack, result.first );
 					}
+					
 					return result;
 				}
 				else
@@ -626,14 +600,13 @@ namespace hydrazine
 				}
 			}
 
-			iterator insert( iterator position, const value_type& x )
+			inline iterator insert( iterator position, const_reference x )
 			{
-				iterator guess = lower_bound( x );
-				return _insert( guess, x );
+				return insert( x ).first;
 			}
 
 			template < typename InputIterator >
-			void insert( InputIterator first, InputIterator last )
+			inline void insert( InputIterator first, InputIterator last )
 			{
 				for( InputIterator fi = first; fi != last; ++fi )
 				{
@@ -641,12 +614,12 @@ namespace hydrazine
 				}
 			}
 			
-			void erase( iterator position )
+			inline void erase( iterator position )
 			{
 				assert( "Erase not implemented." == 0 );
 			}
 			
-			size_type erase( const key_type& x )
+			inline size_type erase( const key_type& x )
 			{
 				iterator position = find( x );
 				if( x != end() )
@@ -657,12 +630,12 @@ namespace hydrazine
 				return 0;
 			}
 			
-			void erase( iterator first, iterator last )
+			inline void erase( iterator first, iterator last )
 			{
 				assert( "Erase not implemented." == 0 );
 			}
 			
-			void swap( BTree& tree )
+			inline void swap( BTree& tree )
 			{
 				std::swap( _stats, tree._stats );
 				std::swap( _begin, tree._begin );
@@ -670,7 +643,7 @@ namespace hydrazine
 				std::swap( _root, tree._root );
 			}
 
-			void clear()
+			inline void clear()
 			{
 				if( _root != 0 )
 				{
@@ -694,28 +667,203 @@ namespace hydrazine
 				_root = leaf;
 			}
 			
-			inline void _split( iterator& position )
+			inline void _findInsertLeaf( Stack& stack, const_reference value )
 			{
-				assert( "Split leaf not implemented" == 0 );
-			}
-			
-			inline Leaf* _findInsertLeaf( const key_type& _key )
-			{
-				Node* node = _root;
-				
 				for( size_type level = _root->level; level > 0; --level )
 				{
-					assert( level == node->level );
-					Body* body = static_cast< Body* >( node );
+					assert( stack.top().first->level == level );
+					Body* body = static_cast< Body* >( stack.top().first );
 					Key* key = std::lower_bound( body->keys, 
-						body->keys + body->size, _key, _keyCompare );
-					assert( key != body->keys + body->size );
-					node = body->children[ key - body->keys ];
+						body->keys + body->size, value, _compare );
+					size_type position = key - body->keys;
+					stack.push( StackElement( body->children[ position ], 
+						position ) );
+				}
+				assert( stack.top().first->leaf() );
+			}
+			
+			inline insertion _insertLeaf( Node* node, const_reference value )
+			{
+				Leaf* leaf = static_cast< Leaf* >( node );
+				pointer position = std::lower_bound( leaf->data, 
+					leaf->data + leaf->size, value, _compare );
+				if( position != leaf->data + leaf->size )
+				{
+					if( !_compare( value, *position ) )
+					{
+						return insertion( iterator( leaf, 
+							position - leaf->data ), false );
+					}
+				}
+				std::copy_backward( position, leaf->data + leaf->size, 
+					leaf->data + leaf->size + 1 );
+				*position = value;
+				++leaf->size;
+				return insertion( iterator( leaf, position - leaf->data ), 
+					true );
+			} 
+			
+			inline void _split( Stack& stack, iterator& fi )
+			{
+				assert( stack.top().first->leaf() );
+				Leaf* leaf = static_cast< Leaf* >( stack.top().first );
+				size_type position = stack.top().second;
+				assert( leaf == fi._leaf );
+				
+				if( !leaf->full() )
+				{
+					return;
 				}
 				
-				assert( node->leaf() );
-				Leaf* leaf = static_cast< Leaf* >( node );
-				return leaf;				
+				Leaf* right = _splitLeaf( leaf, fi );
+				stack.pop();
+				
+				if( stack.empty() )
+				{
+					report( "  Splitting the root." );
+					_bumpRoot( leaf, right );
+					return;
+				}
+				else
+				{
+					Body* parent = static_cast< Body* >( stack.top().first );
+					_propagate( parent, leaf, right, position );
+				}
+				
+				while( stack.size() > 1 )
+				{
+					Body* body = static_cast< Body* >( stack.top().first );
+					size_type position = stack.top().second;
+					stack.pop();
+					if( !body->full() )
+					{
+						return;
+					}
+					size_type splitKey;
+					Body* right = _splitBody( body, splitKey );
+					Body* parent = static_cast< Body* >( stack.top().first );
+					_propagate( parent, body, right, position, splitKey );
+				}
+				
+				assert( stack.top().first == _root );
+				
+				Body* body = static_cast< Body* >( stack.top().first );
+				stack.pop();
+				if( !body->full() )
+				{
+					return;
+				}
+				report( "  Splitting the root." );
+				size_type splitKey;
+				Body* rightBody = _splitBody( body, splitKey );
+				_bumpRoot( body, rightBody, splitKey );		
+			}
+			
+			inline Leaf* _splitLeaf( Leaf* leaf, iterator& fi )
+			{
+				report( "   Splitting leaf node." );
+				Leaf* right = _allocateLeaf();
+				size_type median = leaf->size / 2;
+				right->size = leaf->size - median;
+				std::copy( leaf->data + median, leaf->data + leaf->size, 
+					right->data );
+				leaf->size = median;
+				
+				if( fi._current >= median )
+				{
+					fi._leaf = right;
+					fi._current -= median;
+				}
+				
+				if( _end == leaf )
+				{
+					_end = right;
+				}
+				
+				return right;
+			}
+			
+			inline Body* _splitBody( Body* body, size_type& key )
+			{
+				assert( body->full() );
+				report( "   Splitting body node." );
+				Body* right = _allocateBody( body->level );
+				size_type median = body->size / 2;
+				report( "    median index is " << median );
+				right->size = body->size - median - 1;
+				std::copy( body->keys + median + 1, body->keys + body->size, 
+					right->keys );
+				std::copy( body->children + median + 1, 
+					body->children + body->size + 1, right->children );
+				body->size = median;
+				key = body->keys[ median ];
+				report( "    right size is " << right->size );
+				report( "    left size is " << body->size );
+				report( "    split on key " << key );
+				return right;
+			}
+			
+			inline void _bumpRoot( Body* left, Body* right, size_type key )
+			{
+				assert( left == _root );
+				report( "   Bumped to level " << (left->level + 1) 
+					<< " on key " << key );
+				Body* root = _allocateBody( left->level + 1 );
+				root->size = 1;
+				root->keys[0] = key;
+				root->children[0] = left;
+				root->children[1] = right;
+				report( "    left is below " << left->keys[ left->size - 1 ] );	
+				report( "    right is above " << key );	
+				_root = root;	
+			}
+			
+			inline void _bumpRoot( Leaf* left, Leaf* right )
+			{
+				assert( left == _root );
+				report( "    Bumped to level 1" );
+				Body* root = _allocateBody( 1 );
+				root->size = 1;
+				root->keys[0] = right->data[0].first;
+				root->children[0] = left;	
+				root->children[1] = right;
+				_root = root;	
+			}
+		
+			inline void _propagate( Body* parent, Leaf* left, 
+				Leaf* right, size_type position )
+			{
+				assert( position <= parent->size );
+				assert( parent->children[ position ] == left );
+				report( "  Propagating the split up the tree at index " 
+					<< position << "." );
+				std::copy_backward( parent->keys + position, 
+					parent->keys + parent->size, 
+					parent->keys + parent->size + 1 );
+				std::copy_backward( parent->children + position + 1, 
+					parent->children + parent->size + 1, 
+					parent->children + parent->size + 2 );
+				++parent->size;
+				parent->keys[ position ] = right->data[0].first;
+				parent->children[ position + 1 ] = right;
+			}
+			
+			inline void _propagate( Body* parent, Body* left, 
+				Body* right, size_type position, size_type& key )
+			{
+				assert( position <= parent->size );
+				assert( parent->children[ position ] == left );
+				report( "  Propagating the split up the tree at index " 
+					<< position << "." );
+				std::copy_backward( parent->keys + position, 
+					parent->keys + parent->size, 
+					parent->keys + parent->size + 1 );
+				std::copy_backward( parent->children + position + 1, 
+					parent->children + parent->size + 1, 
+					parent->children + parent->size + 2 );
+				++parent->size;
+				parent->keys[ position ] = key;
+				parent->children[ position + 1 ] = right;
 			}
 		
 			inline void _clear( Node* n )
@@ -761,7 +909,7 @@ namespace hydrazine
 				}
 			}
 			
-			inline void _insert( iterator position, const value_type& val )
+			inline void _insert( iterator position, const_reference val )
 			{
 				assert( "_insert not implemented." == 0 );
 			}
@@ -770,12 +918,12 @@ namespace hydrazine
 				\brief Observers
 			*/
 		public:
-			key_compare key_comp() const
+			inline key_compare key_comp() const
 			{
-				return _keyCompare;
+				return _compare.compare;
 			}
 			
-			value_compare value_comp() const
+			inline value_compare value_comp() const
 			{
 				return _compare;
 			}
@@ -784,48 +932,46 @@ namespace hydrazine
 				\brief Map Operations
 			*/
 		public:
-			iterator find( const key_type& x )
+			inline iterator find( const key_type& x )
 			{
 				iterator result = lower_bound( x );
-				reportE( REPORT_TREE, "Finding key " << x );
+				report( "Finding key " << x );
 				if( result != end() )
 				{
 					if( !_keyCompare( x, result->first ) )
 					{
-						reportE( REPORT_TREE, " Found value " 
+						report( " Found value " 
 							<< result->second );
 						return result;
 					}
 				}
-				reportE( REPORT_TREE && result == end(), 
-					" Could not find value for key." );
+				reportE( result == end(), " Could not find value for key." );
 				return end();
 			}
 			
-			const_iterator find( const key_type& x ) const
+			inline const_iterator find( const key_type& x ) const
 			{
 				const_iterator result = lower_bound( x );
-				reportE( REPORT_TREE, "Finding key " << x );
+				report( "Finding key " << x );
 				if( result != end() )
 				{
 					if( !_compareKey( x, result->first ) )
 					{
-						reportE( REPORT_TREE, " Found value " 
+						report( " Found value " 
 							<< result->second );
 						return result;
 					}
 				}
-				reportE( REPORT_TREE && result == end(), 
-					" Could not find value for key." );
+				reportE( result == end(), " Could not find value for key." );
 				return end();
 			}
 			
-			size_type count( const key_type& x ) const
+			inline size_type count( const key_type& x ) const
 			{
 				return find( x ) != end();
 			}
 			
-			iterator lower_bound( const key_type& x )
+			inline iterator lower_bound( const key_type& x )
 			{
 				if ( _root == 0 ) return end();
 				Node* node = _root;
@@ -849,17 +995,17 @@ namespace hydrazine
 				return iterator( leaf, index );
 			}
 			
-			const_iterator lower_bound( const key_type& x ) const
+			inline const_iterator lower_bound( const key_type& x ) const
 			{
 				return lower_bound( x );
 			}
 			
-			iterator upper_bound( const key_type& x )
+			inline iterator upper_bound( const key_type& x )
 			{
 				iterator result = lower_bound( x );
 				if( result != end() )
 				{
-					if( !_compareKey( x, result->first ) )
+					if( !_compare( x, *result ) )
 					{
 						++result;
 					}
@@ -867,12 +1013,12 @@ namespace hydrazine
 				return result;
 			}
 
-			const_iterator upper_bound( const key_type& x ) const
+			inline const_iterator upper_bound( const key_type& x ) const
 			{
 				const_iterator result = lower_bound( x );
 				if( result != end() )
 				{
-					if( !_compareKey( x, result->first ) )
+					if( !_compare( x, *result ) )
 					{
 						++result;
 					}
@@ -880,14 +1026,14 @@ namespace hydrazine
 				return result;
 			}
 
-			std::pair< iterator, iterator > equal_range( const key_type& x )
+			inline std::pair< iterator, iterator > equal_range( const key_type& x )
 			{
 				std::pair< iterator, iterator > result;
 				result.first = lower_bound( x );
 				result.second = result.first;
 				if( result.second != end() )
 				{
-					if( !_compareKey( x, result.second->first ) )
+					if( !_compare( x, *result.second ) )
 					{
 						++result.second;
 					}
@@ -895,7 +1041,7 @@ namespace hydrazine
 				return result;
 			}
 			
-			std::pair< const_iterator, const_iterator > equal_range( 
+			inline std::pair< const_iterator, const_iterator > equal_range( 
 				const key_type& x ) const
 			{
 				std::pair< iterator, iterator > result;
@@ -903,7 +1049,7 @@ namespace hydrazine
 				result.second = result.first;
 				if( result.second != end() )
 				{
-					if( !_compareKey( x, result.second->first ) )
+					if( !_compare( x, *result.second ) )
 					{
 						++result.second;
 					}
@@ -911,87 +1057,6 @@ namespace hydrazine
 				return result;			
 			}
 
-		public:
-		
-			void toGraphViz( std::ostream& out )
-			{
-				typedef std::stack< const Node* > NodeStack;
-		
-				if( _root == 0 )
-				{
-					return;
-				}
-				
-				NodeStack stack;
-		
-				stack.push( _root );
-
-				out << "digraph BTree_" << this << " {\n";
-				out << "\tnode [ shape = record ];\n\n";
-				while( !stack.empty() )
-				{
-					const Node* node = stack.top();
-					stack.pop();
-					out << "\tnode_" << node << " [ ";
-					if( !node->leaf() )
-					{
-						out << " color = red, ";					
-					} 
-					else
-					{
-						out << " color = black, ";
-					}					
-					out << "label = \"{";
-					if( node->leaf() )
-					{
-						const Leaf* leaf = static_cast< const Leaf* >( node );
-						out << "<head> leaf_" << leaf->data->first 
-							<< " (" << leaf->size << ")" << " | {";
-						for( const_pointer fi = leaf->data; 
-							fi != leaf->data + leaf->size; ++fi )
-						{
-							if( fi != leaf->data )
-							{
-								out << "| ";
-							}
-							out << "{ <key_" << ( fi - leaf->data ) 
-								<< "> " << fi->first << " | " 
-								<< fi->second << " } ";
-						}
-						out << "} }\"];\n";
-					}
-					else
-					{
-						const Body* body = static_cast< const Body* >( node );
-						out << "<head> node_" << *body->keys << " (" 
-							<< body->size << ")" << "(l_" << body->level 
-							<< ")" << " | {";
-						for( const Key* ki = body->keys;
-							ki != body->keys + body->size; ++ki )
-						{
-							if( ki != body->keys )
-							{
-								out << "| ";
-							}
-							out << "<key_" << ( ki - body->keys ) 
-								<< "> " << *ki << " } ";
-						}
-						out << "} }\"];\n";
-
-						for( Node* const* ni = &body->children[0];
-							ni != body->children + body->size; ++ni )
-						{
-							out << "node_" << node << "::<key_" 
-								<< ( ni - body->children ) << "> -> node_"
-								<< *ni << "::<head>\n";
-							stack.push( *ni );
-						}
-						out << "\n";
-					}
-
-				}
-				out << "}";
-			}
 	};
 	
 	template <typename Key, typename T, typename Compare, typename Allocator, 
@@ -1012,7 +1077,7 @@ namespace hydrazine
 		const BTree< Key, T, Compare, Allocator, PageSize >& y)
 	{
 		return std::lexicographical_compare( x.begin(), x.end(), y.begin(), 
-			y.end(), x.value_compare() );
+			y.end(), x.value_comp() );
 	}
 
 	template < typename Key, typename T, typename Compare, typename Allocator, 
@@ -1054,6 +1119,91 @@ namespace hydrazine
 		BTree< Key, T, Compare, Allocator, PageSize >& y )
 	{
 		x.swap( y );
+	}
+	
+	template < typename Key, typename T, typename Compare, typename Allocator, 
+		size_t PageSize >
+	std::ostream& operator<<( std::ostream& out, 
+		const BTree< Key, T, Compare, Allocator, PageSize >& tree )
+	{
+		typedef BTree< Key, T, Compare, Allocator, PageSize > BTree;
+		typedef std::stack< const typename BTree::Node* > NodeStack;
+
+		if( tree._root == 0 )
+		{
+			return out;
+		}
+		
+		NodeStack stack;
+
+		stack.push( tree._root );
+
+		out << "digraph BTree_" << &tree << " {\n";
+		out << "\tnode [ shape = record ];\n\n";
+		while( !stack.empty() )
+		{
+			const typename BTree::Node* node = stack.top();
+			stack.pop();
+			out << "\tnode_" << node << " [ ";
+			if( !node->leaf() )
+			{
+				out << "color = red, ";					
+			} 
+			else
+			{
+				out << "color = black, ";
+			}					
+			out << "label = \"{";
+			if( node->leaf() )
+			{
+				const typename BTree::Leaf* leaf 
+					= static_cast< const typename BTree::Leaf* >( node );
+				out << "<head> leaf_" << leaf->data->first 
+					<< " (" << leaf->size << ")" << " | { { ";
+				for( typename BTree::const_pointer fi = leaf->data; 
+					fi != leaf->data + leaf->size; ++fi )
+				{
+					if( fi != leaf->data )
+					{
+						out << "| { ";
+					}
+					out << "<key_" << ( fi - leaf->data ) 
+						<< "> " << fi->first << " | " 
+						<< fi->second << " } ";
+				}
+				out << "} }\"];\n";
+			}
+			else
+			{
+				const typename BTree::Body* body 
+					= static_cast< const typename BTree::Body* >( node );
+				out << "<head> node_" << *body->keys << " (" 
+					<< body->size << ")" << "(level_" << body->level 
+					<< ")" << " | { {";
+				out << "<key_0> previous } ";
+				for( const typename BTree::key_type* ki = body->keys;
+					ki != body->keys + body->size; ++ki )
+				{
+					out << "| { ";
+					out << "<key_" << ( ki - body->keys + 1) 
+						<< "> " << *ki << " } ";
+				}
+				out << "} }\"];\n";
+
+				for( typename BTree::Node* const* ni = &body->children[0];
+					ni != body->children + body->size + 1; ++ni )
+				{
+					out << "\tnode_" << node << ":key_" 
+						<< ( ni - body->children ) << " -> node_"
+						<< *ni << ":head;\n";
+					stack.push( *ni );
+				}
+				out << "\n";
+			}
+
+		}
+		out << "}";
+		return out;
 	}
 		
 }
