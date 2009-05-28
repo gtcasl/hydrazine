@@ -35,7 +35,7 @@ namespace test
 			throw hydrazine::Exception( 
 				"Could not open file " + stream.str() );
 		}
-		tree.toGraphViz( out );
+		out << tree;
 	}
 
 	bool TestBTree::testRandom()
@@ -857,22 +857,398 @@ namespace test
 
 	bool TestBTree::testSwap()
 	{
-		return false;
+		status << "Running Test Swap\n";
+
+		Map map, map1;
+		Tree tree, tree1;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map1.insert( std::make_pair( vector[ index ], i ) );
+					tree1.insert( std::make_pair( vector[ index ], i ) );					
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map1.find( vector[ index ] );
+					Tree::iterator ti = tree1.find( vector[ index ] );
+					
+					if( mi != map1.end() )
+					{
+						map1.erase( mi );
+						tree1.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		map.swap( map1 );
+		tree.swap( tree1 );
+		
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = tree.begin();
+
+			for( ; mi != map.end() && ti != tree.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Swap failed, map key " << mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Swap failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second 
+						<< "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+			
+		}
+		
+		{
+			Map::iterator mi = map1.begin();
+			Tree::iterator ti = tree1.begin();
+
+			for( ; mi != map1.end() && ti != tree1.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Swap failed, map key " << mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree1, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Swap failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second 
+						<< "\n";
+					dumpTree( tree1, path );
+					return false;
+				}
+			}
+		}
+		
+		status << "  Test Swap Passed.\n";
+		return true;		
 	}
 	
 	bool TestBTree::testInsert()
 	{
-		return false;
+		status << "Running Test Insert\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					Tree::iterator fi = 
+						tree.lower_bound( vector[ index ] );
+					fi = tree.insert( fi, 
+						std::make_pair( vector[ index ], i ) );
+					if( fi->first != vector[ index ] )
+					{
+						status << "Insert failed, returned iterator with key " 
+						<< fi->first << " does not match inserted value " 
+						<< vector[ index ] << "\n";
+						dumpTree( tree, path );
+						return false;
+					}		
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		tree.clear();
+		tree.insert( map.begin(), map.end() );
+		
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = tree.begin();
+
+			for( ; mi != map.end() && ti != tree.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Insert failed, map key " << mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Insert failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second 
+						<< "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+		}
+		
+		status << "  Test Insert Passed.\n";
+		return true;
 	}
 
 	bool TestBTree::testErase()
 	{
-		return false;
+		status << "Running Test Insert\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					Tree::iterator fi = 
+						tree.lower_bound( vector[ index ] );
+					fi = tree.insert( fi, 
+						std::make_pair( vector[ index ], i ) );
+					if( fi->first != vector[ index ] )
+					{
+						status << "Insert failed, returned iterator with key " 
+						<< fi->first << " does not match inserted value " 
+						<< vector[ index ] << "\n";
+						dumpTree( tree, path );
+						return false;
+					}		
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					size_t index1 = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Map::iterator mi1 = map.find( vector[ index1 ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					Tree::iterator ti1 = tree.find( vector[ index1 ] );
+					
+					if( mi == map.end() && mi1 == map.end() )
+					{
+						break;
+					}
+					
+					if( mi == map.end() && mi1 != map.end() )
+					{
+						std::swap( mi, mi1 );
+						std::swap( ti, ti1 );
+					}
+					else if( mi != map.end() && mi1 != map.end() )
+					{
+						if( mi1->first < mi->first )
+						{
+							std::swap( mi, mi1 );
+							std::swap( ti, ti1 );
+						}
+					}
+					
+					map.erase( mi, mi1 );
+					tree.erase( ti, ti1 );
+					break;
+				}
+			}
+		}
+			
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = tree.begin();
+
+			for( ; mi != map.end() && ti != tree.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Erase failed, map key " << mi->first
+						<< " does not match tree key " << ti->first 
+						<< "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Erase failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second 
+						<< "\n";
+					dumpTree( tree, path );
+					return false;
+				}
+			}
+		}
+		
+		status << "  Test Erase Passed.\n";
+		return true;
 	}
 
 	bool TestBTree::testCopy()
 	{
-		return false;
+		status << "Running Test Copy\n";
+
+		Map map;
+		Tree tree;
+		Vector vector( elements );
+		_init( vector );
+		
+		for( unsigned int i = 0; i < iterations; ++i )
+		{
+			switch( random() % 2 )
+			{
+				case 0:
+				{
+					size_t index = random() % vector.size();
+					map.insert( std::make_pair( vector[ index ], i ) );
+					tree.insert( std::make_pair( vector[ index ], i ) );						
+					break;
+				}
+								
+				case 1:
+				{
+					size_t index = random() % vector.size();
+					Map::iterator mi = map.find( vector[ index ] );
+					Tree::iterator ti = tree.find( vector[ index ] );
+					
+					if( mi != map.end() )
+					{
+						map.erase( mi );
+						tree.erase( ti );
+					}
+					break;
+				}
+			}
+		}
+		
+		Tree copy( tree );
+		
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = copy.begin();
+
+			for( ; mi != map.end() && ti != copy.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Copy failed, map key " << mi->first
+						<< " does not match tree key " << ti->first 
+						<< "\n";
+					dumpTree( copy, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Copy failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second 
+						<< "\n";
+					dumpTree( copy, path );
+					return false;
+				}
+			}
+		}
+		
+		copy.clear();
+		copy = tree;
+
+		{
+			Map::iterator mi = map.begin();
+			Tree::iterator ti = copy.begin();
+
+			for( ; mi != map.end() && ti != copy.end(); ++mi, ++ti )
+			{
+				if( mi->first != ti->first )
+				{
+					status << "Assign failed, map key " << mi->first
+						<< " does not match tree key " << ti->first << "\n";
+					dumpTree( copy, path );
+					return false;
+				}
+				if( mi->second != ti->second )
+				{
+					status << "Assign failed, map value " 
+						<< mi->second
+						<< " does not match tree value " << ti->second << "\n";
+					dumpTree( copy, path );
+					return false;
+				}
+			}
+		}
+	
+		status << "  Test Copy Passed.\n";
+		return true;
 	}
 	
 	void TestBTree::doBenchmark()
@@ -924,17 +1300,21 @@ namespace test
 	TestBTree::TestBTree()
 	{
 		name = "TestBTree";
-		description = "A unit test for the BTree mapping data structure. ";
+		description = "A unit test for the Tree mapping data structure. ";
 		description += "Test Points: 1) Randomly insert and remove elements ";
-		description += "from a std::map and a BTree	assert that the final ";
+		description += "from a std::map and a Map assert that the final ";
 		description += "versions have the exact same elements stored in the ";
-		description += "same order. 2) Add elements and then clear the BTree. ";
+		description += "same order. 2) Add elements and then clear the Map. ";
 		description += " Assert that there are no elements after the clear and";
 		description += " that the correct number is reported by size after ";
-		description += "each insertion. 3) Test iteraion through the BTree.";
+		description += "each insertion. 3) Test iteraion through the Map.";
 		description += "4) Test each of the comparison ";
-		description += "operators. 5) Do not run any tests, simply add a ";
-		description += "sequence to the tree and write it out to graph viz ";
+		description += "operators. 5) Test searching functions. 6) Test ";
+		description += "swapping with another map 7) Test all of the insert ";
+		description += "functions. 8) Test all of the erase functions. 9) ";
+		description += "Test assignment and copy constructors. 10) Do not ";
+		description += "run any tests, simply add a ";
+		description += "sequence to the Map and write it out to graph viz ";
 		description += "files after each operaton.";
 	}
 
@@ -952,7 +1332,7 @@ int main( int argc, char** argv )
 		"Print out info after the test." );
 	parser.parse( "-b", "--benchmark", test.benchmark, false,
 		"Rather than testing, print out the tree after several changes." );
-	parser.parse( "-e", "--elements", test.elements, 10,
+	parser.parse( "-e", "--elements", test.elements, 30,
 		"The number of elements to add to the tree." );
 	parser.parse( "-i", "--iterations", test.iterations, 1000,
 		"The number of iterations to perform tests." );
