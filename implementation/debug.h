@@ -391,4 +391,16 @@ namespace hydrazine
 
 #endif
 
+/*!
+
+	\brief A cast along the lines of static_cast that selectively inserts 
+		runtime checks for validity depending on the definition of NDEBUG.
+
+*/
+#ifdef NDEBUG
+	#define debug_cast static_cast
+#else
+	#define debug_cast dynamic_cast
+#endif
+
 #endif

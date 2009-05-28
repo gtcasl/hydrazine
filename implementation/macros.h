@@ -68,26 +68,5 @@
 #define ABS(x) ( ( ( x ) < 0 ) ? ( ( -( x ) ) ) : ( x ) )
 #endif
 
-/*!
-
-	\brief A cast along the lines of static_cast that selectively inserts 
-		runtime checks for validity depending on the definition of NDEBUG.
-
-*/
-template< typename T, typename Ts >
-T debug_cast( const Ts& source )
-{
-
-	#ifdef NDEBUG
-	
-		return static_cast< T >( source );
-	
-	#else
-	
-		return dynamic_cast< T >( source );
-	
-	#endif
-
-}
-
 #endif
+
