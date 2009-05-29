@@ -21,6 +21,9 @@ namespace cuda
 		
 		It should also be convertable into a device handle.  This conversion
 		process should flush the host cache.
+		
+		All other GPU data structures should be built using this for memory
+		allocation.
 	*/
 	template< typename T, size_t LineSize = 2097152 >
 	class CachedVector

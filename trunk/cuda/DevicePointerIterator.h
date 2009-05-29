@@ -161,7 +161,7 @@ namespace cuda
 				return DevicePointerIterator( _current - n );
 			}
 			
-			const Type& base() const
+			pointer base()
 			{
 				return _current;
 			}
