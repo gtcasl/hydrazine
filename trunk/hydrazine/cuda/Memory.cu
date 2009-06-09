@@ -10,6 +10,9 @@
 
 #include <hydrazine/cuda/Memory.h>
 
+namespace hydrazine
+{
+
 namespace cuda
 {
 	
@@ -19,6 +22,8 @@ namespace cuda
 		_memcpy<MemcpyBase>( destination, source, length );
 	}
 	
+}
+
 }
 
 #endif

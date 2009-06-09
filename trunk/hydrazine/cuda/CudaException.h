@@ -11,6 +11,9 @@
 #include <cuda_runtime_api.h>
 #include <exception>
 
+namespace hydrazine
+{
+
 namespace cuda
 {
 
@@ -32,6 +35,8 @@ namespace cuda
 }
 
 void cudaCheck( cudaError_t );
+
+}
 
 #endif
 
