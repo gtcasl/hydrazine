@@ -8,8 +8,11 @@
 #ifndef MEMORY_H_INCLUDED
 #define MEMORY_H_INCLUDED
 
-#include <hydrazine/cuda/Cuda.h>
-#include <hydrazine/implementation/macros.h>
+#include <cuda/Cuda.h>
+#include <implementation/macros.h>
+
+namespace hydrazine
+{
 
 namespace cuda
 {
@@ -98,9 +101,10 @@ namespace cuda
 		_memcpy<MemcpyCta>( destination, source, length );
 	}
 
-
 	__global__ void memcpy(void* destination, 
 		const void* source, size_t length);
+
+}
 
 }
 

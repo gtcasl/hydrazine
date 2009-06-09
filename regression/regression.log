@@ -1,59 +1,197 @@
-INFO     Reading in test file /home/normal/checkout/hydrazine/trunk/regression/tests.txt
+INFO     Reading in test file /home/gdiamos/checkout/hydrazine/trunk/regression/tests.txt
 INFO      Found the following tests:
-INFO       /home/normal/checkout/hydrazine/trunk/TestActiveTimer
-INFO       /home/normal/checkout/hydrazine/trunk/TestArgumentParser
-INFO       /home/normal/checkout/hydrazine/trunk/TestCudaVector
-INFO       /home/normal/checkout/hydrazine/trunk/TestMath
-INFO       /home/normal/checkout/hydrazine/trunk/TestPackage
-INFO       /home/normal/checkout/hydrazine/trunk/TestSerializableArchive
-INFO       /home/normal/checkout/hydrazine/trunk/TestSerializationBuffer
-INFO       /home/normal/checkout/hydrazine/trunk/TestThread
-INFO       /home/normal/checkout/hydrazine/trunk/TestTimer
-INFO       /home/normal/checkout/hydrazine/trunk/TestXmlArgumentParser
-INFO       /home/normal/checkout/hydrazine/trunk/TestXmlParser
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestActiveTimer
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestArgumentParser
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestCudaVector
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestMath
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestPackage
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestSerializableArchive
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestSerializationBuffer
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestThread
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestTimer
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestXmlArgumentParser
+INFO       /home/gdiamos/checkout/hydrazine/trunk/TestXmlParser
 INFO     ==== INDIVIDUAL TEST RESULTS ====
 
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestActiveTimer
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestMath
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestActiveTimer seconds
-INFO     Test completed in 0.509443044662 seconds
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestThread
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestXmlArgumentParser
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestSerializationBuffer
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestActiveTimer
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestTimer
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestCudaVector
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestArgumentParser
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestTimer seconds
+INFO     Test completed in 0.00295901298523 seconds
 INFO      It produced the following output:
 Pass/Fail : Pass
 
 
-Name : TestActiveTimer
+Name : TestTimer
 
-Description : Create a bunch of timers, record when they start, tell them to fire in order.  Make sure that they actually do.
+Description : A simple test to spin for a number of iterations and print out the time recorded by a Timer in the spin loop.
 
-Test time : 0.500236
+Test Seed : 1244581972
+Test time : 0.000170469
 
-Status : Timer 9 will fire after 0.5 seconds.
-Timer 8 will fire after 0.45 seconds.
-Timer 7 will fire after 0.4 seconds.
-Timer 6 will fire after 0.35 seconds.
-Timer 5 will fire after 0.3 seconds.
-Timer 4 will fire after 0.25 seconds.
-Timer 3 will fire after 0.2 seconds.
-Timer 2 will fire after 0.15 seconds.
-Timer 1 will fire after 0.1 seconds.
-Timer 0 will fire after 0.05 seconds.
-Timer 0 fired after 0.0500035 seconds.
-Timer 1 fired after 0.100006 seconds.
-Timer 2 fired after 0.150009 seconds.
-Timer 3 fired after 0.200008 seconds.
-Timer 4 fired after 0.250011 seconds.
-Timer 5 fired after 0.300006 seconds.
-Timer 6 fired after 0.350011 seconds.
-Timer 7 fired after 0.400006 seconds.
-Timer 8 fired after 0.450009 seconds.
-Timer 9 fired after 0.500018 seconds.
-Test passed.
+Status : Timer starting 9.53674e-07s (1126 ticks).
+Timer ending 7.15256e-05s (71332 ticks).
 
 
 
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestXmlParser
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestMath seconds
-INFO     Test completed in 0.509066820145 seconds
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestPackage
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestPackage seconds
+INFO     Test completed in 0.00194787979126 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestPackage
+
+Description : A test for the Package class. TestPoints: 1) Add some variables, copy the package, remove the variables, make sure that they match. 2) Randomly add, remove, reserve, and compress the package.  Finally remove all variables and make sure that they match.
+
+Test Seed : 1244581972
+Test time : 0.000188112
+
+Status : Test Point 1 (AddRemove): Passed.
+Test Point 2 (Complex): Passed.
+
+
+
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestXmlParser
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestArgumentParser seconds
+INFO     Test completed in 0.00450587272644 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestArgumentParser
+
+Description : This test will create a fake argc and argv and populate them with test values.  It will then use the argument parser to initialize some variables and make sure that they are set to the correct values.
+
+Test Seed : 1244581972
+Test time : 0.00178242
+
+Status : For key --key_0, reference -958906812, matched parsed -958906812
+For key --key_10, reference 1944778901, matched parsed 1944778901
+For key --key_12, reference 451457258, matched parsed 451457258
+For key --key_14, reference 1535745009, matched parsed 1535745009
+For key --key_16, reference 1720133510, matched parsed 1720133510
+For key --key_18, reference 229330338, matched parsed 229330338
+For key --key_2, reference 2009914897, matched parsed 2009914897
+For key --key_20, reference 3.29772e+09, matched parsed 3.29772e+09
+For key --key_22, reference 4.05282e+09, matched parsed 4.05282e+09
+For key --key_24, reference 1.04226e+09, matched parsed 1.04226e+09
+For key --key_26, reference 2.47663e+09, matched parsed 2.47663e+09
+For key --key_28, reference 6.23912e+08, matched parsed 6.23912e+08
+For key --key_30, reference 1.57213e+09, matched parsed 1.57213e+09
+For key --key_32, reference 1.1496e+09, matched parsed 1.1496e+09
+For key --key_34, reference 2.32569e+09, matched parsed 2.32569e+09
+For key --key_36, reference 4.04417e+09, matched parsed 4.04417e+09
+For key --key_38, reference 1.06885e+09, matched parsed 1.06885e+09
+For key --key_4, reference 1385911640, matched parsed 1385911640
+For key --key_40, reference string_2498980519, matched parsed string_2498980519
+For key --key_42, reference string_870467395, matched parsed string_870467395
+For key --key_44, reference string_3539152961, matched parsed string_3539152961
+For key --key_46, reference string_294450065, matched parsed string_294450065
+For key --key_48, reference string_35392383, matched parsed string_35392383
+For key --key_50, reference string_553174177, matched parsed string_553174177
+For key --key_52, reference string_2410689797, matched parsed string_2410689797
+For key --key_54, reference string_130295007, matched parsed string_130295007
+For key --key_56, reference string_2546440339, matched parsed string_2546440339
+For key --key_58, reference string_310184694, matched parsed string_310184694
+For key --key_6, reference 674640318, matched parsed 674640318
+For key --key_60, reference 1, matched parsed 1
+For key --key_61, reference 0, matched parsed 0
+For key --key_62, reference 0, matched parsed 0
+For key --key_63, reference 1, matched parsed 1
+For key --key_64, reference 0, matched parsed 0
+For key --key_65, reference 0, matched parsed 0
+For key --key_66, reference 0, matched parsed 0
+For key --key_67, reference 0, matched parsed 0
+For key --key_68, reference 1, matched parsed 1
+For key --key_69, reference 1, matched parsed 1
+For key --key_8, reference 1424712877, matched parsed 1424712877
+
+
+
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestThread seconds
+INFO     Test completed in 0.0109419822693 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestThread
+
+Description : A test program to test the basic communication functions in the thread wrapper class.
+
+Test Seed : 1244581972
+Test time : 0.00848532
+
+Status : Test message passed.
+
+
+
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestMath
+INFO     Running test program /home/gdiamos/checkout/hydrazine/trunk/TestSerializableArchive
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestXmlArgumentParser seconds
+INFO     Test completed in 0.00965189933777 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestXmlArgumentParser
+
+Description : Creates a random XML tree, writes to a temp file, parses it with the XmlArgumentParser, then makes sure that all parsed values match their recorded values.
+
+Test Seed : 1244581972
+Test time : 0.00768781
+
+Status : Test Passed.
+
+
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestXmlParser seconds
+INFO     Test completed in 0.00946307182312 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestXmlParser
+
+Description : Tests the XmlParser by generating a random XML tree, writing it out to a file, parsing the file, and comparing the two XML trees.
+
+Test Seed : 1244581972
+Test time : 0.00306273
+
+Status : Test passed.
+
+
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestSerializationBuffer seconds
+INFO     Test completed in 0.13100194931 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestSerializationBuffer
+
+Description : A test for the serialization buffer.
+
+Write in some values
+then read them back and make sure they match.
+Take in an external buffer and read some values out.
+Write in some strings then read them out.
+
+Test Seed : 1244581972
+Test time : 0.128908
+
+Status : Input string 1914114184294967255429496724242949672111742949672141144294967255429496728612342949672068549107429496726534429496718142949672834294967233 == output string 1914114184294967255429496724242949672111742949672141144294967255429496728612342949672068549107429496726534429496718142949672834294967233.
+Write of 100000 buffers of 100 took 0.0131929 seconds ( 13192949 ).
+Read of 100000 buffers of 100 took 0.00254202 seconds ( 2542070 ).
+Read of 49725 buffers and writes of 50275 buffers took 0.00551248 seconds ( 5512298 ).
+
+
+
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestMath seconds
+INFO     Test completed in 0.168431043625 seconds
 INFO      It produced the following output:
 Pass/Fail : Pass
 
@@ -67,7 +205,8 @@ test benchmarks the operations and tests them against
 equivalent slower implemenations.
 
 
-Test time : 0.502059
+Test Seed : 1244581972
+Test time : 0.165262
 
 Status : Correctly detected 1 as a power of two.
 Correctly detected 2 as a power of two.
@@ -100,18 +239,18 @@ Correctly detected 134217728 as a power of two.
 Correctly detected 268435456 as a power of two.
 Correctly detected 536870912 as a power of two.
 Correctly detected 1073741824 as a power of two.
-Both implementations agreed that 4088358320 was not a power of two.
-Both implementations agreed that 2161996609 was not a power of two.
-Both implementations agreed that 1534393101 was not a power of two.
-Both implementations agreed that 1747813077 was not a power of two.
-Both implementations agreed that 1642436702 was not a power of two.
-Both implementations agreed that 2569261336 was not a power of two.
-Both implementations agreed that 2352766370 was not a power of two.
-Both implementations agreed that 2494353229 was not a power of two.
-Both implementations agreed that 1159899958 was not a power of two.
-Both implementations agreed that 269465729 was not a power of two.
-Experimental isPowerOfTwo time was 0.0194023 seconds, ( 19402118 ) cycles. ( 1 )
-Reference isPowerOfTwo time was 0.152635 seconds, ( 152634497 ) cycles. ( 1 )
+Both implementations agreed that 370260139 was not a power of two.
+Both implementations agreed that 3336060484 was not a power of two.
+Both implementations agreed that 2009914897 was not a power of two.
+Both implementations agreed that 1385911640 was not a power of two.
+Both implementations agreed that 674640318 was not a power of two.
+Both implementations agreed that 1424712877 was not a power of two.
+Both implementations agreed that 1944778901 was not a power of two.
+Both implementations agreed that 451457258 was not a power of two.
+Both implementations agreed that 1535745009 was not a power of two.
+Both implementations agreed that 1720133510 was not a power of two.
+Experimental isPowerOfTwo time was 0.00200772 seconds, ( 2007728 ) cycles. ( 1 )
+Reference isPowerOfTwo time was 0.0482509 seconds, ( 48250787 ) cycles. ( 1 )
 Correctly detected 1 as a power of two.
 Correctly detected 2 as a power of two.
 Correctly detected 4 as a power of two.
@@ -143,778 +282,671 @@ Correctly detected 134217728 as a power of two.
 Correctly detected 268435456 as a power of two.
 Correctly detected 536870912 as a power of two.
 Correctly detected 1073741824 as a power of two.
-Both implementations agreed that 1222641547 was not a power of two.
-Both implementations agreed that -2056194935 was not a power of two.
-Both implementations agreed that 1199193193 was not a power of two.
-Both implementations agreed that 1584195513 was not a power of two.
-Both implementations agreed that -1689025357 was not a power of two.
-Both implementations agreed that 2112420754 was not a power of two.
-Both implementations agreed that 1343095849 was not a power of two.
-Both implementations agreed that -949325810 was not a power of two.
-Both implementations agreed that -1543384454 was not a power of two.
-Both implementations agreed that -1906922234 was not a power of two.
-Experimental isPowerOfTwo time was 0.00697422 seconds, ( 6974280 ) cycles. ( 1 )
-Reference isPowerOfTwo time was 0.107309 seconds, ( 107308957 ) cycles. ( 1 )
-Both implementations agree that 1544103076 % 1 = 0.
-Both implementations agree that 1544103076 % 2 = 0.
-Both implementations agree that 1544103076 % 4 = 0.
-Both implementations agree that 1544103076 % 8 = 4.
-Both implementations agree that 1544103076 % 16 = 4.
-Both implementations agree that 1544103076 % 32 = 4.
-Both implementations agree that 1544103076 % 64 = 36.
-Both implementations agree that 1544103076 % 128 = 36.
-Both implementations agree that 1544103076 % 256 = 164.
-Both implementations agree that 1544103076 % 512 = 164.
-Both implementations agree that 1544103076 % 1024 = 164.
-Both implementations agree that 1544103076 % 2048 = 1188.
-Both implementations agree that 1544103076 % 4096 = 1188.
-Both implementations agree that 1544103076 % 8192 = 1188.
-Both implementations agree that 1544103076 % 16384 = 9380.
-Both implementations agree that 1544103076 % 32768 = 9380.
-Both implementations agree that 1544103076 % 65536 = 9380.
-Both implementations agree that 1544103076 % 131072 = 74916.
-Both implementations agree that 1544103076 % 262144 = 74916.
-Both implementations agree that 1544103076 % 524288 = 74916.
-Both implementations agree that 1544103076 % 1048576 = 599204.
-Both implementations agree that 1544103076 % 2097152 = 599204.
-Both implementations agree that 1544103076 % 4194304 = 599204.
-Both implementations agree that 1544103076 % 8388608 = 599204.
-Both implementations agree that 1544103076 % 16777216 = 599204.
-Both implementations agree that 1544103076 % 33554432 = 599204.
-Both implementations agree that 1544103076 % 67108864 = 599204.
-Both implementations agree that 1544103076 % 134217728 = 67708068.
-Both implementations agree that 1544103076 % 268435456 = 201925796.
-Both implementations agree that 1544103076 % 536870912 = 470361252.
-Both implementations agree that 1544103076 % 1073741824 = 470361252.
-Both implementations agree that 2057017343 % 1 = 0.
-Both implementations agree that 2057017343 % 2 = 1.
-Both implementations agree that 2057017343 % 4 = 3.
-Both implementations agree that 2057017343 % 8 = 7.
-Both implementations agree that 2057017343 % 16 = 15.
-Both implementations agree that 2057017343 % 32 = 31.
-Both implementations agree that 2057017343 % 64 = 63.
-Both implementations agree that 2057017343 % 128 = 127.
-Both implementations agree that 2057017343 % 256 = 255.
-Both implementations agree that 2057017343 % 512 = 511.
-Both implementations agree that 2057017343 % 1024 = 1023.
-Both implementations agree that 2057017343 % 2048 = 2047.
-Both implementations agree that 2057017343 % 4096 = 2047.
-Both implementations agree that 2057017343 % 8192 = 6143.
-Both implementations agree that 2057017343 % 16384 = 6143.
-Both implementations agree that 2057017343 % 32768 = 6143.
-Both implementations agree that 2057017343 % 65536 = 38911.
-Both implementations agree that 2057017343 % 131072 = 104447.
-Both implementations agree that 2057017343 % 262144 = 235519.
-Both implementations agree that 2057017343 % 524288 = 235519.
-Both implementations agree that 2057017343 % 1048576 = 759807.
-Both implementations agree that 2057017343 % 2097152 = 1808383.
-Both implementations agree that 2057017343 % 4194304 = 1808383.
-Both implementations agree that 2057017343 % 8388608 = 1808383.
-Both implementations agree that 2057017343 % 16777216 = 10196991.
-Both implementations agree that 2057017343 % 33554432 = 10196991.
-Both implementations agree that 2057017343 % 67108864 = 43751423.
-Both implementations agree that 2057017343 % 134217728 = 43751423.
-Both implementations agree that 2057017343 % 268435456 = 177969151.
-Both implementations agree that 2057017343 % 536870912 = 446404607.
-Both implementations agree that 2057017343 % 1073741824 = 983275519.
-Both implementations agree that 1922900295 % 1 = 0.
-Both implementations agree that 1922900295 % 2 = 1.
-Both implementations agree that 1922900295 % 4 = 3.
-Both implementations agree that 1922900295 % 8 = 7.
-Both implementations agree that 1922900295 % 16 = 7.
-Both implementations agree that 1922900295 % 32 = 7.
-Both implementations agree that 1922900295 % 64 = 7.
-Both implementations agree that 1922900295 % 128 = 71.
-Both implementations agree that 1922900295 % 256 = 71.
-Both implementations agree that 1922900295 % 512 = 327.
-Both implementations agree that 1922900295 % 1024 = 327.
-Both implementations agree that 1922900295 % 2048 = 327.
-Both implementations agree that 1922900295 % 4096 = 327.
-Both implementations agree that 1922900295 % 8192 = 327.
-Both implementations agree that 1922900295 % 16384 = 8519.
-Both implementations agree that 1922900295 % 32768 = 8519.
-Both implementations agree that 1922900295 % 65536 = 8519.
-Both implementations agree that 1922900295 % 131072 = 74055.
-Both implementations agree that 1922900295 % 262144 = 74055.
-Both implementations agree that 1922900295 % 524288 = 336199.
-Both implementations agree that 1922900295 % 1048576 = 860487.
-Both implementations agree that 1922900295 % 2097152 = 1909063.
-Both implementations agree that 1922900295 % 4194304 = 1909063.
-Both implementations agree that 1922900295 % 8388608 = 1909063.
-Both implementations agree that 1922900295 % 16777216 = 10297671.
-Both implementations agree that 1922900295 % 33554432 = 10297671.
-Both implementations agree that 1922900295 % 67108864 = 43852103.
-Both implementations agree that 1922900295 % 134217728 = 43852103.
-Both implementations agree that 1922900295 % 268435456 = 43852103.
-Both implementations agree that 1922900295 % 536870912 = 312287559.
-Both implementations agree that 1922900295 % 1073741824 = 849158471.
-Both implementations agree that 715871256 % 1 = 0.
-Both implementations agree that 715871256 % 2 = 0.
-Both implementations agree that 715871256 % 4 = 0.
-Both implementations agree that 715871256 % 8 = 0.
-Both implementations agree that 715871256 % 16 = 8.
-Both implementations agree that 715871256 % 32 = 24.
-Both implementations agree that 715871256 % 64 = 24.
-Both implementations agree that 715871256 % 128 = 24.
-Both implementations agree that 715871256 % 256 = 24.
-Both implementations agree that 715871256 % 512 = 24.
-Both implementations agree that 715871256 % 1024 = 24.
-Both implementations agree that 715871256 % 2048 = 1048.
-Both implementations agree that 715871256 % 4096 = 1048.
-Both implementations agree that 715871256 % 8192 = 5144.
-Both implementations agree that 715871256 % 16384 = 5144.
-Both implementations agree that 715871256 % 32768 = 21528.
-Both implementations agree that 715871256 % 65536 = 21528.
-Both implementations agree that 715871256 % 131072 = 87064.
-Both implementations agree that 715871256 % 262144 = 218136.
-Both implementations agree that 715871256 % 524288 = 218136.
-Both implementations agree that 715871256 % 1048576 = 742424.
-Both implementations agree that 715871256 % 2097152 = 742424.
-Both implementations agree that 715871256 % 4194304 = 2839576.
-Both implementations agree that 715871256 % 8388608 = 2839576.
-Both implementations agree that 715871256 % 16777216 = 11228184.
-Both implementations agree that 715871256 % 33554432 = 11228184.
-Both implementations agree that 715871256 % 67108864 = 44782616.
-Both implementations agree that 715871256 % 134217728 = 44782616.
-Both implementations agree that 715871256 % 268435456 = 179000344.
-Both implementations agree that 715871256 % 536870912 = 179000344.
-Both implementations agree that 715871256 % 1073741824 = 715871256.
-Both implementations agree that 2003129492 % 1 = 0.
-Both implementations agree that 2003129492 % 2 = 0.
-Both implementations agree that 2003129492 % 4 = 0.
-Both implementations agree that 2003129492 % 8 = 4.
-Both implementations agree that 2003129492 % 16 = 4.
-Both implementations agree that 2003129492 % 32 = 20.
-Both implementations agree that 2003129492 % 64 = 20.
-Both implementations agree that 2003129492 % 128 = 20.
-Both implementations agree that 2003129492 % 256 = 148.
-Both implementations agree that 2003129492 % 512 = 148.
-Both implementations agree that 2003129492 % 1024 = 148.
-Both implementations agree that 2003129492 % 2048 = 1172.
-Both implementations agree that 2003129492 % 4096 = 1172.
-Both implementations agree that 2003129492 % 8192 = 5268.
-Both implementations agree that 2003129492 % 16384 = 5268.
-Both implementations agree that 2003129492 % 32768 = 21652.
-Both implementations agree that 2003129492 % 65536 = 21652.
-Both implementations agree that 2003129492 % 131072 = 87188.
-Both implementations agree that 2003129492 % 262144 = 87188.
-Both implementations agree that 2003129492 % 524288 = 349332.
-Both implementations agree that 2003129492 % 1048576 = 349332.
-Both implementations agree that 2003129492 % 2097152 = 349332.
-Both implementations agree that 2003129492 % 4194304 = 2446484.
-Both implementations agree that 2003129492 % 8388608 = 6640788.
-Both implementations agree that 2003129492 % 16777216 = 6640788.
-Both implementations agree that 2003129492 % 33554432 = 23418004.
-Both implementations agree that 2003129492 % 67108864 = 56972436.
-Both implementations agree that 2003129492 % 134217728 = 124081300.
-Both implementations agree that 2003129492 % 268435456 = 124081300.
-Both implementations agree that 2003129492 % 536870912 = 392516756.
-Both implementations agree that 2003129492 % 1073741824 = 929387668.
-Both implementations agree that 655145071 % 1 = 0.
-Both implementations agree that 655145071 % 2 = 1.
-Both implementations agree that 655145071 % 4 = 3.
-Both implementations agree that 655145071 % 8 = 7.
-Both implementations agree that 655145071 % 16 = 15.
-Both implementations agree that 655145071 % 32 = 15.
-Both implementations agree that 655145071 % 64 = 47.
-Both implementations agree that 655145071 % 128 = 111.
-Both implementations agree that 655145071 % 256 = 111.
-Both implementations agree that 655145071 % 512 = 111.
-Both implementations agree that 655145071 % 1024 = 111.
-Both implementations agree that 655145071 % 2048 = 111.
-Both implementations agree that 655145071 % 4096 = 2159.
-Both implementations agree that 655145071 % 8192 = 6255.
-Both implementations agree that 655145071 % 16384 = 14447.
-Both implementations agree that 655145071 % 32768 = 14447.
-Both implementations agree that 655145071 % 65536 = 47215.
-Both implementations agree that 655145071 % 131072 = 47215.
-Both implementations agree that 655145071 % 262144 = 47215.
-Both implementations agree that 655145071 % 524288 = 309359.
-Both implementations agree that 655145071 % 1048576 = 833647.
-Both implementations agree that 655145071 % 2097152 = 833647.
-Both implementations agree that 655145071 % 4194304 = 833647.
-Both implementations agree that 655145071 % 8388608 = 833647.
-Both implementations agree that 655145071 % 16777216 = 833647.
-Both implementations agree that 655145071 % 33554432 = 17610863.
-Both implementations agree that 655145071 % 67108864 = 51165295.
-Both implementations agree that 655145071 % 134217728 = 118274159.
-Both implementations agree that 655145071 % 268435456 = 118274159.
-Both implementations agree that 655145071 % 536870912 = 118274159.
-Both implementations agree that 655145071 % 1073741824 = 655145071.
-Both implementations agree that 488502570 % 1 = 0.
-Both implementations agree that 488502570 % 2 = 0.
-Both implementations agree that 488502570 % 4 = 2.
-Both implementations agree that 488502570 % 8 = 2.
-Both implementations agree that 488502570 % 16 = 10.
-Both implementations agree that 488502570 % 32 = 10.
-Both implementations agree that 488502570 % 64 = 42.
-Both implementations agree that 488502570 % 128 = 42.
-Both implementations agree that 488502570 % 256 = 42.
-Both implementations agree that 488502570 % 512 = 298.
-Both implementations agree that 488502570 % 1024 = 298.
-Both implementations agree that 488502570 % 2048 = 1322.
-Both implementations agree that 488502570 % 4096 = 1322.
-Both implementations agree that 488502570 % 8192 = 5418.
-Both implementations agree that 488502570 % 16384 = 13610.
-Both implementations agree that 488502570 % 32768 = 29994.
-Both implementations agree that 488502570 % 65536 = 62762.
-Both implementations agree that 488502570 % 131072 = 128298.
-Both implementations agree that 488502570 % 262144 = 128298.
-Both implementations agree that 488502570 % 524288 = 390442.
-Both implementations agree that 488502570 % 1048576 = 914730.
-Both implementations agree that 488502570 % 2097152 = 1963306.
-Both implementations agree that 488502570 % 4194304 = 1963306.
-Both implementations agree that 488502570 % 8388608 = 1963306.
-Both implementations agree that 488502570 % 16777216 = 1963306.
-Both implementations agree that 488502570 % 33554432 = 18740522.
-Both implementations agree that 488502570 % 67108864 = 18740522.
-Both implementations agree that 488502570 % 134217728 = 85849386.
-Both implementations agree that 488502570 % 268435456 = 220067114.
-Both implementations agree that 488502570 % 536870912 = 488502570.
-Both implementations agree that 488502570 % 1073741824 = 488502570.
-Both implementations agree that 1628544521 % 1 = 0.
-Both implementations agree that 1628544521 % 2 = 1.
-Both implementations agree that 1628544521 % 4 = 1.
-Both implementations agree that 1628544521 % 8 = 1.
-Both implementations agree that 1628544521 % 16 = 9.
-Both implementations agree that 1628544521 % 32 = 9.
-Both implementations agree that 1628544521 % 64 = 9.
-Both implementations agree that 1628544521 % 128 = 9.
-Both implementations agree that 1628544521 % 256 = 9.
-Both implementations agree that 1628544521 % 512 = 9.
-Both implementations agree that 1628544521 % 1024 = 521.
-Both implementations agree that 1628544521 % 2048 = 1545.
-Both implementations agree that 1628544521 % 4096 = 3593.
-Both implementations agree that 1628544521 % 8192 = 7689.
-Both implementations agree that 1628544521 % 16384 = 7689.
-Both implementations agree that 1628544521 % 32768 = 7689.
-Both implementations agree that 1628544521 % 65536 = 40457.
-Both implementations agree that 1628544521 % 131072 = 105993.
-Both implementations agree that 1628544521 % 262144 = 105993.
-Both implementations agree that 1628544521 % 524288 = 105993.
-Both implementations agree that 1628544521 % 1048576 = 105993.
-Both implementations agree that 1628544521 % 2097152 = 1154569.
-Both implementations agree that 1628544521 % 4194304 = 1154569.
-Both implementations agree that 1628544521 % 8388608 = 1154569.
-Both implementations agree that 1628544521 % 16777216 = 1154569.
-Both implementations agree that 1628544521 % 33554432 = 17931785.
-Both implementations agree that 1628544521 % 67108864 = 17931785.
-Both implementations agree that 1628544521 % 134217728 = 17931785.
-Both implementations agree that 1628544521 % 268435456 = 17931785.
-Both implementations agree that 1628544521 % 536870912 = 17931785.
-Both implementations agree that 1628544521 % 1073741824 = 554802697.
-Both implementations agree that 254988039 % 1 = 0.
-Both implementations agree that 254988039 % 2 = 1.
-Both implementations agree that 254988039 % 4 = 3.
-Both implementations agree that 254988039 % 8 = 7.
-Both implementations agree that 254988039 % 16 = 7.
-Both implementations agree that 254988039 % 32 = 7.
-Both implementations agree that 254988039 % 64 = 7.
-Both implementations agree that 254988039 % 128 = 7.
-Both implementations agree that 254988039 % 256 = 7.
-Both implementations agree that 254988039 % 512 = 263.
-Both implementations agree that 254988039 % 1024 = 775.
-Both implementations agree that 254988039 % 2048 = 1799.
-Both implementations agree that 254988039 % 4096 = 3847.
-Both implementations agree that 254988039 % 8192 = 3847.
-Both implementations agree that 254988039 % 16384 = 3847.
-Both implementations agree that 254988039 % 32768 = 20231.
-Both implementations agree that 254988039 % 65536 = 52999.
-Both implementations agree that 254988039 % 131072 = 52999.
-Both implementations agree that 254988039 % 262144 = 184071.
-Both implementations agree that 254988039 % 524288 = 184071.
-Both implementations agree that 254988039 % 1048576 = 184071.
-Both implementations agree that 254988039 % 2097152 = 1232647.
-Both implementations agree that 254988039 % 4194304 = 3329799.
-Both implementations agree that 254988039 % 8388608 = 3329799.
-Both implementations agree that 254988039 % 16777216 = 3329799.
-Both implementations agree that 254988039 % 33554432 = 20107015.
-Both implementations agree that 254988039 % 67108864 = 53661447.
-Both implementations agree that 254988039 % 134217728 = 120770311.
-Both implementations agree that 254988039 % 268435456 = 254988039.
-Both implementations agree that 254988039 % 536870912 = 254988039.
-Both implementations agree that 254988039 % 1073741824 = 254988039.
-Both implementations agree that 174486700 % 1 = 0.
-Both implementations agree that 174486700 % 2 = 0.
-Both implementations agree that 174486700 % 4 = 0.
-Both implementations agree that 174486700 % 8 = 4.
-Both implementations agree that 174486700 % 16 = 12.
-Both implementations agree that 174486700 % 32 = 12.
-Both implementations agree that 174486700 % 64 = 44.
-Both implementations agree that 174486700 % 128 = 44.
-Both implementations agree that 174486700 % 256 = 172.
-Both implementations agree that 174486700 % 512 = 172.
-Both implementations agree that 174486700 % 1024 = 172.
-Both implementations agree that 174486700 % 2048 = 1196.
-Both implementations agree that 174486700 % 4096 = 1196.
-Both implementations agree that 174486700 % 8192 = 5292.
-Both implementations agree that 174486700 % 16384 = 13484.
-Both implementations agree that 174486700 % 32768 = 29868.
-Both implementations agree that 174486700 % 65536 = 29868.
-Both implementations agree that 174486700 % 131072 = 29868.
-Both implementations agree that 174486700 % 262144 = 160940.
-Both implementations agree that 174486700 % 524288 = 423084.
-Both implementations agree that 174486700 % 1048576 = 423084.
-Both implementations agree that 174486700 % 2097152 = 423084.
-Both implementations agree that 174486700 % 4194304 = 2520236.
-Both implementations agree that 174486700 % 8388608 = 6714540.
-Both implementations agree that 174486700 % 16777216 = 6714540.
-Both implementations agree that 174486700 % 33554432 = 6714540.
-Both implementations agree that 174486700 % 67108864 = 40268972.
-Both implementations agree that 174486700 % 134217728 = 40268972.
-Both implementations agree that 174486700 % 268435456 = 174486700.
-Both implementations agree that 174486700 % 536870912 = 174486700.
-Both implementations agree that 174486700 % 1073741824 = 174486700.
-Experimental modPowerOfTwo time was 0.00748968 seconds, ( 7489707 ) cycles. ( 0 )
-Reference modPowerOfTwo time was 0.0125866 seconds, ( 12586585 ) cycles. ( 0 )
-Both implementations agree that 643672302 % 1 = 0.
-Both implementations agree that 643672302 % 2 = 0.
-Both implementations agree that 643672302 % 4 = 2.
-Both implementations agree that 643672302 % 8 = 6.
-Both implementations agree that 643672302 % 16 = 14.
-Both implementations agree that 643672302 % 32 = 14.
-Both implementations agree that 643672302 % 64 = 46.
-Both implementations agree that 643672302 % 128 = 110.
-Both implementations agree that 643672302 % 256 = 238.
-Both implementations agree that 643672302 % 512 = 238.
-Both implementations agree that 643672302 % 1024 = 238.
-Both implementations agree that 643672302 % 2048 = 238.
-Both implementations agree that 643672302 % 4096 = 2286.
-Both implementations agree that 643672302 % 8192 = 2286.
-Both implementations agree that 643672302 % 16384 = 10478.
-Both implementations agree that 643672302 % 32768 = 10478.
-Both implementations agree that 643672302 % 65536 = 43246.
-Both implementations agree that 643672302 % 131072 = 108782.
-Both implementations agree that 643672302 % 262144 = 108782.
-Both implementations agree that 643672302 % 524288 = 370926.
-Both implementations agree that 643672302 % 1048576 = 895214.
-Both implementations agree that 643672302 % 2097152 = 1943790.
-Both implementations agree that 643672302 % 4194304 = 1943790.
-Both implementations agree that 643672302 % 8388608 = 6138094.
-Both implementations agree that 643672302 % 16777216 = 6138094.
-Both implementations agree that 643672302 % 33554432 = 6138094.
-Both implementations agree that 643672302 % 67108864 = 39692526.
-Both implementations agree that 643672302 % 134217728 = 106801390.
-Both implementations agree that 643672302 % 268435456 = 106801390.
-Both implementations agree that 643672302 % 536870912 = 106801390.
-Both implementations agree that 643672302 % 1073741824 = 643672302.
-Both implementations agree that 447875295 % 1 = 0.
-Both implementations agree that 447875295 % 2 = 1.
-Both implementations agree that 447875295 % 4 = 3.
-Both implementations agree that 447875295 % 8 = 7.
-Both implementations agree that 447875295 % 16 = 15.
-Both implementations agree that 447875295 % 32 = 31.
-Both implementations agree that 447875295 % 64 = 31.
-Both implementations agree that 447875295 % 128 = 95.
-Both implementations agree that 447875295 % 256 = 223.
-Both implementations agree that 447875295 % 512 = 223.
-Both implementations agree that 447875295 % 1024 = 223.
-Both implementations agree that 447875295 % 2048 = 223.
-Both implementations agree that 447875295 % 4096 = 2271.
-Both implementations agree that 447875295 % 8192 = 2271.
-Both implementations agree that 447875295 % 16384 = 2271.
-Both implementations agree that 447875295 % 32768 = 2271.
-Both implementations agree that 447875295 % 65536 = 2271.
-Both implementations agree that 447875295 % 131072 = 2271.
-Both implementations agree that 447875295 % 262144 = 133343.
-Both implementations agree that 447875295 % 524288 = 133343.
-Both implementations agree that 447875295 % 1048576 = 133343.
-Both implementations agree that 447875295 % 2097152 = 1181919.
-Both implementations agree that 447875295 % 4194304 = 3279071.
-Both implementations agree that 447875295 % 8388608 = 3279071.
-Both implementations agree that 447875295 % 16777216 = 11667679.
-Both implementations agree that 447875295 % 33554432 = 11667679.
-Both implementations agree that 447875295 % 67108864 = 45222111.
-Both implementations agree that 447875295 % 134217728 = 45222111.
-Both implementations agree that 447875295 % 268435456 = 179439839.
-Both implementations agree that 447875295 % 536870912 = 447875295.
-Both implementations agree that 447875295 % 1073741824 = 447875295.
-Both implementations agree that 532114190 % 1 = 0.
-Both implementations agree that 532114190 % 2 = 0.
-Both implementations agree that 532114190 % 4 = 2.
-Both implementations agree that 532114190 % 8 = 6.
-Both implementations agree that 532114190 % 16 = 14.
-Both implementations agree that 532114190 % 32 = 14.
-Both implementations agree that 532114190 % 64 = 14.
-Both implementations agree that 532114190 % 128 = 14.
-Both implementations agree that 532114190 % 256 = 14.
-Both implementations agree that 532114190 % 512 = 270.
-Both implementations agree that 532114190 % 1024 = 782.
-Both implementations agree that 532114190 % 2048 = 782.
-Both implementations agree that 532114190 % 4096 = 2830.
-Both implementations agree that 532114190 % 8192 = 2830.
-Both implementations agree that 532114190 % 16384 = 11022.
-Both implementations agree that 532114190 % 32768 = 27406.
-Both implementations agree that 532114190 % 65536 = 27406.
-Both implementations agree that 532114190 % 131072 = 92942.
-Both implementations agree that 532114190 % 262144 = 224014.
-Both implementations agree that 532114190 % 524288 = 486158.
-Both implementations agree that 532114190 % 1048576 = 486158.
-Both implementations agree that 532114190 % 2097152 = 1534734.
-Both implementations agree that 532114190 % 4194304 = 3631886.
-Both implementations agree that 532114190 % 8388608 = 3631886.
-Both implementations agree that 532114190 % 16777216 = 12020494.
-Both implementations agree that 532114190 % 33554432 = 28797710.
-Both implementations agree that 532114190 % 67108864 = 62352142.
-Both implementations agree that 532114190 % 134217728 = 129461006.
-Both implementations agree that 532114190 % 268435456 = 263678734.
-Both implementations agree that 532114190 % 536870912 = 532114190.
-Both implementations agree that 532114190 % 1073741824 = 532114190.
-Both implementations agree that 348193183 % 1 = 0.
-Both implementations agree that 348193183 % 2 = 1.
-Both implementations agree that 348193183 % 4 = 3.
-Both implementations agree that 348193183 % 8 = 7.
-Both implementations agree that 348193183 % 16 = 15.
-Both implementations agree that 348193183 % 32 = 31.
-Both implementations agree that 348193183 % 64 = 31.
-Both implementations agree that 348193183 % 128 = 31.
-Both implementations agree that 348193183 % 256 = 159.
-Both implementations agree that 348193183 % 512 = 415.
-Both implementations agree that 348193183 % 1024 = 415.
-Both implementations agree that 348193183 % 2048 = 415.
-Both implementations agree that 348193183 % 4096 = 415.
-Both implementations agree that 348193183 % 8192 = 415.
-Both implementations agree that 348193183 % 16384 = 415.
-Both implementations agree that 348193183 % 32768 = 415.
-Both implementations agree that 348193183 % 65536 = 415.
-Both implementations agree that 348193183 % 131072 = 65951.
-Both implementations agree that 348193183 % 262144 = 65951.
-Both implementations agree that 348193183 % 524288 = 65951.
-Both implementations agree that 348193183 % 1048576 = 65951.
-Both implementations agree that 348193183 % 2097152 = 65951.
-Both implementations agree that 348193183 % 4194304 = 65951.
-Both implementations agree that 348193183 % 8388608 = 4260255.
-Both implementations agree that 348193183 % 16777216 = 12648863.
-Both implementations agree that 348193183 % 33554432 = 12648863.
-Both implementations agree that 348193183 % 67108864 = 12648863.
-Both implementations agree that 348193183 % 134217728 = 79757727.
-Both implementations agree that 348193183 % 268435456 = 79757727.
-Both implementations agree that 348193183 % 536870912 = 348193183.
-Both implementations agree that 348193183 % 1073741824 = 348193183.
-Both implementations agree that 95429057 % 1 = 0.
-Both implementations agree that 95429057 % 2 = 1.
-Both implementations agree that 95429057 % 4 = 1.
-Both implementations agree that 95429057 % 8 = 1.
-Both implementations agree that 95429057 % 16 = 1.
-Both implementations agree that 95429057 % 32 = 1.
-Both implementations agree that 95429057 % 64 = 1.
-Both implementations agree that 95429057 % 128 = 65.
-Both implementations agree that 95429057 % 256 = 193.
-Both implementations agree that 95429057 % 512 = 449.
-Both implementations agree that 95429057 % 1024 = 449.
-Both implementations agree that 95429057 % 2048 = 449.
-Both implementations agree that 95429057 % 4096 = 449.
-Both implementations agree that 95429057 % 8192 = 449.
-Both implementations agree that 95429057 % 16384 = 8641.
-Both implementations agree that 95429057 % 32768 = 8641.
-Both implementations agree that 95429057 % 65536 = 8641.
-Both implementations agree that 95429057 % 131072 = 8641.
-Both implementations agree that 95429057 % 262144 = 8641.
-Both implementations agree that 95429057 % 524288 = 8641.
-Both implementations agree that 95429057 % 1048576 = 8641.
-Both implementations agree that 95429057 % 2097152 = 1057217.
-Both implementations agree that 95429057 % 4194304 = 3154369.
-Both implementations agree that 95429057 % 8388608 = 3154369.
-Both implementations agree that 95429057 % 16777216 = 11542977.
-Both implementations agree that 95429057 % 33554432 = 28320193.
-Both implementations agree that 95429057 % 67108864 = 28320193.
-Both implementations agree that 95429057 % 134217728 = 95429057.
-Both implementations agree that 95429057 % 268435456 = 95429057.
-Both implementations agree that 95429057 % 536870912 = 95429057.
-Both implementations agree that 95429057 % 1073741824 = 95429057.
-Both implementations agree that 654368017 % 1 = 0.
-Both implementations agree that 654368017 % 2 = 1.
-Both implementations agree that 654368017 % 4 = 1.
-Both implementations agree that 654368017 % 8 = 1.
-Both implementations agree that 654368017 % 16 = 1.
-Both implementations agree that 654368017 % 32 = 17.
-Both implementations agree that 654368017 % 64 = 17.
-Both implementations agree that 654368017 % 128 = 17.
-Both implementations agree that 654368017 % 256 = 17.
-Both implementations agree that 654368017 % 512 = 273.
-Both implementations agree that 654368017 % 1024 = 273.
-Both implementations agree that 654368017 % 2048 = 1297.
-Both implementations agree that 654368017 % 4096 = 3345.
-Both implementations agree that 654368017 % 8192 = 7441.
-Both implementations agree that 654368017 % 16384 = 7441.
-Both implementations agree that 654368017 % 32768 = 23825.
-Both implementations agree that 654368017 % 65536 = 56593.
-Both implementations agree that 654368017 % 131072 = 56593.
-Both implementations agree that 654368017 % 262144 = 56593.
-Both implementations agree that 654368017 % 524288 = 56593.
-Both implementations agree that 654368017 % 1048576 = 56593.
-Both implementations agree that 654368017 % 2097152 = 56593.
-Both implementations agree that 654368017 % 4194304 = 56593.
-Both implementations agree that 654368017 % 8388608 = 56593.
-Both implementations agree that 654368017 % 16777216 = 56593.
-Both implementations agree that 654368017 % 33554432 = 16833809.
-Both implementations agree that 654368017 % 67108864 = 50388241.
-Both implementations agree that 654368017 % 134217728 = 117497105.
-Both implementations agree that 654368017 % 268435456 = 117497105.
-Both implementations agree that 654368017 % 536870912 = 117497105.
-Both implementations agree that 654368017 % 1073741824 = 654368017.
-Both implementations agree that 1360477112 % 1 = 0.
-Both implementations agree that 1360477112 % 2 = 0.
-Both implementations agree that 1360477112 % 4 = 0.
-Both implementations agree that 1360477112 % 8 = 0.
-Both implementations agree that 1360477112 % 16 = 8.
-Both implementations agree that 1360477112 % 32 = 24.
-Both implementations agree that 1360477112 % 64 = 56.
-Both implementations agree that 1360477112 % 128 = 56.
-Both implementations agree that 1360477112 % 256 = 184.
-Both implementations agree that 1360477112 % 512 = 440.
-Both implementations agree that 1360477112 % 1024 = 952.
-Both implementations agree that 1360477112 % 2048 = 952.
-Both implementations agree that 1360477112 % 4096 = 3000.
-Both implementations agree that 1360477112 % 8192 = 7096.
-Both implementations agree that 1360477112 % 16384 = 15288.
-Both implementations agree that 1360477112 % 32768 = 15288.
-Both implementations agree that 1360477112 % 65536 = 15288.
-Both implementations agree that 1360477112 % 131072 = 80824.
-Both implementations agree that 1360477112 % 262144 = 211896.
-Both implementations agree that 1360477112 % 524288 = 474040.
-Both implementations agree that 1360477112 % 1048576 = 474040.
-Both implementations agree that 1360477112 % 2097152 = 1522616.
-Both implementations agree that 1360477112 % 4194304 = 1522616.
-Both implementations agree that 1360477112 % 8388608 = 1522616.
-Both implementations agree that 1360477112 % 16777216 = 1522616.
-Both implementations agree that 1360477112 % 33554432 = 18299832.
-Both implementations agree that 1360477112 % 67108864 = 18299832.
-Both implementations agree that 1360477112 % 134217728 = 18299832.
-Both implementations agree that 1360477112 % 268435456 = 18299832.
-Both implementations agree that 1360477112 % 536870912 = 286735288.
-Both implementations agree that 1360477112 % 1073741824 = 286735288.
-Both implementations agree that 1351245751 % 1 = 0.
-Both implementations agree that 1351245751 % 2 = 1.
-Both implementations agree that 1351245751 % 4 = 3.
-Both implementations agree that 1351245751 % 8 = 7.
-Both implementations agree that 1351245751 % 16 = 7.
-Both implementations agree that 1351245751 % 32 = 23.
-Both implementations agree that 1351245751 % 64 = 55.
-Both implementations agree that 1351245751 % 128 = 55.
-Both implementations agree that 1351245751 % 256 = 183.
-Both implementations agree that 1351245751 % 512 = 439.
-Both implementations agree that 1351245751 % 1024 = 951.
-Both implementations agree that 1351245751 % 2048 = 1975.
-Both implementations agree that 1351245751 % 4096 = 4023.
-Both implementations agree that 1351245751 % 8192 = 8119.
-Both implementations agree that 1351245751 % 16384 = 8119.
-Both implementations agree that 1351245751 % 32768 = 24503.
-Both implementations agree that 1351245751 % 65536 = 24503.
-Both implementations agree that 1351245751 % 131072 = 24503.
-Both implementations agree that 1351245751 % 262144 = 155575.
-Both implementations agree that 1351245751 % 524288 = 155575.
-Both implementations agree that 1351245751 % 1048576 = 679863.
-Both implementations agree that 1351245751 % 2097152 = 679863.
-Both implementations agree that 1351245751 % 4194304 = 679863.
-Both implementations agree that 1351245751 % 8388608 = 679863.
-Both implementations agree that 1351245751 % 16777216 = 9068471.
-Both implementations agree that 1351245751 % 33554432 = 9068471.
-Both implementations agree that 1351245751 % 67108864 = 9068471.
-Both implementations agree that 1351245751 % 134217728 = 9068471.
-Both implementations agree that 1351245751 % 268435456 = 9068471.
-Both implementations agree that 1351245751 % 536870912 = 277503927.
-Both implementations agree that 1351245751 % 1073741824 = 277503927.
-Both implementations agree that 894920816 % 1 = 0.
-Both implementations agree that 894920816 % 2 = 0.
-Both implementations agree that 894920816 % 4 = 0.
-Both implementations agree that 894920816 % 8 = 0.
-Both implementations agree that 894920816 % 16 = 0.
-Both implementations agree that 894920816 % 32 = 16.
-Both implementations agree that 894920816 % 64 = 48.
-Both implementations agree that 894920816 % 128 = 112.
-Both implementations agree that 894920816 % 256 = 112.
-Both implementations agree that 894920816 % 512 = 112.
-Both implementations agree that 894920816 % 1024 = 112.
-Both implementations agree that 894920816 % 2048 = 112.
-Both implementations agree that 894920816 % 4096 = 2160.
-Both implementations agree that 894920816 % 8192 = 2160.
-Both implementations agree that 894920816 % 16384 = 10352.
-Both implementations agree that 894920816 % 32768 = 26736.
-Both implementations agree that 894920816 % 65536 = 26736.
-Both implementations agree that 894920816 % 131072 = 92272.
-Both implementations agree that 894920816 % 262144 = 223344.
-Both implementations agree that 894920816 % 524288 = 485488.
-Both implementations agree that 894920816 % 1048576 = 485488.
-Both implementations agree that 894920816 % 2097152 = 1534064.
-Both implementations agree that 894920816 % 4194304 = 1534064.
-Both implementations agree that 894920816 % 8388608 = 5728368.
-Both implementations agree that 894920816 % 16777216 = 5728368.
-Both implementations agree that 894920816 % 33554432 = 22505584.
-Both implementations agree that 894920816 % 67108864 = 22505584.
-Both implementations agree that 894920816 % 134217728 = 89614448.
-Both implementations agree that 894920816 % 268435456 = 89614448.
-Both implementations agree that 894920816 % 536870912 = 358049904.
-Both implementations agree that 894920816 % 1073741824 = 894920816.
-Both implementations agree that 1085608908 % 1 = 0.
-Both implementations agree that 1085608908 % 2 = 0.
-Both implementations agree that 1085608908 % 4 = 0.
-Both implementations agree that 1085608908 % 8 = 4.
-Both implementations agree that 1085608908 % 16 = 12.
-Both implementations agree that 1085608908 % 32 = 12.
-Both implementations agree that 1085608908 % 64 = 12.
-Both implementations agree that 1085608908 % 128 = 76.
-Both implementations agree that 1085608908 % 256 = 204.
-Both implementations agree that 1085608908 % 512 = 460.
-Both implementations agree that 1085608908 % 1024 = 972.
-Both implementations agree that 1085608908 % 2048 = 972.
-Both implementations agree that 1085608908 % 4096 = 972.
-Both implementations agree that 1085608908 % 8192 = 5068.
-Both implementations agree that 1085608908 % 16384 = 5068.
-Both implementations agree that 1085608908 % 32768 = 5068.
-Both implementations agree that 1085608908 % 65536 = 5068.
-Both implementations agree that 1085608908 % 131072 = 70604.
-Both implementations agree that 1085608908 % 262144 = 70604.
-Both implementations agree that 1085608908 % 524288 = 332748.
-Both implementations agree that 1085608908 % 1048576 = 332748.
-Both implementations agree that 1085608908 % 2097152 = 1381324.
-Both implementations agree that 1085608908 % 4194304 = 3478476.
-Both implementations agree that 1085608908 % 8388608 = 3478476.
-Both implementations agree that 1085608908 % 16777216 = 11867084.
-Both implementations agree that 1085608908 % 33554432 = 11867084.
-Both implementations agree that 1085608908 % 67108864 = 11867084.
-Both implementations agree that 1085608908 % 134217728 = 11867084.
-Both implementations agree that 1085608908 % 268435456 = 11867084.
-Both implementations agree that 1085608908 % 536870912 = 11867084.
-Both implementations agree that 1085608908 % 1073741824 = 11867084.
-Experimental modPowerOfTwo time was 0.00624323 seconds, ( 6243391 ) cycles. ( 0 )
-Reference modPowerOfTwo time was 0.0125482 seconds, ( 12548171 ) cycles. ( 0 )
-Both implementations agree that the next power of two of 312427697 = 536870912.
-Both implementations agree that the next power of two of 1030954795 = 1073741824.
-Both implementations agree that the next power of two of 3432473910 = 0.
-Both implementations agree that the next power of two of 4023258209 = 0.
-Both implementations agree that the next power of two of 45553216 = 67108864.
-Both implementations agree that the next power of two of 1665051198 = 2147483648.
-Both implementations agree that the next power of two of 259493039 = 268435456.
-Both implementations agree that the next power of two of 3617278310 = 0.
-Both implementations agree that the next power of two of 197279427 = 268435456.
-Both implementations agree that the next power of two of 1053208195 = 1073741824.
-Experimental powerOfTwo time was 0.0201283 seconds, ( 20128256 ) cycles. ( 1048579 )
-Reference powerOfTwo time was 0.0677705 seconds, ( 67770137 ) cycles. ( 1 )
-Both implementations agree that the next power of two of 1129465147 = -2147483648.
-Both implementations agree that the next power of two of 1316738219 = -2147483648.
-Both implementations agree that the next power of two of 1217521756 = -2147483648.
-Both implementations agree that the next power of two of 1878775302 = -2147483648.
-Both implementations agree that the next power of two of 313964661 = 536870912.
-Both implementations agree that the next power of two of 1770820689 = -2147483648.
-Both implementations agree that the next power of two of 1219822888 = -2147483648.
-Both implementations agree that the next power of two of 450211646 = 536870912.
-Both implementations agree that the next power of two of 439405582 = 536870912.
-Both implementations agree that the next power of two of 2080851773 = -2147483648.
-Experimental powerOfTwo time was 0.01969 seconds, ( 19689933 ) cycles. ( 1048579 )
-Reference powerOfTwo time was 0.0685902 seconds, ( 68590075 ) cycles. ( 1 )
+Both implementations agreed that 229330338 was not a power of two.
+Both implementations agreed that -997245760 was not a power of two.
+Both implementations agreed that -242146438 was not a power of two.
+Both implementations agreed that 1042264490 was not a power of two.
+Both implementations agreed that -1818333290 was not a power of two.
+Both implementations agreed that 623912175 was not a power of two.
+Both implementations agreed that 1572129234 was not a power of two.
+Both implementations agreed that 1149595177 was not a power of two.
+Both implementations agreed that -1969277949 was not a power of two.
+Both implementations agreed that -250795008 was not a power of two.
+Experimental isPowerOfTwo time was 0.00177121 seconds, ( 1771142 ) cycles. ( 1 )
+Reference isPowerOfTwo time was 0.0477152 seconds, ( 47715145 ) cycles. ( 1 )
+Both implementations agree that 1068845664 % 1 = 0.
+Both implementations agree that 1068845664 % 2 = 0.
+Both implementations agree that 1068845664 % 4 = 0.
+Both implementations agree that 1068845664 % 8 = 0.
+Both implementations agree that 1068845664 % 16 = 0.
+Both implementations agree that 1068845664 % 32 = 0.
+Both implementations agree that 1068845664 % 64 = 32.
+Both implementations agree that 1068845664 % 128 = 96.
+Both implementations agree that 1068845664 % 256 = 96.
+Both implementations agree that 1068845664 % 512 = 96.
+Both implementations agree that 1068845664 % 1024 = 608.
+Both implementations agree that 1068845664 % 2048 = 608.
+Both implementations agree that 1068845664 % 4096 = 2656.
+Both implementations agree that 1068845664 % 8192 = 2656.
+Both implementations agree that 1068845664 % 16384 = 2656.
+Both implementations agree that 1068845664 % 32768 = 19040.
+Both implementations agree that 1068845664 % 65536 = 19040.
+Both implementations agree that 1068845664 % 131072 = 84576.
+Both implementations agree that 1068845664 % 262144 = 84576.
+Both implementations agree that 1068845664 % 524288 = 346720.
+Both implementations agree that 1068845664 % 1048576 = 346720.
+Both implementations agree that 1068845664 % 2097152 = 1395296.
+Both implementations agree that 1068845664 % 4194304 = 3492448.
+Both implementations agree that 1068845664 % 8388608 = 3492448.
+Both implementations agree that 1068845664 % 16777216 = 11881056.
+Both implementations agree that 1068845664 % 33554432 = 28658272.
+Both implementations agree that 1068845664 % 67108864 = 62212704.
+Both implementations agree that 1068845664 % 134217728 = 129321568.
+Both implementations agree that 1068845664 % 268435456 = 263539296.
+Both implementations agree that 1068845664 % 536870912 = 531974752.
+Both implementations agree that 1068845664 % 1073741824 = 1068845664.
+Both implementations agree that 1795986777 % 1 = 0.
+Both implementations agree that 1795986777 % 2 = 1.
+Both implementations agree that 1795986777 % 4 = 1.
+Both implementations agree that 1795986777 % 8 = 1.
+Both implementations agree that 1795986777 % 16 = 9.
+Both implementations agree that 1795986777 % 32 = 25.
+Both implementations agree that 1795986777 % 64 = 25.
+Both implementations agree that 1795986777 % 128 = 89.
+Both implementations agree that 1795986777 % 256 = 89.
+Both implementations agree that 1795986777 % 512 = 345.
+Both implementations agree that 1795986777 % 1024 = 345.
+Both implementations agree that 1795986777 % 2048 = 1369.
+Both implementations agree that 1795986777 % 4096 = 1369.
+Both implementations agree that 1795986777 % 8192 = 5465.
+Both implementations agree that 1795986777 % 16384 = 5465.
+Both implementations agree that 1795986777 % 32768 = 5465.
+Both implementations agree that 1795986777 % 65536 = 38233.
+Both implementations agree that 1795986777 % 131072 = 38233.
+Both implementations agree that 1795986777 % 262144 = 38233.
+Both implementations agree that 1795986777 % 524288 = 300377.
+Both implementations agree that 1795986777 % 1048576 = 824665.
+Both implementations agree that 1795986777 % 2097152 = 824665.
+Both implementations agree that 1795986777 % 4194304 = 824665.
+Both implementations agree that 1795986777 % 8388608 = 824665.
+Both implementations agree that 1795986777 % 16777216 = 824665.
+Both implementations agree that 1795986777 % 33554432 = 17601881.
+Both implementations agree that 1795986777 % 67108864 = 51156313.
+Both implementations agree that 1795986777 % 134217728 = 51156313.
+Both implementations agree that 1795986777 % 268435456 = 185374041.
+Both implementations agree that 1795986777 % 536870912 = 185374041.
+Both implementations agree that 1795986777 % 1073741824 = 722244953.
+Both implementations agree that 870467395 % 1 = 0.
+Both implementations agree that 870467395 % 2 = 1.
+Both implementations agree that 870467395 % 4 = 3.
+Both implementations agree that 870467395 % 8 = 3.
+Both implementations agree that 870467395 % 16 = 3.
+Both implementations agree that 870467395 % 32 = 3.
+Both implementations agree that 870467395 % 64 = 3.
+Both implementations agree that 870467395 % 128 = 67.
+Both implementations agree that 870467395 % 256 = 67.
+Both implementations agree that 870467395 % 512 = 323.
+Both implementations agree that 870467395 % 1024 = 835.
+Both implementations agree that 870467395 % 2048 = 1859.
+Both implementations agree that 870467395 % 4096 = 1859.
+Both implementations agree that 870467395 % 8192 = 1859.
+Both implementations agree that 870467395 % 16384 = 1859.
+Both implementations agree that 870467395 % 32768 = 18243.
+Both implementations agree that 870467395 % 65536 = 18243.
+Both implementations agree that 870467395 % 131072 = 18243.
+Both implementations agree that 870467395 % 262144 = 149315.
+Both implementations agree that 870467395 % 524288 = 149315.
+Both implementations agree that 870467395 % 1048576 = 149315.
+Both implementations agree that 870467395 % 2097152 = 149315.
+Both implementations agree that 870467395 % 4194304 = 2246467.
+Both implementations agree that 870467395 % 8388608 = 6440771.
+Both implementations agree that 870467395 % 16777216 = 14829379.
+Both implementations agree that 870467395 % 33554432 = 31606595.
+Both implementations agree that 870467395 % 67108864 = 65161027.
+Both implementations agree that 870467395 % 134217728 = 65161027.
+Both implementations agree that 870467395 % 268435456 = 65161027.
+Both implementations agree that 870467395 % 536870912 = 333596483.
+Both implementations agree that 870467395 % 1073741824 = 870467395.
+Both implementations agree that 755814335 % 1 = 0.
+Both implementations agree that 755814335 % 2 = 1.
+Both implementations agree that 755814335 % 4 = 3.
+Both implementations agree that 755814335 % 8 = 7.
+Both implementations agree that 755814335 % 16 = 15.
+Both implementations agree that 755814335 % 32 = 31.
+Both implementations agree that 755814335 % 64 = 63.
+Both implementations agree that 755814335 % 128 = 63.
+Both implementations agree that 755814335 % 256 = 191.
+Both implementations agree that 755814335 % 512 = 447.
+Both implementations agree that 755814335 % 1024 = 959.
+Both implementations agree that 755814335 % 2048 = 1983.
+Both implementations agree that 755814335 % 4096 = 4031.
+Both implementations agree that 755814335 % 8192 = 4031.
+Both implementations agree that 755814335 % 16384 = 4031.
+Both implementations agree that 755814335 % 32768 = 20415.
+Both implementations agree that 755814335 % 65536 = 53183.
+Both implementations agree that 755814335 % 131072 = 53183.
+Both implementations agree that 755814335 % 262144 = 53183.
+Both implementations agree that 755814335 % 524288 = 315327.
+Both implementations agree that 755814335 % 1048576 = 839615.
+Both implementations agree that 755814335 % 2097152 = 839615.
+Both implementations agree that 755814335 % 4194304 = 839615.
+Both implementations agree that 755814335 % 8388608 = 839615.
+Both implementations agree that 755814335 % 16777216 = 839615.
+Both implementations agree that 755814335 % 33554432 = 17616831.
+Both implementations agree that 755814335 % 67108864 = 17616831.
+Both implementations agree that 755814335 % 134217728 = 84725695.
+Both implementations agree that 755814335 % 268435456 = 218943423.
+Both implementations agree that 755814335 % 536870912 = 218943423.
+Both implementations agree that 755814335 % 1073741824 = 755814335.
+Both implementations agree that 294450065 % 1 = 0.
+Both implementations agree that 294450065 % 2 = 1.
+Both implementations agree that 294450065 % 4 = 1.
+Both implementations agree that 294450065 % 8 = 1.
+Both implementations agree that 294450065 % 16 = 1.
+Both implementations agree that 294450065 % 32 = 17.
+Both implementations agree that 294450065 % 64 = 17.
+Both implementations agree that 294450065 % 128 = 17.
+Both implementations agree that 294450065 % 256 = 145.
+Both implementations agree that 294450065 % 512 = 401.
+Both implementations agree that 294450065 % 1024 = 913.
+Both implementations agree that 294450065 % 2048 = 913.
+Both implementations agree that 294450065 % 4096 = 913.
+Both implementations agree that 294450065 % 8192 = 5009.
+Both implementations agree that 294450065 % 16384 = 13201.
+Both implementations agree that 294450065 % 32768 = 29585.
+Both implementations agree that 294450065 % 65536 = 62353.
+Both implementations agree that 294450065 % 131072 = 62353.
+Both implementations agree that 294450065 % 262144 = 62353.
+Both implementations agree that 294450065 % 524288 = 324497.
+Both implementations agree that 294450065 % 1048576 = 848785.
+Both implementations agree that 294450065 % 2097152 = 848785.
+Both implementations agree that 294450065 % 4194304 = 848785.
+Both implementations agree that 294450065 % 8388608 = 848785.
+Both implementations agree that 294450065 % 16777216 = 9237393.
+Both implementations agree that 294450065 % 33554432 = 26014609.
+Both implementations agree that 294450065 % 67108864 = 26014609.
+Both implementations agree that 294450065 % 134217728 = 26014609.
+Both implementations agree that 294450065 % 268435456 = 26014609.
+Both implementations agree that 294450065 % 536870912 = 294450065.
+Both implementations agree that 294450065 % 1073741824 = 294450065.
+Both implementations agree that 35392383 % 1 = 0.
+Both implementations agree that 35392383 % 2 = 1.
+Both implementations agree that 35392383 % 4 = 3.
+Both implementations agree that 35392383 % 8 = 7.
+Both implementations agree that 35392383 % 16 = 15.
+Both implementations agree that 35392383 % 32 = 31.
+Both implementations agree that 35392383 % 64 = 63.
+Both implementations agree that 35392383 % 128 = 127.
+Both implementations agree that 35392383 % 256 = 127.
+Both implementations agree that 35392383 % 512 = 383.
+Both implementations agree that 35392383 % 1024 = 895.
+Both implementations agree that 35392383 % 2048 = 895.
+Both implementations agree that 35392383 % 4096 = 2943.
+Both implementations agree that 35392383 % 8192 = 2943.
+Both implementations agree that 35392383 % 16384 = 2943.
+Both implementations agree that 35392383 % 32768 = 2943.
+Both implementations agree that 35392383 % 65536 = 2943.
+Both implementations agree that 35392383 % 131072 = 2943.
+Both implementations agree that 35392383 % 262144 = 2943.
+Both implementations agree that 35392383 % 524288 = 265087.
+Both implementations agree that 35392383 % 1048576 = 789375.
+Both implementations agree that 35392383 % 2097152 = 1837951.
+Both implementations agree that 35392383 % 4194304 = 1837951.
+Both implementations agree that 35392383 % 8388608 = 1837951.
+Both implementations agree that 35392383 % 16777216 = 1837951.
+Both implementations agree that 35392383 % 33554432 = 1837951.
+Both implementations agree that 35392383 % 67108864 = 35392383.
+Both implementations agree that 35392383 % 134217728 = 35392383.
+Both implementations agree that 35392383 % 268435456 = 35392383.
+Both implementations agree that 35392383 % 536870912 = 35392383.
+Both implementations agree that 35392383 % 1073741824 = 35392383.
+Both implementations agree that 553174177 % 1 = 0.
+Both implementations agree that 553174177 % 2 = 1.
+Both implementations agree that 553174177 % 4 = 1.
+Both implementations agree that 553174177 % 8 = 1.
+Both implementations agree that 553174177 % 16 = 1.
+Both implementations agree that 553174177 % 32 = 1.
+Both implementations agree that 553174177 % 64 = 33.
+Both implementations agree that 553174177 % 128 = 33.
+Both implementations agree that 553174177 % 256 = 161.
+Both implementations agree that 553174177 % 512 = 161.
+Both implementations agree that 553174177 % 1024 = 161.
+Both implementations agree that 553174177 % 2048 = 1185.
+Both implementations agree that 553174177 % 4096 = 1185.
+Both implementations agree that 553174177 % 8192 = 1185.
+Both implementations agree that 553174177 % 16384 = 1185.
+Both implementations agree that 553174177 % 32768 = 17569.
+Both implementations agree that 553174177 % 65536 = 50337.
+Both implementations agree that 553174177 % 131072 = 50337.
+Both implementations agree that 553174177 % 262144 = 50337.
+Both implementations agree that 553174177 % 524288 = 50337.
+Both implementations agree that 553174177 % 1048576 = 574625.
+Both implementations agree that 553174177 % 2097152 = 1623201.
+Both implementations agree that 553174177 % 4194304 = 3720353.
+Both implementations agree that 553174177 % 8388608 = 7914657.
+Both implementations agree that 553174177 % 16777216 = 16303265.
+Both implementations agree that 553174177 % 33554432 = 16303265.
+Both implementations agree that 553174177 % 67108864 = 16303265.
+Both implementations agree that 553174177 % 134217728 = 16303265.
+Both implementations agree that 553174177 % 268435456 = 16303265.
+Both implementations agree that 553174177 % 536870912 = 16303265.
+Both implementations agree that 553174177 % 1073741824 = 553174177.
+Both implementations agree that 1884277499 % 1 = 0.
+Both implementations agree that 1884277499 % 2 = 1.
+Both implementations agree that 1884277499 % 4 = 3.
+Both implementations agree that 1884277499 % 8 = 3.
+Both implementations agree that 1884277499 % 16 = 11.
+Both implementations agree that 1884277499 % 32 = 27.
+Both implementations agree that 1884277499 % 64 = 59.
+Both implementations agree that 1884277499 % 128 = 123.
+Both implementations agree that 1884277499 % 256 = 251.
+Both implementations agree that 1884277499 % 512 = 251.
+Both implementations agree that 1884277499 % 1024 = 763.
+Both implementations agree that 1884277499 % 2048 = 763.
+Both implementations agree that 1884277499 % 4096 = 2811.
+Both implementations agree that 1884277499 % 8192 = 2811.
+Both implementations agree that 1884277499 % 16384 = 2811.
+Both implementations agree that 1884277499 % 32768 = 19195.
+Both implementations agree that 1884277499 % 65536 = 51963.
+Both implementations agree that 1884277499 % 131072 = 117499.
+Both implementations agree that 1884277499 % 262144 = 248571.
+Both implementations agree that 1884277499 % 524288 = 510715.
+Both implementations agree that 1884277499 % 1048576 = 1035003.
+Both implementations agree that 1884277499 % 2097152 = 1035003.
+Both implementations agree that 1884277499 % 4194304 = 1035003.
+Both implementations agree that 1884277499 % 8388608 = 5229307.
+Both implementations agree that 1884277499 % 16777216 = 5229307.
+Both implementations agree that 1884277499 % 33554432 = 5229307.
+Both implementations agree that 1884277499 % 67108864 = 5229307.
+Both implementations agree that 1884277499 % 134217728 = 5229307.
+Both implementations agree that 1884277499 % 268435456 = 5229307.
+Both implementations agree that 1884277499 % 536870912 = 273664763.
+Both implementations agree that 1884277499 % 1073741824 = 810535675.
+Both implementations agree that 130295007 % 1 = 0.
+Both implementations agree that 130295007 % 2 = 1.
+Both implementations agree that 130295007 % 4 = 3.
+Both implementations agree that 130295007 % 8 = 7.
+Both implementations agree that 130295007 % 16 = 15.
+Both implementations agree that 130295007 % 32 = 31.
+Both implementations agree that 130295007 % 64 = 31.
+Both implementations agree that 130295007 % 128 = 95.
+Both implementations agree that 130295007 % 256 = 223.
+Both implementations agree that 130295007 % 512 = 223.
+Both implementations agree that 130295007 % 1024 = 223.
+Both implementations agree that 130295007 % 2048 = 1247.
+Both implementations agree that 130295007 % 4096 = 1247.
+Both implementations agree that 130295007 % 8192 = 1247.
+Both implementations agree that 130295007 % 16384 = 9439.
+Both implementations agree that 130295007 % 32768 = 9439.
+Both implementations agree that 130295007 % 65536 = 9439.
+Both implementations agree that 130295007 % 131072 = 9439.
+Both implementations agree that 130295007 % 262144 = 9439.
+Both implementations agree that 130295007 % 524288 = 271583.
+Both implementations agree that 130295007 % 1048576 = 271583.
+Both implementations agree that 130295007 % 2097152 = 271583.
+Both implementations agree that 130295007 % 4194304 = 271583.
+Both implementations agree that 130295007 % 8388608 = 4465887.
+Both implementations agree that 130295007 % 16777216 = 12854495.
+Both implementations agree that 130295007 % 33554432 = 29631711.
+Both implementations agree that 130295007 % 67108864 = 63186143.
+Both implementations agree that 130295007 % 134217728 = 130295007.
+Both implementations agree that 130295007 % 268435456 = 130295007.
+Both implementations agree that 130295007 % 536870912 = 130295007.
+Both implementations agree that 130295007 % 1073741824 = 130295007.
+Both implementations agree that 1748526957 % 1 = 0.
+Both implementations agree that 1748526957 % 2 = 1.
+Both implementations agree that 1748526957 % 4 = 1.
+Both implementations agree that 1748526957 % 8 = 5.
+Both implementations agree that 1748526957 % 16 = 13.
+Both implementations agree that 1748526957 % 32 = 13.
+Both implementations agree that 1748526957 % 64 = 45.
+Both implementations agree that 1748526957 % 128 = 109.
+Both implementations agree that 1748526957 % 256 = 109.
+Both implementations agree that 1748526957 % 512 = 365.
+Both implementations agree that 1748526957 % 1024 = 877.
+Both implementations agree that 1748526957 % 2048 = 1901.
+Both implementations agree that 1748526957 % 4096 = 1901.
+Both implementations agree that 1748526957 % 8192 = 1901.
+Both implementations agree that 1748526957 % 16384 = 10093.
+Both implementations agree that 1748526957 % 32768 = 26477.
+Both implementations agree that 1748526957 % 65536 = 26477.
+Both implementations agree that 1748526957 % 131072 = 26477.
+Both implementations agree that 1748526957 % 262144 = 26477.
+Both implementations agree that 1748526957 % 524288 = 26477.
+Both implementations agree that 1748526957 % 1048576 = 550765.
+Both implementations agree that 1748526957 % 2097152 = 1599341.
+Both implementations agree that 1748526957 % 4194304 = 3696493.
+Both implementations agree that 1748526957 % 8388608 = 3696493.
+Both implementations agree that 1748526957 % 16777216 = 3696493.
+Both implementations agree that 1748526957 % 33554432 = 3696493.
+Both implementations agree that 1748526957 % 67108864 = 3696493.
+Both implementations agree that 1748526957 % 134217728 = 3696493.
+Both implementations agree that 1748526957 % 268435456 = 137914221.
+Both implementations agree that 1748526957 % 536870912 = 137914221.
+Both implementations agree that 1748526957 % 1073741824 = 674785133.
+Experimental modPowerOfTwo time was 0.00141978 seconds, ( 1419672 ) cycles. ( 0 )
+Reference modPowerOfTwo time was 0.00141954 seconds, ( 1419521 ) cycles. ( 0 )
+Both implementations agree that 310184694 % 1 = 0.
+Both implementations agree that 310184694 % 2 = 0.
+Both implementations agree that 310184694 % 4 = 2.
+Both implementations agree that 310184694 % 8 = 6.
+Both implementations agree that 310184694 % 16 = 6.
+Both implementations agree that 310184694 % 32 = 22.
+Both implementations agree that 310184694 % 64 = 54.
+Both implementations agree that 310184694 % 128 = 118.
+Both implementations agree that 310184694 % 256 = 246.
+Both implementations agree that 310184694 % 512 = 246.
+Both implementations agree that 310184694 % 1024 = 758.
+Both implementations agree that 310184694 % 2048 = 758.
+Both implementations agree that 310184694 % 4096 = 2806.
+Both implementations agree that 310184694 % 8192 = 2806.
+Both implementations agree that 310184694 % 16384 = 2806.
+Both implementations agree that 310184694 % 32768 = 2806.
+Both implementations agree that 310184694 % 65536 = 2806.
+Both implementations agree that 310184694 % 131072 = 68342.
+Both implementations agree that 310184694 % 262144 = 68342.
+Both implementations agree that 310184694 % 524288 = 330486.
+Both implementations agree that 310184694 % 1048576 = 854774.
+Both implementations agree that 310184694 % 2097152 = 1903350.
+Both implementations agree that 310184694 % 4194304 = 4000502.
+Both implementations agree that 310184694 % 8388608 = 8194806.
+Both implementations agree that 310184694 % 16777216 = 8194806.
+Both implementations agree that 310184694 % 33554432 = 8194806.
+Both implementations agree that 310184694 % 67108864 = 41749238.
+Both implementations agree that 310184694 % 134217728 = 41749238.
+Both implementations agree that 310184694 % 268435456 = 41749238.
+Both implementations agree that 310184694 % 536870912 = 310184694.
+Both implementations agree that 310184694 % 1073741824 = 310184694.
+Both implementations agree that 1474740913 % 1 = 0.
+Both implementations agree that 1474740913 % 2 = 1.
+Both implementations agree that 1474740913 % 4 = 1.
+Both implementations agree that 1474740913 % 8 = 1.
+Both implementations agree that 1474740913 % 16 = 1.
+Both implementations agree that 1474740913 % 32 = 17.
+Both implementations agree that 1474740913 % 64 = 49.
+Both implementations agree that 1474740913 % 128 = 49.
+Both implementations agree that 1474740913 % 256 = 177.
+Both implementations agree that 1474740913 % 512 = 177.
+Both implementations agree that 1474740913 % 1024 = 689.
+Both implementations agree that 1474740913 % 2048 = 689.
+Both implementations agree that 1474740913 % 4096 = 689.
+Both implementations agree that 1474740913 % 8192 = 689.
+Both implementations agree that 1474740913 % 16384 = 689.
+Both implementations agree that 1474740913 % 32768 = 17073.
+Both implementations agree that 1474740913 % 65536 = 49841.
+Both implementations agree that 1474740913 % 131072 = 49841.
+Both implementations agree that 1474740913 % 262144 = 180913.
+Both implementations agree that 1474740913 % 524288 = 443057.
+Both implementations agree that 1474740913 % 1048576 = 443057.
+Both implementations agree that 1474740913 % 2097152 = 443057.
+Both implementations agree that 1474740913 % 4194304 = 2540209.
+Both implementations agree that 1474740913 % 8388608 = 6734513.
+Both implementations agree that 1474740913 % 16777216 = 15123121.
+Both implementations agree that 1474740913 % 33554432 = 31900337.
+Both implementations agree that 1474740913 % 67108864 = 65454769.
+Both implementations agree that 1474740913 % 134217728 = 132563633.
+Both implementations agree that 1474740913 % 268435456 = 132563633.
+Both implementations agree that 1474740913 % 536870912 = 400999089.
+Both implementations agree that 1474740913 % 1073741824 = 400999089.
+Both implementations agree that 2057408376 % 1 = 0.
+Both implementations agree that 2057408376 % 2 = 0.
+Both implementations agree that 2057408376 % 4 = 0.
+Both implementations agree that 2057408376 % 8 = 0.
+Both implementations agree that 2057408376 % 16 = 8.
+Both implementations agree that 2057408376 % 32 = 24.
+Both implementations agree that 2057408376 % 64 = 56.
+Both implementations agree that 2057408376 % 128 = 120.
+Both implementations agree that 2057408376 % 256 = 120.
+Both implementations agree that 2057408376 % 512 = 376.
+Both implementations agree that 2057408376 % 1024 = 888.
+Both implementations agree that 2057408376 % 2048 = 1912.
+Both implementations agree that 2057408376 % 4096 = 3960.
+Both implementations agree that 2057408376 % 8192 = 3960.
+Both implementations agree that 2057408376 % 16384 = 3960.
+Both implementations agree that 2057408376 % 32768 = 3960.
+Both implementations agree that 2057408376 % 65536 = 36728.
+Both implementations agree that 2057408376 % 131072 = 102264.
+Both implementations agree that 2057408376 % 262144 = 102264.
+Both implementations agree that 2057408376 % 524288 = 102264.
+Both implementations agree that 2057408376 % 1048576 = 102264.
+Both implementations agree that 2057408376 % 2097152 = 102264.
+Both implementations agree that 2057408376 % 4194304 = 2199416.
+Both implementations agree that 2057408376 % 8388608 = 2199416.
+Both implementations agree that 2057408376 % 16777216 = 10588024.
+Both implementations agree that 2057408376 % 33554432 = 10588024.
+Both implementations agree that 2057408376 % 67108864 = 44142456.
+Both implementations agree that 2057408376 % 134217728 = 44142456.
+Both implementations agree that 2057408376 % 268435456 = 178360184.
+Both implementations agree that 2057408376 % 536870912 = 446795640.
+Both implementations agree that 2057408376 % 1073741824 = 983666552.
+Both implementations agree that 31374638 % 1 = 0.
+Both implementations agree that 31374638 % 2 = 0.
+Both implementations agree that 31374638 % 4 = 2.
+Both implementations agree that 31374638 % 8 = 6.
+Both implementations agree that 31374638 % 16 = 14.
+Both implementations agree that 31374638 % 32 = 14.
+Both implementations agree that 31374638 % 64 = 46.
+Both implementations agree that 31374638 % 128 = 46.
+Both implementations agree that 31374638 % 256 = 46.
+Both implementations agree that 31374638 % 512 = 302.
+Both implementations agree that 31374638 % 1024 = 302.
+Both implementations agree that 31374638 % 2048 = 1326.
+Both implementations agree that 31374638 % 4096 = 3374.
+Both implementations agree that 31374638 % 8192 = 7470.
+Both implementations agree that 31374638 % 16384 = 15662.
+Both implementations agree that 31374638 % 32768 = 15662.
+Both implementations agree that 31374638 % 65536 = 48430.
+Both implementations agree that 31374638 % 131072 = 48430.
+Both implementations agree that 31374638 % 262144 = 179502.
+Both implementations agree that 31374638 % 524288 = 441646.
+Both implementations agree that 31374638 % 1048576 = 965934.
+Both implementations agree that 31374638 % 2097152 = 2014510.
+Both implementations agree that 31374638 % 4194304 = 2014510.
+Both implementations agree that 31374638 % 8388608 = 6208814.
+Both implementations agree that 31374638 % 16777216 = 14597422.
+Both implementations agree that 31374638 % 33554432 = 31374638.
+Both implementations agree that 31374638 % 67108864 = 31374638.
+Both implementations agree that 31374638 % 134217728 = 31374638.
+Both implementations agree that 31374638 % 268435456 = 31374638.
+Both implementations agree that 31374638 % 536870912 = 31374638.
+Both implementations agree that 31374638 % 1073741824 = 31374638.
+Both implementations agree that 798295511 % 1 = 0.
+Both implementations agree that 798295511 % 2 = 1.
+Both implementations agree that 798295511 % 4 = 3.
+Both implementations agree that 798295511 % 8 = 7.
+Both implementations agree that 798295511 % 16 = 7.
+Both implementations agree that 798295511 % 32 = 23.
+Both implementations agree that 798295511 % 64 = 23.
+Both implementations agree that 798295511 % 128 = 87.
+Both implementations agree that 798295511 % 256 = 215.
+Both implementations agree that 798295511 % 512 = 471.
+Both implementations agree that 798295511 % 1024 = 471.
+Both implementations agree that 798295511 % 2048 = 1495.
+Both implementations agree that 798295511 % 4096 = 1495.
+Both implementations agree that 798295511 % 8192 = 1495.
+Both implementations agree that 798295511 % 16384 = 1495.
+Both implementations agree that 798295511 % 32768 = 1495.
+Both implementations agree that 798295511 % 65536 = 1495.
+Both implementations agree that 798295511 % 131072 = 67031.
+Both implementations agree that 798295511 % 262144 = 67031.
+Both implementations agree that 798295511 % 524288 = 329175.
+Both implementations agree that 798295511 % 1048576 = 329175.
+Both implementations agree that 798295511 % 2097152 = 1377751.
+Both implementations agree that 798295511 % 4194304 = 1377751.
+Both implementations agree that 798295511 % 8388608 = 1377751.
+Both implementations agree that 798295511 % 16777216 = 9766359.
+Both implementations agree that 798295511 % 33554432 = 26543575.
+Both implementations agree that 798295511 % 67108864 = 60098007.
+Both implementations agree that 798295511 % 134217728 = 127206871.
+Both implementations agree that 798295511 % 268435456 = 261424599.
+Both implementations agree that 798295511 % 536870912 = 261424599.
+Both implementations agree that 798295511 % 1073741824 = 798295511.
+Both implementations agree that 2106781322 % 1 = 0.
+Both implementations agree that 2106781322 % 2 = 0.
+Both implementations agree that 2106781322 % 4 = 2.
+Both implementations agree that 2106781322 % 8 = 2.
+Both implementations agree that 2106781322 % 16 = 10.
+Both implementations agree that 2106781322 % 32 = 10.
+Both implementations agree that 2106781322 % 64 = 10.
+Both implementations agree that 2106781322 % 128 = 10.
+Both implementations agree that 2106781322 % 256 = 138.
+Both implementations agree that 2106781322 % 512 = 138.
+Both implementations agree that 2106781322 % 1024 = 650.
+Both implementations agree that 2106781322 % 2048 = 1674.
+Both implementations agree that 2106781322 % 4096 = 3722.
+Both implementations agree that 2106781322 % 8192 = 3722.
+Both implementations agree that 2106781322 % 16384 = 11914.
+Both implementations agree that 2106781322 % 32768 = 28298.
+Both implementations agree that 2106781322 % 65536 = 61066.
+Both implementations agree that 2106781322 % 131072 = 61066.
+Both implementations agree that 2106781322 % 262144 = 192138.
+Both implementations agree that 2106781322 % 524288 = 192138.
+Both implementations agree that 2106781322 % 1048576 = 192138.
+Both implementations agree that 2106781322 % 2097152 = 1240714.
+Both implementations agree that 2106781322 % 4194304 = 1240714.
+Both implementations agree that 2106781322 % 8388608 = 1240714.
+Both implementations agree that 2106781322 % 16777216 = 9629322.
+Both implementations agree that 2106781322 % 33554432 = 26406538.
+Both implementations agree that 2106781322 % 67108864 = 26406538.
+Both implementations agree that 2106781322 % 134217728 = 93515402.
+Both implementations agree that 2106781322 % 268435456 = 227733130.
+Both implementations agree that 2106781322 % 536870912 = 496168586.
+Both implementations agree that 2106781322 % 1073741824 = 1033039498.
+Both implementations agree that 83086670 % 1 = 0.
+Both implementations agree that 83086670 % 2 = 0.
+Both implementations agree that 83086670 % 4 = 2.
+Both implementations agree that 83086670 % 8 = 6.
+Both implementations agree that 83086670 % 16 = 14.
+Both implementations agree that 83086670 % 32 = 14.
+Both implementations agree that 83086670 % 64 = 14.
+Both implementations agree that 83086670 % 128 = 78.
+Both implementations agree that 83086670 % 256 = 78.
+Both implementations agree that 83086670 % 512 = 334.
+Both implementations agree that 83086670 % 1024 = 334.
+Both implementations agree that 83086670 % 2048 = 1358.
+Both implementations agree that 83086670 % 4096 = 3406.
+Both implementations agree that 83086670 % 8192 = 3406.
+Both implementations agree that 83086670 % 16384 = 3406.
+Both implementations agree that 83086670 % 32768 = 19790.
+Both implementations agree that 83086670 % 65536 = 52558.
+Both implementations agree that 83086670 % 131072 = 118094.
+Both implementations agree that 83086670 % 262144 = 249166.
+Both implementations agree that 83086670 % 524288 = 249166.
+Both implementations agree that 83086670 % 1048576 = 249166.
+Both implementations agree that 83086670 % 2097152 = 1297742.
+Both implementations agree that 83086670 % 4194304 = 3394894.
+Both implementations agree that 83086670 % 8388608 = 7589198.
+Both implementations agree that 83086670 % 16777216 = 15977806.
+Both implementations agree that 83086670 % 33554432 = 15977806.
+Both implementations agree that 83086670 % 67108864 = 15977806.
+Both implementations agree that 83086670 % 134217728 = 83086670.
+Both implementations agree that 83086670 % 268435456 = 83086670.
+Both implementations agree that 83086670 % 536870912 = 83086670.
+Both implementations agree that 83086670 % 1073741824 = 83086670.
+Both implementations agree that 649842754 % 1 = 0.
+Both implementations agree that 649842754 % 2 = 0.
+Both implementations agree that 649842754 % 4 = 2.
+Both implementations agree that 649842754 % 8 = 2.
+Both implementations agree that 649842754 % 16 = 2.
+Both implementations agree that 649842754 % 32 = 2.
+Both implementations agree that 649842754 % 64 = 2.
+Both implementations agree that 649842754 % 128 = 66.
+Both implementations agree that 649842754 % 256 = 66.
+Both implementations agree that 649842754 % 512 = 66.
+Both implementations agree that 649842754 % 1024 = 66.
+Both implementations agree that 649842754 % 2048 = 66.
+Both implementations agree that 649842754 % 4096 = 66.
+Both implementations agree that 649842754 % 8192 = 4162.
+Both implementations agree that 649842754 % 16384 = 4162.
+Both implementations agree that 649842754 % 32768 = 20546.
+Both implementations agree that 649842754 % 65536 = 53314.
+Both implementations agree that 649842754 % 131072 = 118850.
+Both implementations agree that 649842754 % 262144 = 249922.
+Both implementations agree that 649842754 % 524288 = 249922.
+Both implementations agree that 649842754 % 1048576 = 774210.
+Both implementations agree that 649842754 % 2097152 = 1822786.
+Both implementations agree that 649842754 % 4194304 = 3919938.
+Both implementations agree that 649842754 % 8388608 = 3919938.
+Both implementations agree that 649842754 % 16777216 = 12308546.
+Both implementations agree that 649842754 % 33554432 = 12308546.
+Both implementations agree that 649842754 % 67108864 = 45862978.
+Both implementations agree that 649842754 % 134217728 = 112971842.
+Both implementations agree that 649842754 % 268435456 = 112971842.
+Both implementations agree that 649842754 % 536870912 = 112971842.
+Both implementations agree that 649842754 % 1073741824 = 649842754.
+Both implementations agree that 2013578230 % 1 = 0.
+Both implementations agree that 2013578230 % 2 = 0.
+Both implementations agree that 2013578230 % 4 = 2.
+Both implementations agree that 2013578230 % 8 = 6.
+Both implementations agree that 2013578230 % 16 = 6.
+Both implementations agree that 2013578230 % 32 = 22.
+Both implementations agree that 2013578230 % 64 = 54.
+Both implementations agree that 2013578230 % 128 = 118.
+Both implementations agree that 2013578230 % 256 = 246.
+Both implementations agree that 2013578230 % 512 = 502.
+Both implementations agree that 2013578230 % 1024 = 1014.
+Both implementations agree that 2013578230 % 2048 = 1014.
+Both implementations agree that 2013578230 % 4096 = 1014.
+Both implementations agree that 2013578230 % 8192 = 1014.
+Both implementations agree that 2013578230 % 16384 = 1014.
+Both implementations agree that 2013578230 % 32768 = 17398.
+Both implementations agree that 2013578230 % 65536 = 50166.
+Both implementations agree that 2013578230 % 131072 = 50166.
+Both implementations agree that 2013578230 % 262144 = 50166.
+Both implementations agree that 2013578230 % 524288 = 312310.
+Both implementations agree that 2013578230 % 1048576 = 312310.
+Both implementations agree that 2013578230 % 2097152 = 312310.
+Both implementations agree that 2013578230 % 4194304 = 312310.
+Both implementations agree that 2013578230 % 8388608 = 312310.
+Both implementations agree that 2013578230 % 16777216 = 312310.
+Both implementations agree that 2013578230 % 33554432 = 312310.
+Both implementations agree that 2013578230 % 67108864 = 312310.
+Both implementations agree that 2013578230 % 134217728 = 312310.
+Both implementations agree that 2013578230 % 268435456 = 134530038.
+Both implementations agree that 2013578230 % 536870912 = 402965494.
+Both implementations agree that 2013578230 % 1073741824 = 939836406.
+Both implementations agree that 2008421221 % 1 = 0.
+Both implementations agree that 2008421221 % 2 = 1.
+Both implementations agree that 2008421221 % 4 = 1.
+Both implementations agree that 2008421221 % 8 = 5.
+Both implementations agree that 2008421221 % 16 = 5.
+Both implementations agree that 2008421221 % 32 = 5.
+Both implementations agree that 2008421221 % 64 = 37.
+Both implementations agree that 2008421221 % 128 = 101.
+Both implementations agree that 2008421221 % 256 = 101.
+Both implementations agree that 2008421221 % 512 = 357.
+Both implementations agree that 2008421221 % 1024 = 869.
+Both implementations agree that 2008421221 % 2048 = 869.
+Both implementations agree that 2008421221 % 4096 = 869.
+Both implementations agree that 2008421221 % 8192 = 4965.
+Both implementations agree that 2008421221 % 16384 = 4965.
+Both implementations agree that 2008421221 % 32768 = 4965.
+Both implementations agree that 2008421221 % 65536 = 4965.
+Both implementations agree that 2008421221 % 131072 = 4965.
+Both implementations agree that 2008421221 % 262144 = 136037.
+Both implementations agree that 2008421221 % 524288 = 398181.
+Both implementations agree that 2008421221 % 1048576 = 398181.
+Both implementations agree that 2008421221 % 2097152 = 1446757.
+Both implementations agree that 2008421221 % 4194304 = 3543909.
+Both implementations agree that 2008421221 % 8388608 = 3543909.
+Both implementations agree that 2008421221 % 16777216 = 11932517.
+Both implementations agree that 2008421221 % 33554432 = 28709733.
+Both implementations agree that 2008421221 % 67108864 = 62264165.
+Both implementations agree that 2008421221 % 134217728 = 129373029.
+Both implementations agree that 2008421221 % 268435456 = 129373029.
+Both implementations agree that 2008421221 % 536870912 = 397808485.
+Both implementations agree that 2008421221 % 1073741824 = 934679397.
+Experimental modPowerOfTwo time was 0.00142193 seconds, ( 1422072 ) cycles. ( 0 )
+Reference modPowerOfTwo time was 0.00142694 seconds, ( 1427099 ) cycles. ( 0 )
+Both implementations agree that the next power of two of 398850659 = 536870912.
+Both implementations agree that the next power of two of 1923742723 = 2147483648.
+Both implementations agree that the next power of two of 2071581026 = 2147483648.
+Both implementations agree that the next power of two of 1777553732 = 2147483648.
+Both implementations agree that the next power of two of 261119369 = 268435456.
+Both implementations agree that the next power of two of 2398639240 = 0.
+Both implementations agree that the next power of two of 1676273902 = 2147483648.
+Both implementations agree that the next power of two of 1254949490 = 2147483648.
+Both implementations agree that the next power of two of 595136346 = 1073741824.
+Both implementations agree that the next power of two of 428663110 = 536870912.
+Experimental powerOfTwo time was 0.00466204 seconds, ( 4662214 ) cycles. ( 1048579 )
+Reference powerOfTwo time was 0.0283821 seconds, ( 28381819 ) cycles. ( 1 )
+Both implementations agree that the next power of two of 1491528741 = -2147483648.
+Both implementations agree that the next power of two of 1013525223 = 1073741824.
+Both implementations agree that the next power of two of 1219121587 = -2147483648.
+Both implementations agree that the next power of two of 1335567163 = -2147483648.
+Both implementations agree that the next power of two of 181203969 = 268435456.
+Both implementations agree that the next power of two of 859687476 = 1073741824.
+Both implementations agree that the next power of two of 1354961521 = -2147483648.
+Both implementations agree that the next power of two of 1066991081 = 1073741824.
+Both implementations agree that the next power of two of 225028125 = 268435456.
+Both implementations agree that the next power of two of 1810706764 = -2147483648.
+Experimental powerOfTwo time was 0.00378609 seconds, ( 3786151 ) cycles. ( 1048579 )
+Reference powerOfTwo time was 0.022392 seconds, ( 22392134 ) cycles. ( 1 )
 
 
 
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestPackage
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestXmlParser seconds
-INFO     Test completed in 0.0124111175537 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestXmlParser
-
-Description : Tests the XmlParser by generating a random XML tree, writing it out to a file, parsing the file, and comparing the two XML trees.
-
-Test time : 0.00756335
-
-Status : Test passed.
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestArgumentParser
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestPackage seconds
-INFO     Test completed in 0.00974297523499 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestPackage
-
-Description : A test for the Package class. TestPoints: 1) Add some variables, copy the package, remove the variables, make sure that they match. 2) Randomly add, remove, reserve, and compress the package.  Finally remove all variables and make sure that they match.
-
-Test time : 0.00684857
-
-Status : Test Point 1 (AddRemove): Passed.
-Test Point 2 (Complex): Passed.
-
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestSerializableArchive
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestArgumentParser seconds
-INFO     Test completed in 0.00480508804321 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestArgumentParser
-
-Description : This test will create a fake argc and argv and populate them with test values.  It will then use the argument parser to initialize some variables and make sure that they are set to the correct values.
-
-Test time : 0.00208092
-
-Status : For key --key_0, reference -2132970687, matched parsed -2132970687
-For key --key_10, reference -1942200926, matched parsed -1942200926
-For key --key_12, reference -1800614067, matched parsed -1800614067
-For key --key_14, reference 1159899958, matched parsed 1159899958
-For key --key_16, reference 269465729, matched parsed 269465729
-For key --key_18, reference 1222641547, matched parsed 1222641547
-For key --key_2, reference 1534393101, matched parsed 1534393101
-For key --key_20, reference 2.23877e+09, matched parsed 2.23877e+09
-For key --key_22, reference 1.19919e+09, matched parsed 1.19919e+09
-For key --key_24, reference 1.5842e+09, matched parsed 1.5842e+09
-For key --key_26, reference 2.60594e+09, matched parsed 2.60594e+09
-For key --key_28, reference 2.11242e+09, matched parsed 2.11242e+09
-For key --key_30, reference 1.3431e+09, matched parsed 1.3431e+09
-For key --key_32, reference 3.34564e+09, matched parsed 3.34564e+09
-For key --key_34, reference 2.75158e+09, matched parsed 2.75158e+09
-For key --key_36, reference 2.38805e+09, matched parsed 2.38805e+09
-For key --key_38, reference 2.75086e+09, matched parsed 2.75086e+09
-For key --key_4, reference 1747813077, matched parsed 1747813077
-For key --key_40, reference string_2237949953, matched parsed string_2237949953
-For key --key_42, reference string_1922900295, matched parsed string_1922900295
-For key --key_44, reference string_715871256, matched parsed string_715871256
-For key --key_46, reference string_2003129492, matched parsed string_2003129492
-For key --key_48, reference string_655145071, matched parsed string_655145071
-For key --key_50, reference string_3806464726, matched parsed string_3806464726
-For key --key_52, reference string_2666422775, matched parsed string_2666422775
-For key --key_54, reference string_254988039, matched parsed string_254988039
-For key --key_56, reference string_174486700, matched parsed string_174486700
-For key --key_58, reference string_3651294994, matched parsed string_3651294994
-For key --key_6, reference 1642436702, matched parsed 1642436702
-For key --key_60, reference 1, matched parsed 1
-For key --key_61, reference 0, matched parsed 0
-For key --key_62, reference 1, matched parsed 1
-For key --key_63, reference 1, matched parsed 1
-For key --key_64, reference 1, matched parsed 1
-For key --key_65, reference 0, matched parsed 0
-For key --key_66, reference 1, matched parsed 1
-For key --key_67, reference 0, matched parsed 0
-For key --key_68, reference 0, matched parsed 0
-For key --key_69, reference 1, matched parsed 1
-For key --key_8, reference -1725705960, matched parsed -1725705960
-
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestXmlArgumentParser
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestXmlArgumentParser seconds
-INFO     Test completed in 0.0174758434296 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestXmlArgumentParser
-
-Description : Creates a random XML tree, writes to a temp file, parses it with the XmlArgumentParser, then makes sure that all parsed values match their recorded values.
-
-Test time : 0.014684
-
-Status : Test Passed.
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestSerializationBuffer
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestSerializableArchive seconds
-INFO     Test completed in 0.117517948151 seconds
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestSerializableArchive seconds
+INFO     Test completed in 0.260900020599 seconds
 INFO      It produced the following output:
 Pass/Fail : Pass
 
@@ -929,75 +961,16 @@ a buffer then immediately restoring, saving to and restoring from disk,
 and saving to an archive, sending the archive over mpi, and restoring at the
 other end.
 
-Test time : 0.105971
+Test Seed : 1244581972
+Test time : 0.229801
 
-Status : SerializableArchive average save/load time for 1000 iterations: 4.29869e-07 seconds.
-SerializableArchive average save/load time for 1000 iterations: 0.000105349 seconds.
-
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestThread
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestThread seconds
-INFO     Test completed in 0.0201148986816 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestThread
-
-Description : A test program to test the basic communication functions in the thread wrapper class.
-
-Test time : 0.0172768
-
-Status : Test message passed.
+Status : SerializableArchive average save/load time for 1000 iterations: 2.58923e-07 seconds.
+SerializableArchive average save/load time for 1000 iterations: 0.000229259 seconds.
 
 
 
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestTimer
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestTimer seconds
-INFO     Test completed in 0.012237071991 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestTimer
-
-Description : A simple test to spin for a number of iterations and print out the time recorded by a Timer in the spin loop.
-
-Test time : 0.000596523
-
-Status : Timer starting 5.48363e-06s (4679 ticks).
-Timer ending 0.000290155s (290051 ticks).
-
-
-
-INFO     Running test program /home/normal/checkout/hydrazine/trunk/TestCudaVector
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestSerializationBuffer seconds
-INFO     Test completed in 0.920649051666 seconds
-INFO      It produced the following output:
-Pass/Fail : Pass
-
-
-Name : TestSerializationBuffer
-
-Description : A test for the serialization buffer.
-
-Write in some values
-then read them back and make sure they match.
-Take in an external buffer and read some values out.
-Write in some strings then read them out.
-
-Test time : 0.917711
-
-Status : Input string 511124294967173963828429496724362429496727142949672494294967286429496727342949671684294967271656577429496723442949672581611661429496723942949672614294967290662670 == output string 511124294967173963828429496724362429496727142949672494294967286429496727342949671684294967271656577429496723442949672581611661429496723942949672614294967290662670.
-Write of 100000 buffers of 100 took 0.0306334 seconds ( 30633364 ).
-Read of 100000 buffers of 100 took 0.0051744 seconds ( 5174611 ).
-Read of 49587 buffers and writes of 50413 buffers took 0.0125229 seconds ( 12523170 ).
-
-
-
-INFO     Test /home/normal/checkout/hydrazine/trunk/TestCudaVector seconds
-INFO     Test completed in 1.09018588066 seconds
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestCudaVector seconds
+INFO     Test completed in 0.438210010529 seconds
 INFO      It produced the following output:
 Pass/Fail : Pass
 
@@ -1006,33 +979,71 @@ Name : TestCudaVector
 
 Description : Test for cuda vector interface. Test Points: 1) Try reserving, resizing, and clearing the vector. 2) Copy data from host vector to gpu vector to another gpu vector back to host vector 3) Iterate over the array incrementing values with array index and iterator
 
-Test time : 0.949064
+Test Seed : 1244581972
+Test time : 0.369411
 
 Status : 1) Allocation
- Size is 3321
+ Size is 140
  Passed.
 2) Copy
- Size is 1610
+ Size is 485
  Passed.
 3) Iteration
- Size is 2406
+ Size is 3871
  Passed.
+
+
+
+INFO     Test /home/gdiamos/checkout/hydrazine/trunk/TestActiveTimer seconds
+INFO     Test completed in 0.502176046371 seconds
+INFO      It produced the following output:
+Pass/Fail : Pass
+
+
+Name : TestActiveTimer
+
+Description : Create a bunch of timers, record when they start, tell them to fire in order.  Make sure that they actually do.
+
+Test Seed : 1244581972
+Test time : 0.500083
+
+Status : Timer 9 will fire after 0.5 seconds.
+Timer 8 will fire after 0.45 seconds.
+Timer 7 will fire after 0.4 seconds.
+Timer 6 will fire after 0.35 seconds.
+Timer 5 will fire after 0.3 seconds.
+Timer 4 will fire after 0.25 seconds.
+Timer 3 will fire after 0.2 seconds.
+Timer 2 will fire after 0.15 seconds.
+Timer 1 will fire after 0.1 seconds.
+Timer 0 will fire after 0.05 seconds.
+Timer 0 fired after 0.0508881 seconds.
+Timer 1 fired after 0.100383 seconds.
+Timer 2 fired after 0.150005 seconds.
+Timer 3 fired after 0.200005 seconds.
+Timer 4 fired after 0.250001 seconds.
+Timer 5 fired after 0.300001 seconds.
+Timer 6 fired after 0.350001 seconds.
+Timer 7 fired after 0.4 seconds.
+Timer 8 fired after 0.45 seconds.
+Timer 9 fired after 0.500002 seconds.
+Test passed.
 
 
 
 INFO     
 Passing tests:
- (0.005s) : /home/normal/checkout/hydrazine/trunk/TestArgumentParser : Passed
- (0.118s) : /home/normal/checkout/hydrazine/trunk/TestSerializableArchive : Passed
- (0.012s) : /home/normal/checkout/hydrazine/trunk/TestTimer : Passed
- (0.017s) : /home/normal/checkout/hydrazine/trunk/TestXmlArgumentParser : Passed
- (0.921s) : /home/normal/checkout/hydrazine/trunk/TestSerializationBuffer : Passed
- (0.010s) : /home/normal/checkout/hydrazine/trunk/TestPackage : Passed
- (0.509s) : /home/normal/checkout/hydrazine/trunk/TestActiveTimer : Passed
- (1.090s) : /home/normal/checkout/hydrazine/trunk/TestCudaVector : Passed
- (0.020s) : /home/normal/checkout/hydrazine/trunk/TestThread : Passed
- (0.012s) : /home/normal/checkout/hydrazine/trunk/TestXmlParser : Passed
- (0.509s) : /home/normal/checkout/hydrazine/trunk/TestMath : Passed
+ (0.502s) : /home/gdiamos/checkout/hydrazine/trunk/TestActiveTimer : Passed
+ (0.009s) : /home/gdiamos/checkout/hydrazine/trunk/TestXmlParser : Passed
+ (0.010s) : /home/gdiamos/checkout/hydrazine/trunk/TestXmlArgumentParser : Passed
+ (0.011s) : /home/gdiamos/checkout/hydrazine/trunk/TestThread : Passed
+ (0.002s) : /home/gdiamos/checkout/hydrazine/trunk/TestPackage : Passed
+ (0.261s) : /home/gdiamos/checkout/hydrazine/trunk/TestSerializableArchive : Passed
+ (0.131s) : /home/gdiamos/checkout/hydrazine/trunk/TestSerializationBuffer : Passed
+ (0.003s) : /home/gdiamos/checkout/hydrazine/trunk/TestTimer : Passed
+ (0.005s) : /home/gdiamos/checkout/hydrazine/trunk/TestArgumentParser : Passed
+ (0.438s) : /home/gdiamos/checkout/hydrazine/trunk/TestCudaVector : Passed
+ (0.168s) : /home/gdiamos/checkout/hydrazine/trunk/TestMath : Passed
 
 Failing tests:
 

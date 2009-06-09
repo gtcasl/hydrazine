@@ -65,7 +65,7 @@ namespace hydrazine
 			typedef std::reverse_iterator< const_iterator > 
 				const_reverse_iterator;
 			typedef std::pair< iterator, bool > insertion;
-			typedef ValueCompare< Key, Value, Compare, type > value_compare;
+			typedef ValueCompare< Compare, type > value_compare;
 
 		private:
 			Allocator _allocator;

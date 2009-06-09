@@ -8,6 +8,9 @@
 #ifndef CACHED_VECTOR_H_INCLUDED
 #define CACHED_VECTOR_H_INCLUDED
 
+namespace hydrazine
+{
+
 namespace cuda
 {
 
@@ -143,6 +146,8 @@ namespace cuda
 			const_reverse_iterator rend() CacheLineconst;
 				
 	};
+
+}
 
 }
 

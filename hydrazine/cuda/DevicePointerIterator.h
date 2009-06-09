@@ -11,6 +11,10 @@
 #include <hydrazine/interface/Iterator.h>
 #include <cuda.h>
 #include <hydrazine/cuda/CudaException.h>
+#include <hydrazine/cuda/DeviceReference.h>
+
+namespace hydrazine
+{
 
 namespace cuda
 {
@@ -38,51 +42,12 @@ namespace cuda
 				difference_type;
 			typedef typename hydrazine::IteratorTraits< Type >::pointer pointer;
 
-			class Reference;
 			typedef typename hydrazine::IteratorTraits< Type >::reference 
 				base_reference;
-			typedef Reference reference;
+			typedef DeviceReference<pointer> reference;
 		
-		public:
-			class Reference
-			{
-				private:
-					iterator_type _pointer;
-					
-				public:
-					Reference( iterator_type p ) : _pointer( p ) {}
-					Reference( ) : _pointer( 0 ) {}
-					
-					Reference& operator=( const value_type& value )
-					{
-						cudaCheck( cudaMemcpy( _pointer, &value, 
-							sizeof( value_type ), cudaMemcpyHostToDevice ) );
-						return *this;
-					}
-					
-					Reference& operator=( const Reference& value )
-					{
-						cudaCheck( cudaMemcpy( _pointer, value._pointer, 
-							sizeof( value_type ), cudaMemcpyDeviceToDevice ) );
-						return *this;
-					}
-					
-					operator value_type() const
-					{
-						value_type temp;
-						cudaCheck( cudaMemcpy( &temp, _pointer, 
-							sizeof( value_type ), cudaMemcpyDeviceToHost ) );
-						return temp;
-					}
-					
-					pointer base()
-					{
-						return _pointer;
-					}
-			};
-	
 		protected:
-			iterator_type _current;
+			pointer _current;
 			
 		public:
 			DevicePointerIterator() : _current( Type() ) 
@@ -126,20 +91,12 @@ namespace cuda
 				return DevicePointerIterator( _current-- );
 			}
 			
-			reference operator[]( const difference_type& n )
+			reference operator[]( const difference_type& n ) const
 			{
-				return Reference( _current + n );
+				return reference( _current + n );
 			}
 			
-			value_type operator[]( const difference_type& n ) const
-			{
-				value_type temp;
-				cudaCheck( cudaMemcpy( &temp, _current + n, 
-					sizeof( value_type ), cudaMemcpyDeviceToHost ) );
-				return temp;
-			}
-			
-			DevicePointerIterator& operator+=( const difference_type& n ) const
+			DevicePointerIterator& operator+=( const difference_type& n )
 			{
 				_current += n;
 				return *this;
@@ -150,7 +107,7 @@ namespace cuda
 				return DevicePointerIterator( _current + n );
 			}
 			
-			DevicePointerIterator& operator-=( const difference_type& n ) const
+			DevicePointerIterator& operator-=( const difference_type& n )
 			{
 				_current -= n;
 				return *this;
@@ -287,6 +244,8 @@ namespace cuda
 	{
 		return DevicePointerIterator<Pointer, Container>( it.base() + n ); 
 	}
+
+}
 
 }
 

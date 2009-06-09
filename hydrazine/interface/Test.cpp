@@ -18,12 +18,9 @@ namespace test
 	{
 		if( seed == 0 )
 		{	
-			random.seed( std::time( 0 ) );
+			seed = std::time( 0 );			
 		}
-		else
-		{
-			random.seed( seed );
-		}
+		random.seed( seed );
 	}
 
 	Test::Test()
@@ -77,6 +74,7 @@ namespace test
 		
 		if( _testRun )
 		{
+			stream << "Test Seed : " << seed << "\n";
 			stream << "Test time : " << _time << "\n\n";
 			stream << "Status : " << status.str() << "\n\n";
 		}
