@@ -17,6 +17,9 @@
 #define PAGE_ALIGN(x) ( (x) + ( (x) % PageSize ) )
 #define MEM_RATIO .2
 
+namespace hydrazine
+{
+
 namespace cuda
 {
 
@@ -43,11 +46,11 @@ namespace cuda
 			typedef Vector< T > vector_type;
 			typedef vector_type type;
 			
-			typedef cuda::DevicePointerIterator< pointer, vector_type > 
-				iterator;
-			typedef cuda::DevicePointerIterator< const_pointer, 
+			typedef hydrazine::cuda::DevicePointerIterator< pointer, 
+				vector_type > iterator;
+			typedef hydrazine::cuda::DevicePointerIterator< const_pointer, 
 				vector_type > const_iterator;
-			typedef typename cuda::DevicePointerIterator< pointer, 
+			typedef typename hydrazine::cuda::DevicePointerIterator< pointer, 
 				vector_type >::reference reference;
 				
 		private:
@@ -388,6 +391,8 @@ namespace cuda
 			}
 		
 	};
+
+}
 
 }
 

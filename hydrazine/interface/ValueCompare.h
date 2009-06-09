@@ -7,23 +7,23 @@
 #ifndef VALUE_COMPARE_H_INCLUDED
 #define VALUE_COMPARE_H_INCLUDED
 
+#include <functional>
+
 namespace hydrazine
 {
 	/*!
 		\brief A class for comparing key/value pairs based on the key only
 	*/
-	template< typename Key, typename Value, typename Compare, 
-		typename Container >
+	template< typename Compare, typename Container >
 	class ValueCompare : 
-		public std::binary_function< std::pair< Key, Value >, 
-			std::pair< Key, Value >, bool >
+		public std::binary_function< typename Container::value_type, 
+			typename Container::value_type, bool >
 	{
-		friend class Container::type;
 		public:
 			typedef size_t size_type;
-			typedef Key key_type;
-			typedef Value mapped_type;
-			typedef std::pair< const key_type, mapped_type > value_type;
+			typedef typename Container::key_type key_type;
+			typedef typename Container::mapped_type mapped_type;
+			typedef typename Container::value_type value_type;
 			typedef ptrdiff_t difference_type;
 			typedef value_type* pointer;
 			typedef value_type& reference;
@@ -31,25 +31,31 @@ namespace hydrazine
 			typedef const value_type& const_reference;
 			
 		protected:
-			Compare compare;
-	
-		protected:
-			ValueCompare( const Compare& c ) : compare( c ) {}
+			Compare _compare;
 	
 		public:
-			bool operator()( const_reference x, const_reference y )
+			const Compare& compare() const
 			{
-				return compare( x.first, y.first );
+				return _compare;
+			}
+		
+		public:
+			ValueCompare( const Compare& c ) : _compare( c ) {}
+	
+		public:
+			bool operator()( const_reference x, const_reference y ) const
+			{
+				return _compare( x.first, y.first );
 			}
 
-			bool operator()( const key_type& x, const_reference y )
+			bool operator()( const key_type& x, const_reference y ) const
 			{
-				return compare( x, y.first );
+				return _compare( x, y.first );
 			}
 
-			bool operator()( const_reference x, const key_type& y )
+			bool operator()( const_reference x, const key_type& y ) const
 			{
-				return compare( x.first, y );
+				return _compare( x.first, y );
 			}
 	};
 

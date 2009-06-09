@@ -18,7 +18,7 @@ namespace test
 	
 	bool TestCudaVector::testAllocation( )
 	{
-		typedef cuda::Vector< char > DeviceVector;
+		typedef hydrazine::cuda::Vector< char > DeviceVector;
 
 		size_t size = ( random() % max ) + 1;
 		
@@ -81,7 +81,7 @@ namespace test
 
 	bool TestCudaVector::testCopy( )
 	{
-		typedef cuda::Vector< char > DeviceVector;
+		typedef hydrazine::cuda::Vector< char > DeviceVector;
 		typedef std::vector< char > HostVector;
 		
 		size_t size = ( random() % max ) + 1;
@@ -149,7 +149,7 @@ namespace test
 	}
 	bool TestCudaVector::testIteration( )
 	{
-		typedef cuda::Vector< char > DeviceVector;
+		typedef hydrazine::cuda::Vector< char > DeviceVector;
 		typedef std::vector< char > HostVector;
 		
 		size_t size = ( random() % max ) + 1;
@@ -207,7 +207,7 @@ namespace test
 	
 	void TestCudaVector::benchmark()
 	{
-		typedef cuda::Vector< char > DeviceVector;
+		typedef hydrazine::cuda::Vector< char > DeviceVector;
 		typedef std::vector< char > HostVector;
 
 		hydrazine::Timer timer;

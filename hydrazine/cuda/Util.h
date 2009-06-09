@@ -8,6 +8,12 @@
 #ifndef UTIL_H_INCLUDED
 #define UTIL_H_INCLUDED
 
+namespace hydrazine
+{
+
+namespace cuda
+{
+
 /*!
 	\brief Compute the next highest power of 2 for 32 bit numbers
 */
@@ -32,6 +38,10 @@ __device__ void swap( T& a, T& b )
 	T tmp = a;
 	a = b;
 	b = tmp;
+}
+
+}
+
 }
 
 #endif

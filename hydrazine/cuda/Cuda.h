@@ -26,6 +26,13 @@
 #endif
 
 /*!
+	\brief The optimal amount of shared memory available
+*/
+#ifndef OPTIMAL_SHARED_MEMORY
+#define OPTIMAL_SHARED_MEMORY 8192
+#endif
+
+/*!
 	\brief The min amount of regs guaranteed available to a thread.
 */
 #ifndef MIN_REGS

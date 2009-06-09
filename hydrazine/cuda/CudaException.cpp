@@ -12,6 +12,9 @@
 #include <hydrazine/implementation/string.h>
 #include <cuda.h>
 
+namespace hydrazine
+{
+
 namespace cuda
 {
 	CudaException::CudaException( ) : code( cudaErrorUnknown )
@@ -40,6 +43,8 @@ void cudaCheck( cudaError_t code )
 	}
 	
 	throw cuda::CudaException( code );
+}
+
 }
 
 #endif

@@ -10,6 +10,12 @@
 
 #include <cfloat>
 
+namespace hydrazine
+{
+
+namespace cuda
+{
+
 template< typename T >
 __device__ __host__ inline T minValue();
 
@@ -62,6 +68,10 @@ template< >
 __device__ __host__ inline double maxValue< double >()
 {
 	return DBL_MAX;
+}
+
+}
+
 }
 
 #endif
