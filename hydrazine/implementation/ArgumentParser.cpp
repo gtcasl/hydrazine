@@ -135,7 +135,14 @@ namespace hydrazine
 		assert( _identifier.size() == 2 );
 		assert( _identifier[0] == '-' );
 
-		b = starting ^ isPresent( _identifier );
+		if( isPresent( _identifier ) )
+		{
+			b = !starting;
+		}
+		else
+		{
+			b = starting;
+		}
 		
 		std::string identifier( ' ' + _identifier );
 
@@ -160,8 +167,14 @@ namespace hydrazine
 		assert( _identifier.size() == 2 );
 		assert( _identifier[0] == '-' );
 
-		b = starting ^ isPresent( _identifier );
-		b |= starting ^ isPresent( _longIdentifier );
+		if( isPresent( _identifier ) || isPresent( _longIdentifier ) )
+		{
+			b = !starting;
+		}
+		else
+		{
+			b = starting;
+		}
 		
 		std::string identifier( ' ' + _identifier + '(' 
 			+ _longIdentifier + ')' );
