@@ -105,11 +105,15 @@ namespace hydrazine
 	{
 		bool found = false;
 	
+		report( "Searching for " << identifier );
+	
 		for(int i = 0; i < argc; i++)
 		{
 			std::string str = argv[i];
-			if( !str.compare(identifier) )
+			size_t pos = str.find(identifier);
+			if( pos == 0 && str.size() == identifier.size() )
 			{
+				report( "Found in " << str );
 				found = true;
 				break;
 			}
@@ -137,6 +141,7 @@ namespace hydrazine
 
 		if( isPresent( _identifier ) )
 		{
+			report( " is present" );
 			b = !starting;
 		}
 		else
@@ -169,6 +174,7 @@ namespace hydrazine
 
 		if( isPresent( _identifier ) || isPresent( _longIdentifier ) )
 		{
+			report( " is present" );
 			b = !starting;
 		}
 		else
