@@ -17,14 +17,11 @@ namespace hydrazine
 {
 
 	/*!
-	
 		\brief Safe string copy
 		
 		\param destination The target string
 		\param source The source string
 		\param max The max number of characters to copy
-		
-	
 	*/
 	void strlcpy( char* destination, const char* source, unsigned int max );
 

@@ -60,26 +60,6 @@ namespace hydrazine
 		return stream.str();
 	}
 	
-	template < typename T, typename Format > std::string toString( T begin, 
-		T end, Format format, std::string space = " " )
-	{
-		std::stringstream stream;
-		
-		if( begin != end )
-		{
-			stream << format( begin );
-			++begin;
-		}
-		
-		for( T iterator = begin; iterator != end; ++iterator )
-		{
-			stream << space;			
-			stream << format( iterator );
-		}
-		
-		return stream.str();
-	}
-	
 	/*!
 		\brief Strip the front of a file	
 	*/
