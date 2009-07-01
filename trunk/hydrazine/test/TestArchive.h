@@ -1,17 +1,17 @@
 /*!
-	\file TestSerializableArchive.h
+	\file TestArchive.h
 	\author Gregory Diamos
 	\date Sunday July 20, 2008	
-	\brief Header file for the TestSerializableArchive class. 
-	\bored Comments Written while sitting in a starbucks with some really noisy 
+	\brief Header file for the TestArchive class. 
+	\bored Comments written while sitting in a starbucks with some really noisy 
 		people behind me.  Green tea lattes can't compete with chai tea 
 		lattes...	
 */
 
-#ifndef TEST_SERIALIZABLE_ARCHIVE_H_INCLUDED
-#define TEST_SERIALIZABLE_ARCHIVE_H_INCLUDED
+#ifndef TEST_ARCHIVE_H_INCLUDED
+#define TEST_ARCHIVE_H_INCLUDED
 
-#include <hydrazine/implementation/SerializableArchive.h>
+#include <hydrazine/implementation/Archive.h>
 #include <hydrazine/implementation/ArgumentParser.h>
 #include <hydrazine/interface/Test.h>
 
@@ -36,21 +36,12 @@ namespace test
 		restoring from disk, and saving to an archive, sending the archive 
 		over mpi, and restoring at the other end.
 	*/
-	class TestSerializableArchive : public Test
+	class TestArchive : public Test
 	{
 		private:
 			class SimpleSerializable : public hydrazine::Serializable
 			{
 				private:
-#ifdef HAVE_BOOST_SERIALIZATION					
-					friend class boost::serialization::access;
-					template< class Archive >
-					void save( Archive& ar, const unsigned int version ) const;					
-					template< class Archive >
-					void load( Archive& ar, const unsigned int version );
-
-					BOOST_SERIALIZATION_SPLIT_MEMBER()
-#endif						
 					char* _data;
 					unsigned int _size;
 					
@@ -69,8 +60,8 @@ namespace test
 					void resize( unsigned int size );
 					void* data();					
 					hydrazine::Serializable::Id id() const;
-					void serialize( hydrazine::SerializationBuffer& b ) const;
-					void deserialize( hydrazine::SerializationBuffer& b );
+					void save( hydrazine::Archive& b ) const;
+					void load( hydrazine::Archive& b );
 					hydrazine::Serializable::Allocator* allocator() const;
 					bool operator!=( const SimpleSerializable& object ) const;			
 			};
@@ -83,7 +74,7 @@ namespace test
 			bool doTest();
 		
 		public:
-			TestSerializableArchive();
+			TestArchive();
 
 			unsigned int iterations;
 			unsigned int size;
@@ -95,7 +86,7 @@ namespace test
 #ifdef HAVE_BOOST_SERIALIZATION
 
 	template< class Archive >
-	void TestSerializableArchive::SimpleSerializable::save( Archive& ar, 
+	void TestArchive::SimpleSerializable::save( Archive& ar, 
 		const unsigned int version ) const
 	{
 		ar & _size;
@@ -107,7 +98,7 @@ namespace test
 	}
 	
 	template< class Archive >
-	void TestSerializableArchive::SimpleSerializable::load( Archive& ar, 
+	void TestArchive::SimpleSerializable::load( Archive& ar, 
 		const unsigned int version )
 	{
 		unsigned int size;

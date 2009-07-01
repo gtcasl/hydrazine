@@ -21,9 +21,8 @@ AC_CONFIG_HEADER([configure.h])
 
 ################################################################################
 ## Checks for libraries.
-LIBRT=""
-AC_CHECK_LIB([rt], [clock_gettime], [LIBRT="-lrt"])
-AC_SUBST(LIBRT)
+AC_CHECK_LIB([rt], [clock_gettime], [],\
+	AC_MSG_ERROR("librt required"))
 ################################################################################
 
 ################################################################################
