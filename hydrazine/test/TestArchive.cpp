@@ -1,14 +1,14 @@
 /*!
-	\file TestSerializableArchive.cpp
+	\file TestArchive.cpp
 	\author Gregory Diamos
 	\date Sunday July 20, 2008
-	\brief Source file for the TestSerializableArchive class. 
+	\brief Source file for the TestArchive class. 
 */
 
-#ifndef TEST_SERIALIZABLE_ARCHIVE_CPP_INCLUDED
-#define TEST_SERIALIZABLE_ARCHIVE_CPP_INCLUDED
+#ifndef TEST_ARCHIVE_CPP_INCLUDED
+#define TEST_ARCHIVE_CPP_INCLUDED
 
-#include "TestSerializableArchive.h"
+#include "TestArchive.h"
 #include <cstring>
 
 namespace test
@@ -17,21 +17,21 @@ namespace test
 	////////////////////////////////////////////////////////////////////////////
 	// SimpleSerializableAllocator
 	hydrazine::Serializable* 
-		TestSerializableArchive::SimpleSerializable::\
+		TestArchive::SimpleSerializable::\
 		SimpleSerializableAllocator::allocate() const
 	{
-		return new TestSerializableArchive::SimpleSerializable;
+		return new TestArchive::SimpleSerializable;
 	}
 	////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////////
 	// SimpleSerializable
-	TestSerializableArchive::SimpleSerializable::SimpleSerializable()
+	TestArchive::SimpleSerializable::SimpleSerializable()
 	{
 		_size = 0;
 	}
 					
-	TestSerializableArchive::SimpleSerializable::~SimpleSerializable()
+	TestArchive::SimpleSerializable::~SimpleSerializable()
 	{
 		if( _size > 0 )
 		{
@@ -39,12 +39,12 @@ namespace test
 		}
 	}
 	
-	unsigned int TestSerializableArchive::SimpleSerializable::size() const
+	unsigned int TestArchive::SimpleSerializable::size() const
 	{
 		return _size;
 	}
 	
-	void TestSerializableArchive::SimpleSerializable::resize( 
+	void TestArchive::SimpleSerializable::resize( 
 		unsigned int size )
 	{
 		if( size != _size )
@@ -63,25 +63,25 @@ namespace test
 		}
 	}
 	
-	void* TestSerializableArchive::SimpleSerializable::data()
+	void* TestArchive::SimpleSerializable::data()
 	{
 		return _data;
 	}
 	
 	hydrazine::Serializable::Id 
-		TestSerializableArchive::SimpleSerializable::id() const
+		TestArchive::SimpleSerializable::id() const
 	{
 		return 0;
 	}
 	
-	void TestSerializableArchive::SimpleSerializable::serialize( 
+	void TestArchive::SimpleSerializable::serialize( 
 		hydrazine::SerializationBuffer& b ) const
 	{
 		b.write( &_size, sizeof( unsigned int ) );
 		b.write( _data, _size );
 	}
 	
-	void TestSerializableArchive::SimpleSerializable::deserialize( 
+	void TestArchive::SimpleSerializable::deserialize( 
 		hydrazine::SerializationBuffer& b )
 	{
 		unsigned int size;
@@ -91,14 +91,14 @@ namespace test
 	}
 	
 	hydrazine::Serializable::Allocator* 
-		TestSerializableArchive::SimpleSerializable::allocator() const
+		TestArchive::SimpleSerializable::allocator() const
 	{
-		return new TestSerializableArchive::SimpleSerializable::\
+		return new TestArchive::SimpleSerializable::\
 			SimpleSerializableAllocator;
 	}
 	
-	bool TestSerializableArchive::SimpleSerializable::operator!=( 
-		const TestSerializableArchive::SimpleSerializable& object ) const
+	bool TestArchive::SimpleSerializable::operator!=( 
+		const TestArchive::SimpleSerializable& object ) const
 	{
 		if( _size != object._size )
 		{
@@ -112,8 +112,8 @@ namespace test
 	////////////////////////////////////////////////////////////////////////////
 	
 	////////////////////////////////////////////////////////////////////////////
-	// TestSerializableArchive
-	bool TestSerializableArchive::testSaveLoad()
+	// TestArchive
+	bool TestArchive::testSaveLoad()
 	{
 	
 		bool pass = true;
@@ -122,8 +122,8 @@ namespace test
 		
 		hydrazine::SerializableArchive archive;
 		
-		TestSerializableArchive::SimpleSerializable objectIn;
-		TestSerializableArchive::SimpleSerializable objectOut;
+		TestArchive::SimpleSerializable objectIn;
+		TestArchive::SimpleSerializable objectOut;
 		
 		archive.registerClass( &objectIn );
 		objectIn.resize( size );
@@ -144,11 +144,11 @@ namespace test
 			pass = false;
 		}
 		
-		TestSerializableArchive::SimpleSerializable* objectClone;
+		TestArchive::SimpleSerializable* objectClone;
 		
 		archive.save( &objectIn );
 		objectClone = static_cast< 
-			TestSerializableArchive::SimpleSerializable* >( archive.load() );
+			TestArchive::SimpleSerializable* >( archive.load() );
 		
 		if( objectIn != *objectClone )
 		{
@@ -185,7 +185,7 @@ namespace test
 			std::ofstream boostArchiveFile( "_temp.archive" );
 			boost::archive::text_oarchive boostArchive( boostArchiveFile );
 			boostArchive << const_cast< const 
-				TestSerializableArchive::SimpleSerializable& >( objectIn );
+				TestArchive::SimpleSerializable& >( objectIn );
 		}
 		
 		{
@@ -210,7 +210,7 @@ namespace test
 				std::ofstream boostArchiveFile( "_temp.archive" );
 				boost::archive::text_oarchive boostArchive( boostArchiveFile );
 				boostArchive << static_cast< const 
-					TestSerializableArchive::SimpleSerializable& >( objectIn );
+					TestArchive::SimpleSerializable& >( objectIn );
 			}
 		
 			{
@@ -232,7 +232,7 @@ namespace test
 		return pass;
 	}
 	
-	bool TestSerializableArchive::testDisk()
+	bool TestArchive::testDisk()
 	{
 
 		bool pass = true;
@@ -241,8 +241,8 @@ namespace test
 		
 		hydrazine::SerializableArchive archive;
 		
-		TestSerializableArchive::SimpleSerializable objectIn;
-		TestSerializableArchive::SimpleSerializable objectOut;
+		TestArchive::SimpleSerializable objectIn;
+		TestArchive::SimpleSerializable objectOut;
 		
 		archive.registerClass( &objectIn );
 		objectIn.resize( size );
@@ -265,11 +265,11 @@ namespace test
 			pass = false;
 		}
 		
-		TestSerializableArchive::SimpleSerializable* objectClone;
+		TestArchive::SimpleSerializable* objectClone;
 		
 		archive.save( &objectIn );
 		objectClone = static_cast< 
-			TestSerializableArchive::SimpleSerializable* >( archive.load() );
+			TestArchive::SimpleSerializable* >( archive.load() );
 		
 		if( objectIn != *objectClone )
 		{
@@ -304,12 +304,12 @@ namespace test
 	
 	#ifdef HAVE_MPI	
 	
-	bool TestSerializableArchive::testMpi()
+	bool TestArchive::testMpi()
 	{
 		bool pass = true;
 	
 		hydrazine::SerializableArchive archive;
-		TestSerializableArchive::SimpleSerializable object;
+		TestArchive::SimpleSerializable object;
 		
 		archive.registerClass( &object );
 		object.resize( size );
@@ -350,7 +350,7 @@ namespace test
 				{
 				
 					MPI_Status status;
-					TestSerializableArchive::SimpleSerializable objectOut;
+					TestArchive::SimpleSerializable objectOut;
 					unsigned int size;
 
 					MPI_Probe( 0, 0, MPI_COMM_WORLD, &status );
@@ -389,7 +389,7 @@ namespace test
 						boost::archive::text_oarchive 
 							boostArchive( boostArchiveFile );
 						boostArchive << static_cast< const 
-							TestSerializableArchive::SimpleSerializable& >( 
+							TestArchive::SimpleSerializable& >( 
 							objectIn );
 					}
 		
@@ -425,7 +425,7 @@ namespace test
 				for( unsigned int i = 0; i < iteratios; i++ )
 				{
 					MPI_Status status;
-					TestSerializableArchive::SimpleSerializable objectOut;
+					TestArchive::SimpleSerializable objectOut;
 					unsigned int size;
 
 					MPI_Probe( 0, 0, MPI_COMM_WORLD, &status );					
@@ -462,7 +462,7 @@ namespace test
 	
 	#endif	
 	
-	bool TestSerializableArchive::doTest()
+	bool TestArchive::doTest()
 	{
 		bool pass = true;
 		
@@ -484,9 +484,9 @@ namespace test
 		return pass;
 	}
 	
-	TestSerializableArchive::TestSerializableArchive()
+	TestArchive::TestArchive()
 	{
-		name = "TestSerializableArchive";
+		name = "TestArchive";
 		
 		description += "Make sure that the implementation of a Serializable\n";
 		description += "archive works as intended.\n";  
@@ -504,7 +504,7 @@ namespace test
 int main( int argc, char** argv )
 {
 	hydrazine::ArgumentParser parser( argc, argv );
-	test::TestSerializableArchive test;
+	test::TestArchive test;
 
 	#ifdef HAVE_MPI
 		MPI_Init( &argc, &argv );
