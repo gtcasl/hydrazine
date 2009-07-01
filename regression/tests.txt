@@ -3,8 +3,6 @@
 ../TestCudaVector
 ../TestMath
 ../TestPackage
-../TestSerializableArchive
-../TestSerializationBuffer
 ../TestThread
 ../TestTimer
 ../TestXmlArgumentParser
