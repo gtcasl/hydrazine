@@ -17,6 +17,10 @@ namespace hydrazine
 	template< typename Compare, typename Container >
 	class ValueCompare : 
 		public std::binary_function< typename Container::value_type, 
+			typename Container::value_type, bool >, 
+		public std::binary_function< typename Container::value_type, 
+			typename Container::key_type, bool >, 
+		public std::binary_function< typename Container::key_type, 
 			typename Container::value_type, bool >
 	{
 		public:
@@ -40,7 +44,8 @@ namespace hydrazine
 			}
 		
 		public:
-			ValueCompare( const Compare& c ) : _compare( c ) {}
+			explicit ValueCompare( const Compare& c ) : _compare( c ) {}
+			ValueCompare() {}
 	
 		public:
 			bool operator()( const_reference x, const_reference y ) const

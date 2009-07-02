@@ -76,9 +76,9 @@ namespace cuda
 				size_type size = c.size();
 				size_type storage = _pageAlign( size );
 			
-				cudaCheck( cudaMalloc( (void**) &_begin, 
+				cuda::check( cudaMalloc( (void**) &_begin, 
 					sizeof(T) * storage ) );
-				cudaCheck( cudaMemcpy( _begin, c._begin, sizeof(T) * size, 
+				cuda::check( cudaMemcpy( _begin, c._begin, sizeof(T) * size, 
 					cudaMemcpyDeviceToDevice ) );
 				
 				_end = _begin + size;
@@ -90,7 +90,7 @@ namespace cuda
 			{
 				size_type storage = _pageAlign( size );
 			
-				cudaCheck( cudaMalloc( (void**) &_begin, 
+				cuda::check( cudaMalloc( (void**) &_begin, 
 					sizeof(T) * storage ) );
 				
 				_end = _begin + size;
@@ -103,7 +103,7 @@ namespace cuda
 				size_type size = end - start;
 				size_type storage = _pageAlign( size );
 			
-				cudaCheck( cudaMalloc( (void**) &_begin, 
+				cuda::check( cudaMalloc( (void**) &_begin, 
 					sizeof(T) * storage ) );
 				
 				_end = _begin + size;
@@ -111,7 +111,7 @@ namespace cuda
 			
 				T* temp;
 			
-				cudaCheck( cudaMallocHost( (void**) &temp, 
+				cuda::check( cudaMallocHost( (void**) &temp, 
 					sizeof(T) * size ) );
 		
 				T* temp_it = temp;
@@ -121,17 +121,17 @@ namespace cuda
 					*temp_it = *it;
 				}
 			
-				cudaCheck( cudaMemcpy( _begin, temp, sizeof(T) * size, 
+				cuda::check( cudaMemcpy( _begin, temp, sizeof(T) * size, 
 					cudaMemcpyHostToDevice ) );
 		
-				cudaCheck( cudaFreeHost( temp ) );
+				cuda::check( cudaFreeHost( temp ) );
 			}
 
 			~Vector()
 			{
 				if( _begin != 0 )
 				{
-					cudaCheck( cudaFree( _begin ) );
+					cuda::check( cudaFree( _begin ) );
 				}
 			}
 		
@@ -151,9 +151,9 @@ namespace cuda
 
 				T* pointer;
 
-				cudaCheck( cudaMalloc( (void**) &pointer, 
+				cuda::check( cudaMalloc( (void**) &pointer, 
 					sizeof(T) * size() ) );
-				cudaCheck( cudaMemcpy( _begin, c._begin, sizeof(T) * size(), 
+				cuda::check( cudaMemcpy( _begin, c._begin, sizeof(T) * size(), 
 					cudaMemcpyDeviceToDevice ) );
 				
 				return *this;
@@ -198,7 +198,7 @@ namespace cuda
 			
 				T* temp;
 			
-				cudaCheck( cudaMallocHost( (void**) &temp, 
+				cuda::check( cudaMallocHost( (void**) &temp, 
 					sizeof(T) * size ) );
 		
 				T* temp_it = temp;
@@ -208,10 +208,10 @@ namespace cuda
 					*temp_it = val;
 				}
 			
-				cudaCheck( cudaMemcpy( _begin, temp, sizeof(T) * size, 
+				cuda::check( cudaMemcpy( _begin, temp, sizeof(T) * size, 
 					cudaMemcpyHostToDevice ) );
 		
-				cudaCheck( cudaFreeHost( temp ) );
+				cuda::check( cudaFreeHost( temp ) );
 		
 			}
 		
@@ -224,7 +224,7 @@ namespace cuda
 
 				T* temp;
 			
-				cudaCheck( cudaMallocHost( (void**) &temp, sizeof(T) * size ) );
+				cuda::check( cudaMallocHost( (void**) &temp, sizeof(T) * size ) );
 		
 				T* temp_it = temp;
 		
@@ -233,10 +233,10 @@ namespace cuda
 					*temp_it = *it;
 				}
 			
-				cudaCheck( cudaMemcpy( _begin, temp, sizeof(T) * size, 
+				cuda::check( cudaMemcpy( _begin, temp, sizeof(T) * size, 
 					cudaMemcpyHostToDevice ) );
 		
-				cudaCheck( cudaFreeHost( temp ) );		
+				cuda::check( cudaFreeHost( temp ) );		
 			}
 		
 			const T& at( size_type index ) const
@@ -258,7 +258,7 @@ namespace cuda
 			{
 				if( _storage != _begin )
 				{
-					cudaCheck( cudaFree( _begin ) );
+					cuda::check( cudaFree( _begin ) );
 					_storage = 0;
 					_begin = 0;
 					_end = 0;
@@ -279,8 +279,8 @@ namespace cuda
 			{
 				cudaDeviceProp properties;
 				int device;
-				cudaCheck( cudaGetDevice( &device ) );
-				cudaCheck( cudaGetDeviceProperties( &properties, device ) );
+				cuda::check( cudaGetDevice( &device ) );
+				cuda::check( cudaGetDeviceProperties( &properties, device ) );
 				return ( properties.totalGlobalMem * MEM_RATIO ) / sizeof(T);
 			}
 		
@@ -297,7 +297,7 @@ namespace cuda
 					resize( size() + 1 );
 				}
 
-				cudaCheck( cudaMemcpy( _end - 1, &val, sizeof(T), 
+				cuda::check( cudaMemcpy( _end - 1, &val, sizeof(T), 
 					cudaMemcpyHostToDevice ) );
 			}
 
@@ -307,10 +307,10 @@ namespace cuda
 				{
 					storage = _pageAlign( storage );
 					T* _new;
-					cudaCheck( cudaMalloc( (void**) &_new, 
+					cuda::check( cudaMalloc( (void**) &_new, 
 						sizeof( T ) * storage ) );
 					size_type old = size();
-					cudaCheck( cudaMemcpy( _new, _begin, 
+					cuda::check( cudaMemcpy( _new, _begin, 
 						old * sizeof( T ), cudaMemcpyDeviceToDevice ) );
 					clear();
 					_begin = _new;
@@ -325,10 +325,10 @@ namespace cuda
 				if( storage != capacity() )
 				{
 					T* _new;
-					cudaCheck( cudaMalloc( (void**) &_new, 
+					cuda::check( cudaMalloc( (void**) &_new, 
 						sizeof( T ) * storage ) );
 					size_type old = MIN( size(), newSize );
-					cudaCheck( cudaMemcpy( _new, _begin, 
+					cuda::check( cudaMemcpy( _new, _begin, 
 						old * sizeof( T ), cudaMemcpyDeviceToDevice ) );
 					clear();
 					_begin = _new;
@@ -354,7 +354,7 @@ namespace cuda
 			void read( void* dest, size_type bytes )
 			{
 				assert( bytes <= sizeof( T ) * size() );
-				cudaCheck( cudaMemcpy( dest, _begin, bytes, 
+				cuda::check( cudaMemcpy( dest, _begin, bytes, 
 					cudaMemcpyDeviceToHost ) );
 			}
 			
@@ -364,7 +364,7 @@ namespace cuda
 				{
 					resize( CEIL_DIV( bytes, sizeof( T ) ) );
 				}
-				cudaCheck( cudaMemcpy( _begin, src, bytes, 
+				cuda::check( cudaMemcpy( _begin, src, bytes, 
 					cudaMemcpyHostToDevice ) );
 			}
 	

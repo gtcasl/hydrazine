@@ -33,16 +33,17 @@ namespace cuda
 	{
 		return cudaGetErrorString( code );
 	}
-}
 
-void cudaCheck( cudaError_t code )
-{
-	if( code == cudaSuccess )
+	void check( cudaError_t code )
 	{
-		return;
-	}
+		if( code == cudaSuccess )
+		{
+			return;
+		}
 	
-	throw cuda::CudaException( code );
+		throw cuda::CudaException( code );
+	}
+
 }
 
 }

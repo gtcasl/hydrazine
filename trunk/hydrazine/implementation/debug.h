@@ -26,6 +26,17 @@ namespace hydrazine
 	*/
 	extern Timer _ReportTimer;
 
+	
+	/*!
+		\brief Return a string representing the current system time
+	*/
+	extern std::string _debugTime();
+
+	/*!
+		\brief Return a formatted line number and file name.
+	*/
+	extern std::string _debugFile( const std::string& file, unsigned int line );
+
 	/*!
 
 		\brief Convert an iterable range to a string
@@ -41,7 +52,7 @@ namespace hydrazine
 
 	*/
 	template < typename T > std::string toString( T begin, T end, 
-		std::string space = " " )
+		std::string space = " ", unsigned int limit = 80 )
 	{
 		std::stringstream stream;
 		
@@ -55,11 +66,55 @@ namespace hydrazine
 		{
 			stream << space;			
 			stream << *iterator;
+			if( stream.str().size() > limit )
+			{
+				break;
+			}
 		}
 		
 		return stream.str();
 	}
-	
+
+	/*!
+
+		\brief Convert an iterable range to a string using a formatting functor
+		
+		T must implement the concept of a forward iterator and the object being
+			pointed to must be able to be accepted 
+			by operator<< format( object )
+		
+		\param begin Iterator to the start of the range
+		\param end Iterator to the end of the range
+		\param space The string used as a space
+		
+		\return A string representation of the specified range.
+
+	*/
+	template < typename T, typename Format > std::string toFormattedString( 
+		T begin, T end, Format format, std::string space = " ", 
+		unsigned int limit = 80 )
+	{
+		std::stringstream stream;
+		
+		if( begin != end )
+		{
+			stream << format( begin );
+			++begin;
+		}
+		
+		for( T iterator = begin; iterator != end; ++iterator )
+		{
+			stream << space;			
+			stream << format( iterator );
+			if( stream.str().size() > limit )
+			{
+				break;
+			}
+		}
+		
+		return stream.str();
+	}
+
 	/*!
 		\brief Strip the front of a file	
 	*/
@@ -109,8 +164,6 @@ namespace hydrazine
 #ifndef REPORT_BASE
 #define REPORT_BASE 11
 #endif
-
-
 
 /*!
 	\def printg(x)
@@ -171,47 +224,25 @@ namespace hydrazine
 
 #ifndef NDEBUG
 
-	#ifdef DONT_STRIP_REPORT_PATH
-
 	#define reportE(x, y) \
 		if(REPORT_BASE >= REPORT_ERROR_LEVEL && (x) >= REPORT_ERROR_LEVEL)\
 		{ \
 			{\
-			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-				<< __FILE__ << ":" << __LINE__ << ": " << y << "\n";\
+			std::cout << "(" << hydrazine::_debugTime() << ") " \
+				<< hydrazine::_debugFile( __FILE__, __LINE__ ) \
+				<< " " << y << "\n";\
 			}\
 		 \
 		}\
 		else if( (x) >= EXIT_ERROR_LEVEL)\
 		{ \
-			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-				<< __FILE__ << ":" << __LINE__ << ": This error level " \
+			std::cout << "(" << hydrazine::_debugTime() << ") " \
+				<< hydrazine::_debugFile( __FILE__, __LINE__ ) \
+				<< " This error level " \
 				<< "is critical, exiting!\n";\
 			exit( x ); \
 		}
-
-	#else
-	
-		#define reportE(x, y) \
-			if(REPORT_BASE >= REPORT_ERROR_LEVEL && (x) >= REPORT_ERROR_LEVEL)\
-			{ \
-				{\
-				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-					<< hydrazine::stripReportPath<'/'>(__FILE__) << ":" \
-					<< __LINE__ << ": " << y << "\n";\
-				}\
-			 \
-			}\
-			else if( (x) >= EXIT_ERROR_LEVEL)\
-			{ \
-				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-					<< hydrazine::stripReportPath<'/'>(__FILE__)\
-					<< ":" << __LINE__ << ": This error level " \
-					<< "is critical, exiting!\n";\
-				exit( x ); \
-			}	
-	#endif
-
+		
 #else
 
 	#define reportE(x, y)
@@ -314,46 +345,24 @@ namespace hydrazine
 
 #ifndef NDEBUG
 
-	#ifdef DONT_STRIP_REPORT_PATH
-
 	#define report(y) \
 		if(REPORT_BASE >= REPORT_ERROR_LEVEL)\
 		{ \
 			{\
-			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-				<< __FILE__ << ":" << __LINE__ << ": " << y << "\n";\
+			std::cout << "(" << hydrazine::_debugTime() << ") " \
+				<< hydrazine::_debugFile( __FILE__, __LINE__ ) \
+					<< " " << y << "\n";\
 			}\
 		 \
 		}\
 		else if(REPORT_BASE  >= EXIT_ERROR_LEVEL)\
 		{ \
-			std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-				<< __FILE__ << ":" << __LINE__ << ": This error level " \
+			std::cout << "(" << hydrazine::_debugTime() << ") " \
+				<< hydrazine::_debugFile( __FILE__, __LINE__ ) \
+				<< " This error level " \
 				<< "is critical, exiting!\n";\
 			exit( REPORT_BASE ); \
 		}
-
-	#else
-	
-		#define report(y) \
-			if(REPORT_BASE >= REPORT_ERROR_LEVEL)\
-			{ \
-				{\
-				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-					<< hydrazine::stripReportPath<'/'>(__FILE__) << ":" \
-					<< __LINE__ << ": " << y << "\n";\
-				}\
-			 \
-			}\
-			else if(REPORT_BASE  >= EXIT_ERROR_LEVEL)\
-			{ \
-				std::cout << "(" << hydrazine::_ReportTimer.seconds() << ") " \
-					<< hydrazine::stripReportPath<'/'>(__FILE__)\
-					<< ":" << __LINE__ << ": This error level " \
-					<< "is critical, exiting!\n";\
-				exit( REPORT_BASE ); \
-			}	
-	#endif
 
 #else
 
