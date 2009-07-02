@@ -32,9 +32,9 @@ namespace cuda
 
 	};
 
-}
+	void check( cudaError_t );
 
-void cudaCheck( cudaError_t );
+}
 
 }
 

@@ -42,14 +42,14 @@ namespace cuda
 			
 			DeviceReference& operator=( const value_type& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, &value, 
+				cuda::check( cudaMemcpy( _pointer, &value, 
 					sizeof( value_type ), cudaMemcpyHostToDevice ) );
 				return *this;
 			}
 			
 			DeviceReference& operator=( const DeviceReference& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, value._pointer, 
+				cuda::check( cudaMemcpy( _pointer, value._pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToDevice ) );
 				return *this;
 			}
@@ -57,7 +57,7 @@ namespace cuda
 			operator value_type() const
 			{
 				value_type temp;
-				cudaCheck( cudaMemcpy( &temp, _pointer, 
+				cuda::check( cudaMemcpy( &temp, _pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToHost ) );
 				return temp;
 			}
@@ -153,7 +153,7 @@ namespace cuda
 			
 			DeviceReference& operator=( const value_type& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, &value, 
+				cuda::check( cudaMemcpy( _pointer, &value, 
 					sizeof( value_type ), cudaMemcpyHostToDevice ) );
 				return *this;
 			}
@@ -161,7 +161,7 @@ namespace cuda
 			DeviceReference& operator=( const typename UglyHack< First, 
 				Second >::type& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, value._pointer, 
+				cuda::check( cudaMemcpy( _pointer, value._pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToDevice ) );
 				return *this;
 			}
@@ -169,7 +169,7 @@ namespace cuda
 			operator value_type() const
 			{
 				value_type temp;
-				cudaCheck( cudaMemcpy( &temp, _pointer, 
+				cuda::check( cudaMemcpy( &temp, _pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToHost ) );
 				return temp;
 			}
@@ -218,7 +218,7 @@ namespace cuda
 			
 			DeviceReference& operator=( const value_type& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, &value, 
+				cuda::check( cudaMemcpy( _pointer, &value, 
 					sizeof( value_type ), cudaMemcpyHostToDevice ) );
 				return *this;
 			}
@@ -226,7 +226,7 @@ namespace cuda
 			DeviceReference& operator=( const typename ConstUglyHack< First, 
 				Second >::type& value )
 			{
-				cudaCheck( cudaMemcpy( _pointer, value._pointer, 
+				cuda::check( cudaMemcpy( _pointer, value._pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToDevice ) );
 				return *this;
 			}
@@ -234,7 +234,7 @@ namespace cuda
 			operator value_type() const
 			{
 				value_type temp;
-				cudaCheck( cudaMemcpy( &temp, _pointer, 
+				cuda::check( cudaMemcpy( &temp, _pointer, 
 					sizeof( value_type ), cudaMemcpyDeviceToHost ) );
 				return temp;
 			}
