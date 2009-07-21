@@ -169,10 +169,16 @@ namespace hydrazine
 		const std::string& _longIdentifier, bool& b, bool starting,
 		const std::string& string)
 	{
-		assert( _identifier.size() == 2 );
-		assert( _identifier[0] == '-' );
+		bool inFirst = false;
 
-		if( isPresent( _identifier ) || isPresent( _longIdentifier ) )
+		if( !_identifier.empty() )
+		{
+			assert( _identifier.size() == 2 );
+			assert( _identifier[0] == '-' );
+			inFirst = isPresent( _identifier );
+		}
+		
+		if( inFirst || isPresent( _longIdentifier ) )
 		{
 			report( " is present" );
 			b = !starting;
