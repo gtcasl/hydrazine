@@ -276,13 +276,18 @@ namespace hydrazine
 		const std::string& _longIdentifier, T& i, 
 		const V& starting, const std::string& _string)
 	{
-		assert( _identifier.size() == 2 );
-		assert( _identifier[0] == '-' );
+		i = starting;
+		
+		if( !_identifier.empty() )
+		{
+			assert( _identifier.size() == 2 );
+			assert( _identifier[0] == '-' );
+			find( _identifier.substr(1), i );
+		}
+		
 		assert( _longIdentifier.size() > 2 );
 		assert( 0 == _longIdentifier.find( "--" ) );
 
-		i = starting;
-		find( _identifier.substr(1), i );
 		find( _longIdentifier.substr(2), i );
 		
 		std::string identifier( ' ' + _identifier 
