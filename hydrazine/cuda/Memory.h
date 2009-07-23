@@ -8,8 +8,8 @@
 #ifndef MEMORY_H_INCLUDED
 #define MEMORY_H_INCLUDED
 
-#include <cuda/Cuda.h>
-#include <implementation/macros.h>
+#include <hydrazine/cuda/Cuda.h>
+#include <hydrazine/implementation/macros.h>
 
 namespace hydrazine
 {
@@ -57,36 +57,46 @@ namespace cuda
 			}
 		}
 		
-		int steps = length/sizeof(int2);
-		int doubleStride = stride * 2;
-		int i;
-	
-		// Transfer bulk
-		for(i= 0; i< steps - doubleStride; i+=doubleStride )
+		if( (size_t)destination % sizeof(uint2) != 0 
+			|| (size_t)source % sizeof(uint2) != 0 )
 		{
-			int2 tempA = ((int2*)source)[ i + index + stride*0 ];
-			int2 tempB = ((int2*)source)[ i + index + stride*1 ];
-
-			((int2*)destination)[ i + index + stride*0 ] = tempA;
-			((int2*)destination)[ i + index + stride*1 ] = tempB;
-		}
-
-		// Transfer remainder
-		for(    ; i< steps; i += stride)
-		{
-			if( (i + index) < steps )
+			for( unsigned int i = index; i < length; i += stride )
 			{
-				((int2*)destination)[ i + index ] = 
-					((int2*)source)[ i + index ];
+				destination[i] = source[i];
 			}
 		}
-		
-		// Transfer last few bytes
-		for(i= length - length%sizeof(int2); i< length; i++)
+		else
 		{
-			((char*)destination)[ i ] = ((char*)source)[ i ];
+			int steps = length/sizeof(int2);
+			int doubleStride = stride * 2;
+			int i;
+		
+			// Transfer bulk
+			for(i= 0; i < steps - doubleStride; i += doubleStride )
+			{
+				int2 tempA = ((int2*)source)[ i + index + stride * 0 ];
+				int2 tempB = ((int2*)source)[ i + index + stride * 1 ];
+
+				((int2*)destination)[ i + index + stride * 0 ] = tempA;
+				((int2*)destination)[ i + index + stride * 1 ] = tempB;
+			}
+
+			// Transfer remainder
+			for(    ; i< steps; i += stride)
+			{
+				if( (i + index) < steps )
+				{
+					((int2*)destination)[ i + index ] = 
+						((int2*)source)[ i + index ];
+				}
+			}
+		
+			// Transfer last few bytes
+			for(i= length - length % sizeof(int2); i< length; i++)
+			{
+				destination[ i ] = source[ i ];
+			}
 		}
-	
 	}
 
 	__device__ void memcpyWarp(void* destination, 
