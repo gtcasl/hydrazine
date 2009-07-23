@@ -126,7 +126,7 @@ namespace hydrazine
 				\brief Parse an argument from the command line
 				
 				\param identifier A string used to match strings in argv. Must
-					be a '-' followed by a single character
+					be a '-' followed by a single character or blank
 				\param i A refernce to an argument to set to the parsed value
 				\param starting The value to assign to i if the identifier is 
 					not found in argv
@@ -143,7 +143,7 @@ namespace hydrazine
 				\brief Parse a long argument from the command line
 				
 				\param identifier A string used to match strings in argv. Must
-					be a '-' followed by a single character
+					be a '-' followed by a single character or blank
 				\param longIdentifier A long string used to match strings in 
 					argv.  Must begin with "--".
 				\param i A refernce to an argument to set to the parsed value
