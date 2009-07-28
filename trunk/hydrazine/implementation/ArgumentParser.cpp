@@ -11,75 +11,7 @@ namespace hydrazine
 {
 
 	////////////////////////////////////////////////////////////////////////////
-	// Argument parser
-	void ArgumentParser::format( std::stringstream& stream, 
-		const std::string& firstPrefix, const std::string& prefix )
-	{
-
-		report( "Formating string." );
-		report( " Input stream is \"" << stream.str() << "\"" );
-		report( " First prefix is \"" << firstPrefix << "\"" );
-		report( " Regular prefix is \"" << prefix << "\"" );
-			
-		char currentCharacter;
-		
-		std::string word;
-		std::stringstream result;
-		unsigned int currentIndex = firstPrefix.size();
-		
-		unsigned int streamSize = stream.str().size();
-	
-		result << firstPrefix;
-	
-		for( unsigned int i = 0; i < streamSize; i++ )
-		{
-		
-			stream.get( currentCharacter );
-			
-			if
-			( 
-				currentCharacter == ' ' ||
-				currentCharacter == '\t' ||
-				currentCharacter == '\n'
-			)
-			{
-			
-				if( currentIndex + word.size() > SCREEN_WIDTH )
-				{
-					currentIndex = prefix.size();
-					result << "\n";
-					result << prefix;
-				}
-				
-				result << word << " " ;
-				++currentIndex;
-				word.clear();
-			
-			}
-			else
-			{
-				word.push_back( currentCharacter );
-				currentIndex++;
-			}
-		}
-
-		if( currentIndex + word.size() > SCREEN_WIDTH )
-		{
-		
-			result << "\n";
-		
-		}
-		
-		result << word << "\n";
-	
-		stream.str( "" );
-		stream << result.str();
-	
-		report(  "Formatted stream is \"" << stream.str() << "\"" );
-	
-	}
-
-	
+	// Argument parser	
 	ArgumentParser::ArgumentParser(int _argc, char* _argv[])
 	{
 		argc = _argc;
@@ -90,14 +22,13 @@ namespace hydrazine
 	void ArgumentParser::description( const std::string& d )
 	{
 		std::string desc = " Description: ";
-		std::stringstream stream( d + '\n' );
+		std::stringstream stream( d );
 		int repetition = MESSAGE_OFFSET - ( int )desc.size();
 		std::string prefix( MAX( repetition, 0 ), ' ' );
 		std::string regularPrefix( MESSAGE_OFFSET, ' ' );
 		
-		format( stream, prefix, regularPrefix );
-		
-		_description = desc + stream.str() + "\n";
+		_description = format( stream.str(), desc + prefix, 
+			regularPrefix, SCREEN_WIDTH ) + "\n";
 	}
 
 
@@ -158,11 +89,14 @@ namespace hydrazine
 
 		std::stringstream secondStream( string + '\n' );
 		
-		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << std::boolalpha 
+		std::string result = format( secondStream.str(), prefix, 
+			regularPrefix, SCREEN_WIDTH );
+		
+		std::stringstream thirdStream;
+		thirdStream << result << regularPrefix << "value = " << std::boolalpha 
 			<< b << "\n";
-	
-		arguments << identifier << secondStream.str() << "\n";
+			
+		arguments << identifier << thirdStream.str() << "\n";
 	}
 
 	void ArgumentParser::parse(const std::string& _identifier, 
@@ -198,11 +132,14 @@ namespace hydrazine
 
 		std::stringstream secondStream( string + '\n' );
 		
-		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << std::boolalpha 
+		std::string result = format( secondStream.str(), prefix, 
+			regularPrefix, SCREEN_WIDTH );
+		
+		std::stringstream thirdStream;
+		thirdStream << result << regularPrefix << "value = " << std::boolalpha 
 			<< b << "\n";
-	
-		arguments << identifier << secondStream.str() << "\n";
+		
+		arguments << identifier << thirdStream.str() << "\n";
 	}
 	
 	void ArgumentParser::parse()

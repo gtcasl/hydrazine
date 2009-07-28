@@ -78,7 +78,7 @@ namespace test
 			std::string toString() const;
 			std::string testStatus() const;
 			const std::string& testName() const;
-			const std::string& testDescription() const;
+			std::string testDescription() const;
 			bool passed() const;
 			bool run() const;			
 			hydrazine::Timer::Second time() const;
