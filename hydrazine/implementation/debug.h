@@ -16,6 +16,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include <cassert>
 #include <hydrazine/implementation/Timer.h>
 
 namespace hydrazine
@@ -392,6 +393,27 @@ namespace hydrazine
 
 	#define reportf
 
+#endif
+
+/*! \brief An assertion with a message */
+
+#ifndef NDEBUG
+
+	#define assertM(x,y) \
+		if(!(x))\
+		{ \
+			{\
+			std::cout << "(" << hydrazine::_debugTime() << ") " \
+				<< hydrazine::_debugFile( __FILE__, __LINE__ ) \
+					<< " Assertion message: " << y << "\n";\
+			}\
+			assert(x);\
+		 \
+		}
+#else
+
+	#define assertM(x,y)
+	
 #endif
 
 /*!

@@ -10,6 +10,7 @@
 
 #include "Test.h"
 #include <ctime>
+#include <hydrazine/implementation/string.h>
 
 namespace test
 {
@@ -70,7 +71,7 @@ namespace test
 		}
 		
 		stream << "\nName : " << name << "\n\n";
-		stream << "Description : " << description << "\n\n";
+		stream << testDescription() << "\n\n";
 		
 		if( _testRun )
 		{
@@ -93,9 +94,10 @@ namespace test
 		return name;
 	}
 	
-	const std::string& Test::testDescription() const
+	std::string Test::testDescription() const
 	{
-		return description;
+		return hydrazine::format( description, " Description: ", 
+			"              " );
 	}
 	
 	bool Test::passed() const

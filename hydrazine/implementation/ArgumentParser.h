@@ -14,6 +14,7 @@
 #include "macros.h"
 #include <cassert>
 #include "debug.h"
+#include <hydrazine/implementation/string.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE 
@@ -43,14 +44,8 @@ namespace hydrazine
 			/*! A string to hold the descriptions of arguments
 			*/
 			std::stringstream arguments;
+			/*!	\brief Format a string to fit a specific length. */			
 
-			/*!
-				\brief Format a string to fit a specific length.
-			
-			*/			
-			void format( std::stringstream& stream, 
-				const std::string& firstPrefix, const std::string& prefix );
-			
 			/*!
 				\brief A string to hold the description of the program.
 			*/
@@ -264,11 +259,14 @@ namespace hydrazine
 		std::string regularPrefix( MESSAGE_OFFSET, ' ' );
 
 		std::stringstream secondStream( _string + '\n' );
+
+		std::string result = format( secondStream.str(), prefix, 
+			regularPrefix, SCREEN_WIDTH );
 		
-		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << i << "\n";
-	
-		arguments << identifier << secondStream.str() << "\n";
+		std::stringstream thirdStream;
+		thirdStream << result << regularPrefix << "value = " << i << "\n";
+			
+		arguments << identifier << thirdStream.str() << "\n";
 	}
 
 	template< class T, class V >
@@ -299,11 +297,14 @@ namespace hydrazine
 		std::string regularPrefix( MESSAGE_OFFSET, ' ' );
 
 		std::stringstream secondStream( _string + '\n' );
+
+		std::string result = format( secondStream.str(), prefix, 
+			regularPrefix, SCREEN_WIDTH );
 		
-		format( secondStream, prefix, regularPrefix );
-		secondStream << regularPrefix << "value = " << i << "\n";
-	
-		arguments << identifier << secondStream.str() << "\n";
+		std::stringstream thirdStream;
+		thirdStream << result << regularPrefix << "value = " << i << "\n";
+			
+		arguments << identifier << thirdStream.str() << "\n";
 	}
 
 }
