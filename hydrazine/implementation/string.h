@@ -13,6 +13,8 @@
 #ifndef STRING_H_INCLUDED
 #define STRING_H_INCLUDED
 
+#include <string>
+
 namespace hydrazine
 {
 
@@ -24,6 +26,11 @@ namespace hydrazine
 		\param max The max number of characters to copy
 	*/
 	void strlcpy( char* destination, const char* source, unsigned int max );
+	
+	/*! \brief Format a string to fit a specific character width */
+	std::string format( const std::string& input, 
+		const std::string& firstPrefix = "", const std::string& prefix = "", 
+		unsigned int width = 80 );
 
 }
 
