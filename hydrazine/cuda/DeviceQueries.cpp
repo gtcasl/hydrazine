@@ -9,7 +9,7 @@
 #define DEVICE_QUERIES_CPP_INCLUDED
 
 #include <hydrazine/cuda/CudaException.h>
-#include <cuda_runtime_api.h>
+#include <hydrazine/cuda/include/cuda_runtime_api.h>
 
 namespace hydrazine
 {

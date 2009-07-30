@@ -96,8 +96,8 @@ namespace test
 	
 	std::string Test::testDescription() const
 	{
-		return hydrazine::format( description, " Description: ", 
-			"              " );
+		return hydrazine::format( description, "Description: ", 
+			"             " );
 	}
 	
 	bool Test::passed() const
