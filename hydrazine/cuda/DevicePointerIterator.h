@@ -9,7 +9,7 @@
 #define DEVICE_POINTER_ITERATOR_H_INCLUDED
 
 #include <hydrazine/interface/Iterator.h>
-#include <cuda.h>
+#include <hydrazine/cuda/include/cuda.h>
 #include <hydrazine/cuda/CudaException.h>
 #include <hydrazine/cuda/DeviceReference.h>
 

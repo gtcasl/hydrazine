@@ -10,7 +10,7 @@
 
 #include "CudaException.h"
 #include <hydrazine/implementation/string.h>
-#include <cuda.h>
+#include <hydrazine/cuda/include/cuda.h>
 
 namespace hydrazine
 {
