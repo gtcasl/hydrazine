@@ -61,15 +61,15 @@ AC_ARG_WITH([cuda],
 if test -n "$with_cuda"
 then
 	CUDA_CFLAGS="-I$with_cuda/include"
-	CUDA_LIBS="-L$with_cuda/lib -lcudart -lcublas"
-	CUFFT_LIBS="-L$with_cuda/lib -lcufft"
-	CUBLAS_LIBS="-L$with_cuda/lib -lcublas"
+	CUDA_LIBS="-L$with_cuda/lib64 -lcudart -lcublas"
+	CUFFT_LIBS="-L$with_cuda/lib64 -lcufft"
+	CUBLAS_LIBS="-L$with_cuda/lib64 -lcublas"
 	NVCC="$with_cuda/bin/nvcc"
 else
 	CUDA_CFLAGS="-I/usr/local/cuda/include"
-	CUDA_LIBS="-L/usr/local/cuda/lib -lcudart -lcublas"
-	CUFFT_LIBS="-L/usr/local/cuda/lib -lcufft"
-	CUBLAS_LIBS="-L/usr/local/cuda/lib -lcublas"
+	CUDA_LIBS="-L/usr/local/cuda/lib64 -lcudart -lcublas"
+	CUFFT_LIBS="-L/usr/local/cuda/lib64 -lcufft"
+	CUBLAS_LIBS="-L/usr/local/cuda/lib64 -lcublas"
 	NVCC="nvcc"
 fi
 

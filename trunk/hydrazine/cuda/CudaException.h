@@ -8,7 +8,7 @@
 #ifndef CUDA_EXCEPTION_H_INCLUDED
 #define CUDA_EXCEPTION_H_INCLUDED
 
-#include <cuda_runtime_api.h>
+#include <hydrazine/cuda/include/cuda_runtime_api.h>
 #include <exception>
 
 namespace hydrazine
@@ -18,22 +18,18 @@ namespace cuda
 {
 
 	class CudaException : public std::exception
-	{
-	
+	{	
 		public:
 			cudaError_t code;
 		
-		public:
-	
+		public:	
 			CudaException( );
 			CudaException( cudaError_t code );
 			~CudaException() throw();
 			const char* what() const throw();
-
 	};
 
 	void check( cudaError_t );
-
 }
 
 }

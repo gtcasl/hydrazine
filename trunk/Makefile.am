@@ -18,8 +18,7 @@ lib_LIBRARIES = libhydralize.a
 
 ################################################################################
 ## libhydralize
-libhydralize_a_CXXFLAGS = $(CUDA_CFLAGS) -Wall -ansi -pedantic \
-	-Werror -std=c++0x
+libhydralize_a_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 libhydralize_a_SOURCES = \
 	hydrazine/implementation/Exception.cpp \
 	hydrazine/implementation/Package.cpp \
@@ -49,7 +48,7 @@ libhydralize_a_SOURCES = \
 TestActiveTimer_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestActiveTimer_SOURCES = hydrazine/test/TestActiveTimer.cpp
 TestActiveTimer_LDADD = libhydralize.a
-TestActiveTimer_LDFLAGS = $(LIBRT)
+TestActiveTimer_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -57,7 +56,7 @@ TestActiveTimer_LDFLAGS = $(LIBRT)
 TestArgumentParser_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestArgumentParser_SOURCES = hydrazine/test/TestArgumentParser.cpp
 TestArgumentParser_LDADD = libhydralize.a
-TestArgumentParser_LDFLAGS = $(LIBRT)
+TestArgumentParser_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -65,16 +64,15 @@ TestArgumentParser_LDFLAGS = $(LIBRT)
 TestBTree_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestBTree_SOURCES = hydrazine/test/TestBTree.cpp
 TestBTree_LDADD = libhydralize.a
-TestBTree_LDFLAGS = $(LIBRT)
+TestBTree_LDFLAGS =
 ################################################################################
 
 ################################################################################
 ## TestCudaVector
-TestCudaVector_CXXFLAGS =  $(CUDA_CFLAGS) -Wall -ansi -pedantic \
-	-Werror -std=c++0x
+TestCudaVector_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestCudaVector_SOURCES = hydrazine/test/TestCudaVector.cpp
 TestCudaVector_LDADD = libhydralize.a
-TestCudaVector_LDFLAGS = $(LIBRT) $(CUDA_LIBS)
+TestCudaVector_LDFLAGS = $(CUDA_LIBS)
 ################################################################################
 
 ################################################################################
@@ -82,7 +80,7 @@ TestCudaVector_LDFLAGS = $(LIBRT) $(CUDA_LIBS)
 TestMath_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestMath_SOURCES = hydrazine/test/TestMath.cpp
 TestMath_LDADD = libhydralize.a
-TestMath_LDFLAGS = $(LIBRT)
+TestMath_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -90,7 +88,7 @@ TestMath_LDFLAGS = $(LIBRT)
 TestPackage_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestPackage_SOURCES = hydrazine/test/TestPackage.cpp
 TestPackage_LDADD = libhydralize.a
-TestPackage_LDFLAGS = $(LIBRT)
+TestPackage_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -98,7 +96,7 @@ TestPackage_LDFLAGS = $(LIBRT)
 TestThread_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestThread_SOURCES = hydrazine/test/TestThread.cpp
 TestThread_LDADD = libhydralize.a
-TestThread_LDFLAGS = $(LIBRT)
+TestThread_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -106,7 +104,7 @@ TestThread_LDFLAGS = $(LIBRT)
 TestTimer_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestTimer_SOURCES = hydrazine/test/TestTimer.cpp
 TestTimer_LDADD = libhydralize.a
-TestTimer_LDFLAGS = $(LIBRT)
+TestTimer_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -115,7 +113,7 @@ TestXmlArgumentParser_CXXFLAGS = -Wall -ansi -pedantic -Werror \
 	-std=c++0x
 TestXmlArgumentParser_SOURCES = hydrazine/test/TestXmlArgumentParser.cpp
 TestXmlArgumentParser_LDADD = libhydralize.a
-TestXmlArgumentParser_LDFLAGS = $(LIBRT)
+TestXmlArgumentParser_LDFLAGS =
 ################################################################################
 
 ################################################################################
@@ -123,7 +121,7 @@ TestXmlArgumentParser_LDFLAGS = $(LIBRT)
 TestXmlParser_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestXmlParser_SOURCES = hydrazine/test/TestXmlParser.cpp
 TestXmlParser_LDADD = libhydralize.a
-TestXmlParser_LDFLAGS = $(LIBRT)
+TestXmlParser_LDFLAGS =
 ################################################################################
 
 ################################################################################
