@@ -109,7 +109,7 @@ namespace hydrazine
 		
 			clock_gettime( CLOCK_REALTIME, &spec );
 		
-			return spec.tv_nsec + spec.tv_sec * 1000000000;
+			return spec.tv_nsec + (Cycle)spec.tv_sec * 1000000000;
 					
 		}
 		
