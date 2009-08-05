@@ -1,11 +1,7 @@
 /*!	\file LowLevelTimer.h
-*
-*	\brief Header file for the LowLevelTimer set of functions
-*
-*	\author Gregory Diamos
-*
-*	\date : Monday May 4, 2009
-*
+	\brief Header file for the LowLevelTimer set of functions
+	\author Gregory Diamos
+	\date : Monday May 4, 2009
 */
 
 #ifndef LOW_LEVEL_TIMER_H_INCLUDED
