@@ -18,80 +18,43 @@
 namespace hydrazine
 {
 
-	/*!
-	
-		\brief A class to represent a version of a package
-	
-	*/
+	/*!	\brief A class to represent a version of a package */
 	class Version : public Stringable
 	{
 	
 		public:
-		
-			/*!
-			
-				\brief A type for a version number
-			
-			*/
+			/*!	\brief A type for a version number */
 			typedef unsigned int Number;
 		
 		private:
-		
-			/*!
-			
-				\brief Parse string representation of the version
+			/*!	\brief Parse string representation of the version
 			
 				\param version A string representation of the version
-			
 			*/
 			void parse( const std::string& version );
 			
 		public:
-
-			/*!
-			
-				\brief The major feature set
-			
-			*/		
+			/*! \brief The major feature set */		
 			Number major;
 			
-			/*!
-			
-				\brief The minor feature set
-			
-			*/
+			/*! \brief The minor feature set */
 			Number minor;
 			
-			/*!
-			
-				\brief The changelist number
-			
-			*/
+			/*! \brief The changelist number */
 			Number changeList;
 					
 		public:
-
-			/*!
-			
-				\brief Initialize the version from the specified config file
-			
-			*/		
+			/*! \brief Initialize the version from the specified config file */		
 			Version();
 
 			/*!
-			
 				\brief Return a string representation of the version
 			
 				\return Said representation
-			
 			*/
 			std::string toString() const;
 		
-			/*!
-			
-				\brief Greater than comparison
-			
-			*/
+			/*! \brief Greater than comparison */
 			bool operator>( const Version& );
 	
 	};
