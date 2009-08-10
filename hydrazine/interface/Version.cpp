@@ -22,9 +22,7 @@ namespace hydrazine
 
 	Version::Version()
 	{
-	
 		parse( PACKAGE_VERSION );
-	
 	}
 
 	void Version::parse( const std::string& version )
