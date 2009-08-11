@@ -222,7 +222,6 @@ namespace hydrazine
 	{
 		
 		report( "At node " << node->identifier << ", descending to " << tag );
-		assert( !successor.empty() );
 		XmlTreeNode::SuccessorIterator next = node->successors.find( tag );
 		
 		if( next == node->successors.end() )
