@@ -57,12 +57,15 @@ class Test:
 		self.status = ""
 		self.time = 0.0
 		self.lock = lock
+		self.arguments = ""
 	
 	def parseParameters( self ):
 		for parameter in self.parameters:
 			if parameter.find("CUDA_SDK_STYLE") != -1:
 				self.style = "CUDA_SDK_STYLE"
-	
+			else:
+				self.arguments += parameter + " "
+				
 	def parseDefault( self, message ):	
 		self.status = "Did not complete."	
 		for line in message.splitlines():
@@ -105,17 +108,20 @@ class Test:
 		self.parseParameters()
 		self.lock.acquire()
 		logging.debug( "Set style to " + self.style)
-		logging.info( "Running test program " + self.path )
+		logging.info( "Running test program " + self.path \
+			+ " " + self.arguments )
 		tempName = self.randomString() + ".tmp"
-		command = "echo \"\u001b\" | " + self.path + " -v >" + tempName \
-			+ " 2>&1"
+		command = "echo \"\u001b\" | " + self.path + " " + self.arguments
+		if self.style != "CUDA_SDK_STYLE":
+			command += " -v"
+		command += " >" + tempName + " 2>&1"
 		logging.debug( "The command was " + command )
 		self.lock.release()
 		begin = time.time()
 		os.system( command )
 		self.time = time.time() - begin
 		self.lock.acquire()
-		logging.info( "Test " + self.path + " seconds"  )
+		logging.info( "Test " + self.path )
 		logging.info( "Test completed in " + str(self.time) + " seconds"  )
 		try:
 			tempFile = open( tempName, "rb" )
