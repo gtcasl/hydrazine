@@ -427,7 +427,6 @@ namespace hydrazine
 	
 	XmlParser::XmlParser( const std::string& fileName )
 	{
-	
 		report( "Creating new XML parser on file " << fileName );
 		_lexer = new XmlLexer( fileName );
 		_state = BeginCaretOpen;
@@ -438,14 +437,11 @@ namespace hydrazine
 		
 		while( _lexer->next() )
 		{
-		
 			_handleToken();
-		
 		}
 		
 		delete _lexer;
 		_lexer = 0;
-	
 	}
 	
 	XmlParser::~XmlParser()

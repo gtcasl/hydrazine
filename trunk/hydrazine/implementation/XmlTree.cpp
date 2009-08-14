@@ -254,10 +254,8 @@ namespace hydrazine
 		
 		if( !successor.empty() )
 		{
-			
 			successor.pop();
 			node = node->parent;
-		
 		}
 		
 	}
