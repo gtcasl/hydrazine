@@ -112,8 +112,11 @@ class Plot:
 		self.labels = [ ]
 		self.dataVector = [ ]
 		count = 0
-		for name, data in self.names.iteritems() :
+		names = self.names.keys()
+		names.sort()
+		for name in names :
 			self.labels.append( name )
+			data = self.names[ name ]
 			if count == 0:
 				for i in data:
 					self.dataVector.append( [ ] )
@@ -139,7 +142,6 @@ class Plot:
 		plot.title( self.title )
 		plot.xticks( numpy.array(self.indicies) + numpy.array(self.barWidth)
 			* ( self.size / 2.0 ), self.labels, rotation = 'vertical' )
-		print "Plots " + str(len(plots)) + ", names " + str(len(self.setNames))
 		plot.legend( plots, self.setNames, self.position )
 		plot.show()
 
