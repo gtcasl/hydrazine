@@ -87,6 +87,7 @@ namespace hydrazine
 					void descend( std::string tag );
 					void ascend( );
 					const std::string& leaf() const;
+					bool isLeaf() const;
 					std::map< std::string, std::string > map() const;
 					
 			};
