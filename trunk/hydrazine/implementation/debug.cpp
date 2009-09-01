@@ -15,6 +15,11 @@
 
 #include <hydrazine/implementation/debug.h>
 
+#include <configure.h>
+#ifdef HAVE_MPICXX
+#include <mpi.h>
+#endif
+
 namespace hydrazine
 {
 
@@ -38,6 +43,20 @@ namespace hydrazine
 		lineColon << line << ":";
 		
 		std::stringstream stream;
+		
+		#ifdef HAVE_MPICXX
+		int ranks;
+		MPI_Comm_size( MPI_COMM_WORLD, &ranks );
+		
+		if( ranks > 1 )
+		{
+			int rank;
+			MPI_Comm_rank( MPI_COMM_WORLD, &rank );
+		
+			stream << "(LP " << rank << "):";
+		}
+		#endif
+		
 		stream << stripReportPath( file ) << ":";
 		stream.width( 5 );
 		stream.fill( ' ' );
