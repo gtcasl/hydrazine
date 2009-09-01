@@ -12,6 +12,10 @@
 #include <ctime>
 #include <hydrazine/implementation/string.h>
 
+#ifdef HAVE_MPICXX
+#include <mpi.h>
+#endif
+
 namespace test
 {
 
@@ -51,7 +55,16 @@ namespace test
 		
 		if( verbose )
 		{
-			std::cout << toString();
+			#ifdef HAVE_MPICXX
+				int rank;
+				MPI_Comm_rank( MPI_COMM_WORLD, &rank );
+				if( rank == 0 )
+				{
+					std::cout << toString();
+				}
+			#else
+				std::cout << toString();
+			#endif
 		}
 	}
 	
