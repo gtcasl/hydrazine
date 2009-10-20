@@ -12,64 +12,24 @@
 
 namespace hydrazine
 {
-	template< typename Type >
-	Type bit_cast( char i )
+	template< typename To, typename From >
+	class UnionCast
 	{
-		return *reinterpret_cast< Type* >( &i );
-	}
+		public:
+			union
+			{
+				To to;
+				From from;
+			};
+	};
 	
-	template< typename Type >
-	Type bit_cast( unsigned char i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
 	
-	template< typename Type >
-	Type bit_cast( short i )
+	template< typename To, typename From >
+	To bit_cast( From from )
 	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( unsigned short i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( int i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( unsigned int i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( long long int i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( unsigned long long int i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( float i )
-	{
-		return *reinterpret_cast< Type* >( &i );
-	}
-	
-	template< typename Type >
-	Type bit_cast( double i )
-	{
-		return *reinterpret_cast< Type* >( &i );
+		UnionCast< To, From > cast;
+		cast.from = from;
+		return cast.to;
 	}
 
 }
