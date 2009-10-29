@@ -1,13 +1,8 @@
 /*!
-
 	\file string.h
-	
 	\date Friday February 13, 2009
-	
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
-	
 	\brief Function headers for common C string manipulations
-
 */
 
 #ifndef STRING_H_INCLUDED
@@ -31,6 +26,9 @@ namespace hydrazine
 	std::string format( const std::string& input, 
 		const std::string& firstPrefix = "", const std::string& prefix = "", 
 		unsigned int width = 80 );
+
+	/*! \brief Parse a string specifying a binary number, return the number */
+	long long unsigned int binaryToUint( const std::string& );
 
 }
 
