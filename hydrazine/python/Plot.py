@@ -12,6 +12,15 @@ import matplotlib.pyplot as plot
 import matplotlib.text as text
 import matplotlib.font_manager as font_manager
 import numpy
+import re
+
+################################################################################
+## Comments
+def isComment( string ):
+	regularExpression = re.compile( "[ \t]*//" )
+	return regularExpression.match( string ) != None
+
+################################################################################
 
 ################################################################################
 ## Plot - A class that parses an input file and creates a plot
@@ -34,7 +43,7 @@ class Plot:
 	def parse( self ):
 		self.names = {}				
 		inputs = open( self.path, 'r' )
-		self.parseNames(inputs)
+		self.parseNames( inputs )
 		self.parseArguments( inputs )
 		self.parseData( inputs )
 		self.partition()
@@ -49,7 +58,9 @@ class Plot:
 	def parseNames( self, inputs ):
 		while True:
 			temp = inputs.readline();
-			if len( temp) == 0:
+			if isComment( temp ):
+				continue
+			elif len( temp) == 0:
 				break
 			elif temp == '\n':
 				continue
@@ -80,7 +91,9 @@ class Plot:
 	def parseArguments( self, inputs ):
 		while True:
 			temp = inputs.readline();
-			if len( temp) == 0:
+			if isComment( temp ):
+				continue
+			elif len( temp) == 0:
 				break
 			elif temp == '\n':
 				continue
@@ -90,41 +103,52 @@ class Plot:
 				self.arguments.append(temp)
 			
 	def parseData( self, inputs ):
-		self.names = { }
+		count = 0
+		self.names = [ ]
+		self.names.append( { } )
 		self.size = -1
 		for name in inputs:
+			if isComment( name ):
+				continue
 			if name == "\n" :
+				continue
+			elif name.startswith( "--new set--" ):
+				count += 1
+				self.names.append( { } )
 				continue
 			items = name.split()
 			if items[ 0 ] in self.names:
 				raise Exception, "Duplicate type " + items[ 0 ] + " declared"
-			self.names[ items[ 0 ] ] = [ ]
+			self.names[ count ][ items[ 0 ] ] = [ ]
 			if self.size == -1 :
 				self.size = len( items ) - 1
 			if self.size != len( items ) - 1:
 				raise Exception, "Label " + items[ 0 ] + " only has " \
 					+ str( len( items ) - 1 ) + " elements"
 			for i in range( 1, len( items ) ):
-				self.names[ items[ 0 ] ].append( float( items[ i ] ) )
+				self.names[ count ][ items[ 0 ] ].append( float( items[ i ] ) )
 	
 	def partition( self ):
-		self.indicies = range( len( self.names ) )
 		self.labels = [ ]
 		self.dataVector = [ ]
+		totalElements = 0
 		count = 0
-		names = self.names.keys()
-		names.sort()
-		for name in names :
-			self.labels.append( name )
-			data = self.names[ name ]
-			if count == 0:
+		for nameSet in self.names :
+			names = nameSet.keys()
+			names.sort()
+			totalElements += len( names )
+			for name in names :
+				self.labels.append( name )
+				data = nameSet[ name ]
+				if count == 0:
+					for i in data:
+						self.dataVector.append( [ ] )
+				index = 0
 				for i in data:
-					self.dataVector.append( [ ] )
-			index = 0
-			for i in data:
-				self.dataVector[ index ].append( i )
-				index += 1
-			count += 1
+					self.dataVector[ index ].append( i )
+					index += 1
+				count += 1
+		self.indicies = range( totalElements )
 		
 	def display( self ):
 		self.parse()

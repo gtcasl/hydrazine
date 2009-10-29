@@ -1,19 +1,15 @@
 /*!
-
 	\file string.cpp
-	
 	\date Friday February 13, 2009
-	
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
-	
 	\brief Function sources for common C string manipulations
-
 */
 
 #ifndef STRING_CPP_INCLUDED
 #define STRING_CPP_INCLUDED
 
 #include <hydrazine/implementation/string.h>
+#include <hydrazine/implementation/debug.h>
 
 namespace hydrazine
 {
@@ -75,6 +71,35 @@ namespace hydrazine
 		result += word + "\n";
 		return result;
 	}
+
+	long long unsigned int binaryToUint( const std::string& string )
+	{
+
+		long long unsigned int result = 0;
+		assert( string.size() > 2 );
+	
+		std::string::const_iterator ci = string.begin();
+		assert( *ci == '0' );
+		++ci;
+		assert( *ci == 'b' );
+		++ci;
+	
+		long long unsigned int mask = 1;
+	
+		for( ; ci != string.end(); ++ci )
+		{
+	
+			assert( *ci == '0' || *ci == '1' );
+	
+			result |= mask & ( *ci == '1' );
+			mask <<= 1;
+	
+		}
+	
+		return result;
+
+	}
+
 
 }
 
