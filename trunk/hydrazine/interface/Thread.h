@@ -1,36 +1,25 @@
-/*!
-*	\file thread.h
-*
-*	\author Gregory Diamos
-*	\date 4/10/2008
-*	
-*
-*	
-*
-*	\brief 	The header file for the thread class
-*
-*					This file provides a class wrapper for pthreads
+/*! \file Thread.h
+	\author Gregory Diamos
+	\date 4/10/2008
+	\brief 	The header file for the thread class
 */
 
-#ifndef THREAD_H_INCLUDED
-#define THREAD_H_INCLUDED
+#ifndef HYDRAZINE_THREAD_H_INCLUDED
+#define HYDRAZINE_THREAD_H_INCLUDED
 
 #include <pthread.h>
 #include <list>
 #include <unordered_map>
-#include <assert.h>
+#include <cassert>
 
 #define THREAD_CONTROLLER_ID 0
 #define THREAD_START_ID ( THREAD_CONTROLLER_ID + 1 )
 #define THREAD_ANY_ID 0xffffffff
 
-////////////////////////////////////////////////////////////////////////////////
-
 namespace hydrazine
 {
 
 	/*!
-	
 		\brief A wrapper class around pthreads
 		
 		Essentially this is just a front end interface in the main process
@@ -65,35 +54,20 @@ namespace hydrazine
 		Similarly, once threads have been grouped together, the entire group
 		can be tested to see if there are any messages from any of the threads 
 		that can be received.
-	
 	*/
 	class Thread
 	{
-		
 		public:
-		
-			/*!
-			
-				\brief A type for thread ids
-			
-			*/
-	
+			/*! \brief A type for thread ids */
 			typedef unsigned int Id;
 	
-			/*!
-			
-				\brief A type for a message's payload data
-			
-			*/
+			/*! \brief A type for a message's payload data */
 			typedef void* MessageData;
 	
 		private:
-					
 			class Message
 			{
-			
 				public:
-				
 					enum Type
 					{
 						Invalid,
@@ -101,36 +75,28 @@ namespace hydrazine
 					};
 			
 				public:
-				
 					MessageData payload;
 					Id source;
 					Id destination;
 					Type type;
-			
 			};
 	
 			class Queue
 			{
-			
 				private:
-				
 					friend class Group;
 			
 				private:
-				
 					typedef std::list< Message > MessageQueue;
 				
 				private:
-				
 					pthread_cond_t _condition;
 					pthread_mutex_t _mutex;
 			
 				private:
-				
 					MessageQueue _queue;
 			
 				public:
-				
 					Queue();
 					~Queue();
 					
@@ -142,22 +108,17 @@ namespace hydrazine
 
 			class Group
 			{
-
 				private:
-				
 					pthread_mutex_t _mutex;
 			
 				public:
-				
 					typedef std::unordered_map< Id, Thread* > ThreadMap;
 
 				private:
-							
 					ThreadMap _threads;
 					Queue _controllerQueue;
 				
 				public:
-
 					Group();
 					~Group();
 					
@@ -171,23 +132,14 @@ namespace hydrazine
 			
 					bool empty() const;
 					unsigned int size() const;
-			
 			};
 	
 		private:
-		
-			/*!
-			
-				\brief The next id
-			
-			*/
+			/*! \brief The next id */
 			static Id _nextId;
 
 		private:
-
-			/*!
-			
-				\brief Pthread create needs a static function to launch 
+			/*! \brief Pthread create needs a static function to launch 
 					the thread with
 				
 				\return Void pointer required by pthreads.
@@ -197,74 +149,41 @@ namespace hydrazine
 			*/
 			static void* _launch( void* argument );
 
-			/*!
-			
-				\brief Compare two ids
-			
-			*/
+			/*! \brief Compare two ids */
 			static bool _compare( Id, Id );
 
 		private:
-					
-			/*!
-			
-				\brief Is the thread running
-			
-			*/
+			/*! \brief Is the thread running */
 			bool _running;
 
-			/*!
-			
-				\brief Queue of messages waiting to be delivered to the thread 
-			
-			*/
+			/*! \brief Queue of messages to be delivered to the thread */
 			Queue _threadQueue;
 			
-			/*!
-			
-				\brief Group of threads
+			/*! \brief Group of threads
 				
 				Should be set to 0 if threads are not grouped
-			
 			*/
 			Group* _group;
 			
-			/*!
-			
-				\brief The id of this thread
-			
-			*/
+			/*! \brief The id of this thread */
 			Id _id;
 			
-			/*!
-			
-				\brief Attribute of the thread
-			
-			*/
+			/*! \brief Attribute of the thread */
 			pthread_attr_t _attribute;
 					
-			/*!
-
-				\brief The pthread
-
-			*/
+			/*! \brief The pthread */
 			pthread_t _handle;
 			
 		protected:
 		
-			/*!
-			
-				\brief This is the function that is executed in a separate 
+			/*! \brief This is the function that is executed in a separate 
 					thread when the run command is sent.
-			
 			*/
 			virtual void execute() = 0;
 	
 		protected:
 	
-			/*!
-			
-				\brief Test to see if there are any messages that can be 
+			/*!\brief Test to see if there are any messages that can be 
 					received
 			
 				\return True if there is a message that can be received
@@ -276,9 +195,7 @@ namespace hydrazine
 			*/
 			bool threadTest( Id id = THREAD_ANY_ID );
 
-			/*!
-			
-				\brief Receive a message in this thread.
+			/*! \brief Receive a message in this thread.
 			
 				This method will block until the message is received
 				
@@ -290,9 +207,7 @@ namespace hydrazine
 			template<class T>
 			Id threadReceive( T*& message, Id id = THREAD_ANY_ID );
 						
-			/*!
-			
-				\brief Send a message to the controller thread
+			/*! \brief Send a message to the controller thread
 			
 				This method will not block even if the message was not received 
 					by the controller.
@@ -303,104 +218,62 @@ namespace hydrazine
 			void threadSend( MessageData message, 
 				Id id = THREAD_CONTROLLER_ID );
 			
-			/*!
-			
-				\brief All associated threads will block here until all other 
-					threads have hit the barrier
-			
-			*/
+			/*! \brief All associated threads will block here until all other 
+					threads have hit the barrier */
 			void barrier();					
 			
 		public:
 		
-			/*!
-			
-				\brief Constructor
-			
-			*/
+			/*! \brief Constructor */
 			Thread();
 			
-			/*!
-			
-				\brief Copy constructor
-			
-			*/
+			/*! \brief Copy constructor */
 			Thread( const Thread& );
 			
-			/*!
-			
-				\brief Assignment operator
-			
-			*/
+			/*! \brief Assignment operator */
 			const Thread& operator=( const Thread& );
 			
-			/*!
-			
-				\brief Destructor
-			
-			*/
+			/*! \brief Destructor */
 			virtual ~Thread();
 		
-			/*!
-			
-				\brief Start the thread
-			
-			*/
+			/*! \brief Start the thread */
 			void start();
 			
-			/*!
-			
-				\brief Block until the thread returns
-			
-			*/
+			/*! \brief Block until the thread returns */
 			void join();
 
-			/*!
-			
-				\brief Associate this thread with another thread
+			/*! \brief Associate this thread with another thread
 				
 				This is used for collective operations
 			
 				\param The thread to associate with
-			
 			*/
 			void associate( Thread* t );
 		
-			/*!
-			
-				\brief Remove this thread from any groups that it is 
+			/*! \brief Remove this thread from any groups that it is 
 					associated with
-			
 			*/
 			void remove();
 		
-			/*!
-			
-				\brief Send a message to this thread
+			/*! \brief Send a message to this thread
 			
 				This method will not block until the message is received by the 
 					thread
 			
 				\param The message being sent
-				
 			*/
 			void send( MessageData message );
 			
-			/*!
-			
-				\brief Test to see if there are any messages that can be 
+			/*! \brief Test to see if there are any messages that can be 
 					received
 			
 				\param Block until there is a message
 			
 				\return True if there is a message that can be received
-			
 			*/
 			bool test( bool block = false );
 			
-			/*!
-			
-				\brief Test to see if there are any messages in any of the 
+			/*! \brief Test to see if there are any messages in any of the 
 					queues of the threads in the current group.
 				
 				\param id Test for messages send by a specific thread
@@ -414,9 +287,7 @@ namespace hydrazine
 			std::pair< Id, bool > testGroup( bool block = false, 
 				Id source = THREAD_ANY_ID );
 			
-			/*!
-			
-				\brief Receive a message from this thread.
+			/*! \brief Receive a message from this thread.
 			
 				This method will block until the message is received
 				
@@ -426,27 +297,19 @@ namespace hydrazine
 			template<class T>
 			void receive( T*& message );
 			
-			/*!
-			
-				\brief Get the id of this thread.
+			/*! \brief Get the id of this thread.
 			
 				\return The id of this thread.
-			
 			*/
 			Id id() const;
 			
-			/*!
-			
-				\brief Is the thread running
+			/*! \brief Is the thread running
 			
 				\return true if it is running
-			
 			*/
 			bool started() const;
 			
-			/*!
-			
-				\brief Get a pointer to a thread in the group associated with a 
+			/*! \brief Get a pointer to a thread in the group associated with a 
 				specific id.
 				
 				\param id The id of the thread in the group to look up.
@@ -454,7 +317,6 @@ namespace hydrazine
 				\return the pointer to the correct thread.
 				
 				should return 0 if thread does not exist
-			
 			*/
 			Thread* find( Id id );
 	
@@ -464,6 +326,5 @@ namespace hydrazine
 
 #include "Thread.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
 #endif
 
