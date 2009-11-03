@@ -435,9 +435,18 @@ namespace hydrazine
 		
 		report( "Parsing file:" );
 		
-		while( _lexer->next() )
+		try
 		{
-			_handleToken();
+			while( _lexer->next() )
+			{
+				_handleToken();
+			}
+		}
+		catch( const Exception& e )
+		{
+			delete _lexer;
+			_lexer = 0;
+			throw e;		
 		}
 		
 		delete _lexer;
