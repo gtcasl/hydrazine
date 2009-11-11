@@ -57,7 +57,7 @@ namespace hydrazine
 		}
 		#endif
 		
-		stream << stripReportPath( file ) << ":";
+		stream << stripReportPath<'/'>( file ) << ":";
 		stream.width( 5 );
 		stream.fill( ' ' );
 		stream << std::left << lineColon.str();
