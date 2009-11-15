@@ -60,10 +60,10 @@ namespace test
 				MPI_Comm_rank( MPI_COMM_WORLD, &rank );
 				if( rank == 0 )
 				{
-					std::cout << toString();
+					std::cout << toString() << std::flush;
 				}
 			#else
-				std::cout << toString();
+				std::cout << toString() << std::flush;
 			#endif
 		}
 	}
