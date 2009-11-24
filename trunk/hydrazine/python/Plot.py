@@ -13,12 +13,22 @@ import matplotlib.text as text
 import matplotlib.font_manager as font_manager
 import numpy
 import re
+import scipy.stats
 
 ################################################################################
 ## Comments
 def isComment( string ):
 	regularExpression = re.compile( "[ \t]*//" )
 	return regularExpression.match( string ) != None
+
+################################################################################
+
+################################################################################
+## Element - A data element to be plotted
+class Element:
+	def __init__(self, data, error):
+		self.data = data
+		self.error = error
 
 ################################################################################
 
@@ -38,6 +48,8 @@ class Plot:
 		self.colors=[]
 		self.defaultColor=color
 		self.log = False
+		self.yerror = False
+		self.normalize = False
 		self.position = 'best'
 		
 	def parse( self ):
@@ -85,6 +97,16 @@ class Plot:
 					self.log = True
 				else:
 					self.log = False
+			elif temp.startswith("normalize ") :
+				if temp.find( "True" ):
+					self.normalize = True
+				else:
+					self.normalize = False
+			elif temp.startswith("errorBars ") :
+				if temp.find( "True" ):
+					self.yerror = True
+				else:
+					self.yerror = False
 			elif temp.find( "--arguments--" ) != -1 :
 				break
 				
@@ -101,6 +123,58 @@ class Plot:
 				break
 			else:
 				self.arguments.append(temp)
+
+	def combine( self, string ):
+		inElement = False
+		elements = [ ]
+		identifier = string.split(' ', 1)
+		data = [ identifier[ 0 ] ]
+		for word in identifier[1].split():
+			if inElement:
+				if word == ']':
+					inElement = False
+					data.append( numpy.mean( numpy.array( elements ) ) )
+					del elements[:]
+				else:
+					elements.append( float( word ) )
+			else:
+				if word == '[':
+					inElement = True
+				else:
+					data.append( float( word ) )
+		if self.normalize:
+			factor = data[1]
+			for i in range(1, len(data)):
+				data[i] = data[i] / factor
+		for i in range(1, len(data)):
+			data[i] = str( data[i] )
+		return data
+	
+	def computeErrorBound( self, string ):
+		inElement = False
+		data = [ ]
+		elements = [ ]
+		for word in string.split()[1:]:
+			if inElement:
+				if word == ']':
+					inElement = False
+					if self.normalize:
+						factor = elements[ 0 ]
+						for i in range(0,len(elements)):
+							elements[i] = elements[i] / factor
+					data.append( numpy.std( numpy.array( elements ) ) )
+					del elements[:]
+				else:
+					elements.append( float( word ) )
+			else:
+				if word == '[':
+					inElement = True
+				else:
+					data.append( 0 )
+		for i in range(0,len(data)):
+			data[ i ] = data[i] * ( 1 - scipy.stats.t.cdf(.975, len(data)))
+
+		return data
 			
 	def parseData( self, inputs ):
 		count = 0
@@ -116,9 +190,10 @@ class Plot:
 				count += 1
 				self.names.append( { } )
 				continue
-			items = name.split()
+			items = self.combine( name )
 			if items[ 0 ] in self.names:
 				raise Exception, "Duplicate type " + items[ 0 ] + " declared"
+			error = self.computeErrorBound( name )
 			self.names[ count ][ items[ 0 ] ] = [ ]
 			if self.size == -1 :
 				self.size = len( items ) - 1
@@ -126,11 +201,13 @@ class Plot:
 				raise Exception, "Label " + items[ 0 ] + " only has " \
 					+ str( len( items ) - 1 ) + " elements"
 			for i in range( 1, len( items ) ):
-				self.names[ count ][ items[ 0 ] ].append( float( items[ i ] ) )
+				self.names[ count ][ items[ 0 ] ].append( \
+					Element( float( items[ i ] ), float( error[ i - 1 ] ) ) )
 	
 	def partition( self ):
 		self.labels = [ ]
 		self.dataVector = [ ]
+		self.errorVector = [ ]
 		totalElements = 0
 		count = 0
 		for nameSet in self.names :
@@ -143,9 +220,11 @@ class Plot:
 				if count == 0:
 					for i in data:
 						self.dataVector.append( [ ] )
+						self.errorVector.append( [ ] )
 				index = 0
 				for i in data:
-					self.dataVector[ index ].append( i )
+					self.dataVector[ index ].append( i.data )
+					self.errorVector[ index ].append( i.error )
 					index += 1
 				count += 1
 		self.indicies = range( totalElements )
@@ -156,17 +235,22 @@ class Plot:
 		plots = [ ]
 		count = 0
 		for data in self.dataVector:
+			error = None
+			if self.yerror:
+				error = numpy.array( self.errorVector[ count ] )
 			plots.append( plot.bar( numpy.array( self.indicies ) 
 				+ count * self.barWidth, numpy.array( data ), 
-				self.barWidth, color = self.colors[ count ], 
-				log = self.log )[0] )
+				self.barWidth, color = self.colors[ count ], log = self.log, 
+				yerr = error )[0] )
 			count += 1
 		plot.xlabel( self.xlabel )
 		plot.ylabel( self.ylabel )
 		plot.title( self.title )
+		error = None
 		plot.xticks( numpy.array(self.indicies) + numpy.array(self.barWidth)
 			* ( self.size / 2.0 ), self.labels, rotation = 'vertical' )
-		plot.legend( plots, self.setNames, self.position )
+		if len( self.setNames ) == len( plots ):
+			plot.legend( plots, self.setNames, self.position )
 		plot.show()
 
 ################################################################################
