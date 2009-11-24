@@ -1,15 +1,11 @@
 /*!
-*	\file Thread.cpp
-*
-*	\author Gregory Diamos
-*	\date 4/10/2008
-*	
-*
-*	
-*
-*	\brief 	The source file for the thread class
-*
-*					This file provides a class wrapper for pthreads
+	\file Thread.cpp
+
+	\author Gregory Diamos
+	\date 4/10/2008
+
+	\brief 	The source file for the thread class
+		This file provides a class wrapper for pthreads
 */
 
 #ifndef THREAD_CPP_INCLUDED
@@ -26,39 +22,31 @@
 
 #define REPORT_BASE 0
 
-////////////////////////////////////////////////////////////////////////////////
-
 namespace hydrazine
 {
 
 	Thread::Queue::Queue()
 	{
-	
 		pthread_mutex_init( &_mutex, 0 );
 		pthread_cond_init( &_condition, 0 );
-	
 	}
 	
 	Thread::Queue::~Queue()
 	{
-	
 		assert( _queue.empty() );	
 	
 		pthread_mutex_destroy( &_mutex );
 		pthread_cond_destroy( &_condition );
-	
 	}
 	
 	void Thread::Queue::push( const Message& message )
 	{
-	
 		pthread_mutex_lock( &_mutex );
 		
 		_queue.push_back( message );
 		
 		pthread_cond_broadcast( &_condition );
 		pthread_mutex_unlock( &_mutex );
-	
 	}
 	
 	Thread::Message Thread::Queue::pull( Id id )
