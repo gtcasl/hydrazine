@@ -29,7 +29,6 @@ def detectCPUs():
  """
  Detects the number of CPUs on a system. Cribbed from pp.
  """
- return 1
  # Linux, Unix and MacOS:
  if hasattr(os, "sysconf"):
      if os.sysconf_names.has_key("SC_NPROCESSORS_ONLN"):
