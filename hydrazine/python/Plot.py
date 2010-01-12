@@ -51,6 +51,7 @@ class Plot:
 		self.yerror = False
 		self.normalize = False
 		self.position = 'best'
+		self.sort = True
 		
 	def parse( self ):
 		self.names = {}				
@@ -93,17 +94,22 @@ class Plot:
 				for name in temp[7:].split():
 					self.colors.append(name)
 			elif temp.startswith("log ") :
-				if temp.find( "True" ):
+				if temp.find( "True" ) > 0:
 					self.log = True
 				else:
 					self.log = False
+			elif temp.startswith("sorting ") :
+				if temp.find( "True" ) > 0:
+					self.sort = True
+				else:
+					self.sort = False
 			elif temp.startswith("normalize ") :
-				if temp.find( "True" ):
+				if temp.find( "True" ) > 0:
 					self.normalize = True
 				else:
 					self.normalize = False
 			elif temp.startswith("errorBars ") :
-				if temp.find( "True" ):
+				if temp.find( "True" ) > 0:
 					self.yerror = True
 				else:
 					self.yerror = False
@@ -178,7 +184,9 @@ class Plot:
 			
 	def parseData( self, inputs ):
 		count = 0
+		index = 0
 		self.names = [ ]
+		self.namemap = { }
 		self.names.append( { } )
 		self.size = -1
 		for name in inputs:
@@ -187,10 +195,12 @@ class Plot:
 			if name == "\n" :
 				continue
 			elif name.startswith( "--new set--" ):
+				index = 0
 				count += 1
 				self.names.append( { } )
 				continue
 			items = self.combine( name )
+			self.namemap[ items[ 0 ] ] = index
 			if items[ 0 ] in self.names:
 				raise Exception, "Duplicate type " + items[ 0 ] + " declared"
 			error = self.computeErrorBound( name )
@@ -203,6 +213,17 @@ class Plot:
 			for i in range( 1, len( items ) ):
 				self.names[ count ][ items[ 0 ] ].append( \
 					Element( float( items[ i ] ), float( error[ i - 1 ] ) ) )
+			index += 1
+	
+	def arrange( self, names ):
+		indexmap = {}
+		for name in names:
+			indexmap[ self.namemap[ name ] ] = name
+	
+		names = []
+		for i in range( 0, len( indexmap ) ):
+			names.append( indexmap[ i ] )
+		return names
 	
 	def partition( self ):
 		self.labels = [ ]
@@ -212,7 +233,10 @@ class Plot:
 		count = 0
 		for nameSet in self.names :
 			names = nameSet.keys()
-			names.sort()
+			if self.sort:
+				names.sort()
+			else:
+				names = self.arrange( names )
 			totalElements += len( names )
 			for name in names :
 				self.labels.append( name )
