@@ -19,6 +19,11 @@
 
 namespace test
 {
+	/*	\brief A unit test for asynchronous timers 
+		
+		Test Point 1: Launch several timers, each set to fire at a specific 
+			time.  Make sure that they fire in order of increasing time.
+	*/
 	class TestActiveTimer : public Test
 	{
 		private:
