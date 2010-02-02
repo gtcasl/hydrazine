@@ -10,7 +10,7 @@
 ## Programs and Libraries
 bin_PROGRAMS = 
 check_PROGRAMS = TestActiveTimer TestArgumentParser TestCudaVector \
-	TestMath TestPackage \
+	TestMath \
 	TestThread TestTimer TestXmlArgumentParser \
 	TestXmlParser TestBTree
 lib_LIBRARIES = libhydralize.a
@@ -21,7 +21,6 @@ lib_LIBRARIES = libhydralize.a
 libhydralize_a_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 libhydralize_a_SOURCES = \
 	hydrazine/implementation/Exception.cpp \
-	hydrazine/implementation/Package.cpp \
 	hydrazine/implementation/XmlLexer.cpp \
 	hydrazine/implementation/Timer.cpp \
 	hydrazine/implementation/LowLevelTimer.cpp \
@@ -81,14 +80,6 @@ TestMath_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestMath_SOURCES = hydrazine/test/TestMath.cpp
 TestMath_LDADD = libhydralize.a
 TestMath_LDFLAGS =
-################################################################################
-
-################################################################################
-## TestPackage
-TestPackage_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
-TestPackage_SOURCES = hydrazine/test/TestPackage.cpp
-TestPackage_LDADD = libhydralize.a
-TestPackage_LDFLAGS =
 ################################################################################
 
 ################################################################################
