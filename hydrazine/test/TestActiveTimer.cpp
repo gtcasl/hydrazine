@@ -55,9 +55,7 @@ namespace test
 		
 		for( Vector::iterator fi = timers.begin(); fi != timers.end(); ++fi )
 		{
-		
 			fi->wait();
-		
 		}
 		
 		count = 0;
