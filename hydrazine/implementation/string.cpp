@@ -74,7 +74,6 @@ namespace hydrazine
 
 	long long unsigned int binaryToUint( const std::string& string )
 	{
-
 		long long unsigned int result = 0;
 		assert( string.size() > 2 );
 	
@@ -88,19 +87,36 @@ namespace hydrazine
 	
 		for( ; ci != string.end(); ++ci )
 		{
-	
 			assert( *ci == '0' || *ci == '1' );
 	
 			result |= mask & ( *ci == '1' );
 			mask <<= 1;
-	
 		}
 	
 		return result;
-
 	}
 
-
+	std::string toGraphVizParsableLabel( const std::string& string )
+	{
+		std::string result;
+		for( std::string::const_iterator fi = string.begin();
+			fi != string.end(); ++fi ) 
+		{
+			if( *fi == '{' ) 
+			{
+				result.push_back( '[' );
+			}
+			else if( *fi == '}' ) 
+			{
+				result.push_back( ']' );
+			}
+			else 
+			{
+				result.push_back( *fi );
+			}	
+		}
+		return std::move(result);
+	}
 }
 
 #endif
