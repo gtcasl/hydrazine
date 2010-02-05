@@ -12,7 +12,7 @@ bin_PROGRAMS =
 check_PROGRAMS = TestActiveTimer TestArgumentParser TestCudaVector \
 	TestMath \
 	TestThread TestTimer TestXmlArgumentParser \
-	TestXmlParser TestBTree
+	TestXmlParser TestBTree TestJson
 lib_LIBRARIES = libhydralize.a
 ################################################################################
 
@@ -31,6 +31,7 @@ libhydralize_a_SOURCES = \
 	hydrazine/implementation/XmlArgumentParser.cpp \
 	hydrazine/implementation/XmlTree.cpp \
 	hydrazine/implementation/string.cpp \
+	hydrazine/implementation/json.cpp \
 	hydrazine/cuda/Cuda.cpp \
 	hydrazine/cuda/CudaException.cpp \
 	hydrazine/interface/Configurable.cpp \
@@ -113,6 +114,14 @@ TestXmlParser_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
 TestXmlParser_SOURCES = hydrazine/test/TestXmlParser.cpp
 TestXmlParser_LDADD = libhydralize.a
 TestXmlParser_LDFLAGS =
+################################################################################
+
+################################################################################
+## TestJson
+TestJson_CXXFLAGS = -Wall -ansi -pedantic -Werror -std=c++0x
+TestJson_SOURCES = hydrazine/test/TestJson.cpp
+TestJson_LDADD = libhydralize.a
+TestJson_LDFLAGS =
 ################################################################################
 
 ################################################################################
