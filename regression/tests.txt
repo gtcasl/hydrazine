@@ -7,4 +7,5 @@
 ../TestTimer
 ../TestXmlArgumentParser
 ../TestXmlParser
+../TestJson
 
