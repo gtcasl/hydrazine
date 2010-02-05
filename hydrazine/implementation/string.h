@@ -30,6 +30,9 @@ namespace hydrazine
 	/*! \brief Parse a string specifying a binary number, return the number */
 	long long unsigned int binaryToUint( const std::string& );
 
+	/*! \brief Convert a string to a label that can be parsed by graphviz */
+	std::string toGraphVizParsableLabel( const std::string& );
+
 }
 
 #endif
