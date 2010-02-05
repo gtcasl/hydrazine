@@ -248,6 +248,8 @@ namespace json {
 		~Visitor();
 		
 		Visitor(Value *value);
+
+		Value *find(const std::string & obj) const;
 		
 		//! assuming value is an Object, returns a Visitor for the named value
 		Visitor operator[](const char *) const;
@@ -269,6 +271,13 @@ namespace json {
 		
 		//! casts value to a string, assuming it is a String
 		operator std::string() const;
+
+		template <typename T> T parse(const char *key, T defaultValue) {
+			if (find(key)) {
+				return (T)(*this)[key];
+			}
+			return defaultValue;
+		}
 		
 	public:
 	
