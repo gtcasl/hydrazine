@@ -1,5 +1,4 @@
-/*!
-	\file string.h
+/*! \file string.h
 	\date Friday February 13, 2009
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
 	\brief Function headers for common C string manipulations
@@ -13,8 +12,7 @@
 namespace hydrazine
 {
 
-	/*!
-		\brief Safe string copy
+	/*! \brief Safe string copy
 		
 		\param destination The target string
 		\param source The source string
@@ -32,6 +30,9 @@ namespace hydrazine
 
 	/*! \brief Convert a string to a label that can be parsed by graphviz */
 	std::string toGraphVizParsableLabel( const std::string& );
+
+	/*! \brief Add line numbers to a ver large string */
+	std::string addLineNumbers( const std::string& );
 
 }
 

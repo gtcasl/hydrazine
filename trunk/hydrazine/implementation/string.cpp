@@ -1,5 +1,4 @@
-/*!
-	\file string.cpp
+/*! \file string.cpp
 	\date Friday February 13, 2009
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
 	\brief Function sources for common C string manipulations
@@ -117,6 +116,29 @@ namespace hydrazine
 		}
 		return std::move(result);
 	}
+	
+	std::string addLineNumbers( const std::string& string )
+	{
+		unsigned int line = 1;
+		std::stringstream result;
+		
+		result << line++ << " ";
+		
+		for( std::string::const_iterator s = string.begin(); 
+			s != string.end(); ++s )
+		{
+			if( *s == '\n' )
+			{
+				result << "\n" << line++ << " ";
+			}
+			else
+			{
+				result << *s;
+			}
+		}
+		return std::move( result.str() );
+	}
+
 }
 
 #endif
