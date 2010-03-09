@@ -12,7 +12,6 @@
 
 namespace hydrazine
 {
-
 	void strlcpy( char* dest, const char* src, unsigned int length )
 	{
 		const char* end = src + ( length - 1 );
@@ -137,6 +136,17 @@ namespace hydrazine
 			}
 		}
 		return std::move( result.str() );
+	}
+
+	std::string dataToString(const void* data, unsigned int size)
+	{
+		std::stringstream stream;
+		stream << "0x";
+		if(size == 1) stream << std::hex << (int)*((unsigned char*) data);
+		if(size == 2) stream << std::hex << *((unsigned short*) data);
+		if(size == 4) stream << std::hex << *((unsigned int*) data);
+		if(size == 8) stream << std::hex << *((long long unsigned int*) data);
+		return stream.str();
 	}
 
 }
