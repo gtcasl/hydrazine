@@ -31,9 +31,11 @@ namespace hydrazine
 	/*! \brief Convert a string to a label that can be parsed by graphviz */
 	std::string toGraphVizParsableLabel( const std::string& );
 
-	/*! \brief Add line numbers to a ver large string */
+	/*! \brief Add line numbers to a very large string */
 	std::string addLineNumbers( const std::string& );
 
+	/*! \brief Convert a raw data stream into a hex representation */
+	std::string dataToString(const void* data, unsigned int bytes);
 }
 
 #endif
