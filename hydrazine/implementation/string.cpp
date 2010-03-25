@@ -26,6 +26,38 @@ namespace hydrazine
 		*dest = '\0';
 	}
 	
+	StringVector split( const std::string& string, 
+		const std::string& delimiter )
+	{
+		size_t begin = 0;
+		size_t end = 0;
+		StringVector strings;
+		
+		while( end != std::string::npos )
+		{
+			end = string.find( delimiter, begin );
+			strings.push_back( string.substr( begin, end - begin ) );
+			begin = end + 1;
+		}
+		return std::move( strings );
+	}
+	
+	std::string strip( const std::string& string, const std::string& delimiter )
+	{
+		std::string result;
+		size_t begin = 0;
+		size_t end = 0;
+		
+		while( end != std::string::npos )
+		{
+			end = string.find( delimiter, begin );
+			result += string.substr( begin, end - begin );
+			begin = end + 1;
+		}
+		
+		return std::move( result );
+	}
+	
 	std::string format( const std::string& input, 
 		const std::string& firstPrefix, const std::string& prefix, 
 		unsigned int width )

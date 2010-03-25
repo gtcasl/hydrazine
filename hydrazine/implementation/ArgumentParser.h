@@ -69,6 +69,13 @@ namespace hydrazine
 						
 			*/			
 			bool isPresent(const std::string& identifier);
+
+			/*! \brief Set the value of an arbitrary type given a string */
+			template< typename T >
+			void setValue(T& value, const std::string& s);
+	
+			/*! \brief override the default for strings */
+			void setValue(std::string& value, const std::string& s);
 			
 		public:
 			
@@ -168,8 +175,16 @@ namespace hydrazine
 			
 	};
 	
+	template< typename T >
+	void ArgumentParser::setValue(T& value, const std::string& s)
+	{
+		std::stringstream stream(s);
+		stream >> value;
+	}
+	
+	void setValue(std::string& value, const std::string& s);
 
-	template< class T >
+	template< typename T >
 	void ArgumentParser::find(const std::string& identifier, T& value)
 	{
 		std::string str;
@@ -233,10 +248,7 @@ namespace hydrazine
 	
 		if( found )
 		{
-			std::stringstream stream;
-	
-			stream << str;
-			stream >> value;
+			setValue(value, str);
 		}
 		
 	}
