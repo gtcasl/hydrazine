@@ -53,6 +53,11 @@ namespace hydrazine
 		return found;
 	}
 	
+	void ArgumentParser::setValue(std::string& value, const std::string& s)
+	{
+		value = s;
+	}
+	
 	std::string ArgumentParser::help() const
 	{
 		std::stringstream stream;

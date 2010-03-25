@@ -8,9 +8,12 @@
 #define STRING_H_INCLUDED
 
 #include <string>
+#include <vector>
 
 namespace hydrazine
 {
+	/*! \brief A vector of strings */
+	typedef std::vector< std::string > StringVector;
 
 	/*! \brief Safe string copy
 		
@@ -19,6 +22,14 @@ namespace hydrazine
 		\param max The max number of characters to copy
 	*/
 	void strlcpy( char* destination, const char* source, unsigned int max );
+
+	/*! \brief Split a string into substrings divided on a delimiter */
+	StringVector split( const std::string& string, 
+		const std::string& delimiter = " " );
+	
+	/*! \brief Strip out substrings in a string */
+	std::string strip( const std::string& string, 
+		const std::string& delimiter = " ");
 	
 	/*! \brief Format a string to fit a specific character width */
 	std::string format( const std::string& input, 
