@@ -96,6 +96,7 @@ namespace hydrazine
 		if( currentIndex + word.size() > width )
 		{
 			result += "\n";
+			result += prefix;
 		}
 		
 		result += word + "\n";
