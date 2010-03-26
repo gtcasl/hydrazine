@@ -31,6 +31,12 @@ namespace hydrazine
 		cast.from = from;
 		return cast.to;
 	}
+	
+	template< typename To, typename From >
+	void bit_cast(To& to, const From& from)
+	{
+		to = bit_cast<To, From>(from);
+	}
 
 }
 
