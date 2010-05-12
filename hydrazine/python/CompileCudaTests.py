@@ -31,8 +31,8 @@ def getAllCudaSources(path):
 
 def compileSources(commandBase, sources):
 	for source in sources:
-		if !os.path.isfile(source.outfile):
-			command = commandBase + " -o " + source.outfile 
+		if not os.path.isfile(source.outfile):
+			command = commandBase + " -o " + source.outfile \
 				+ " " + source.filename
 			print command
 			os.system(command)
