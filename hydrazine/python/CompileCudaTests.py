@@ -36,6 +36,10 @@ def compileSources(commandBase, sources):
 				+ " " + source.filename
 			print command
 			os.system(command)
+			if not os.path.isfile(source.outfile):
+				print 'error - compiling \'' + source.filename \
+					+ '\' failed. aborting...\n'
+				break
 
 def sanitizeSources(sources):
 	for source in sources:
