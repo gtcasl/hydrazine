@@ -13,11 +13,7 @@
 #include <cassert>
 #include <boost/random/mersenne_twister.hpp>
 
-/*!
-
-	\brief A namespace for creating test programs for individual classes.
-
-*/
+/*! \brief A namespace for creating test programs for individual classes. */
 namespace test
 {
 
