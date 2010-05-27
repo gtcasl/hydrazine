@@ -475,6 +475,7 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 					input.putback(ch);
 					active_value = parse_value(input);
 					if (active_value) {
+						assert(dictionary.count(active_string->value_string) == 0);
 						dictionary[active_string->value_string] = active_value;
 						delete active_string;
 						ch = get_non_whitespace_char(input);
