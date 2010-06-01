@@ -40,6 +40,10 @@ namespace hydrazine
 	template< typename type >
 	void multiplyHiLo( type& hi, type& lo, type r0, type r1 );
 
+	/*! \brief Perform extended precision add */
+	template< typename type >
+	void addHiLo( type& hi, type& lo, type r0 );
+	
 	////////////////////////////////////////////////////////////////////////////
 	// Power of two checks
 	inline bool isPowerOfTwo( int value )
@@ -140,6 +144,24 @@ namespace hydrazine
 		lo = ( negative ) ? -lo : lo;
 		hi = ( negative ) ? ( utype )( ~( utype ) hi ) + signCarryOut : hi;
 	}
+	
+	template< typename type >
+	void addHiLo( type& hi, type& lo, type r0 )
+	{
+		typedef typename SignedToUnsigned< type >::type utype;
+	
+		utype uHi = hi;
+		utype uLo = lo;
+		utype uR0 = r0;
+		
+		utype loResult = uR0 + uLo;
+		utype carry = (loResult < uR0 || loResult < uLo) ? 1 : 0;
+		utype hiResult = uHi + carry;
+		
+		hi = hiResult;
+		lo = loResult;
+	}
+
 	////////////////////////////////////////////////////////////////////////////
 
 }
