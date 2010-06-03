@@ -1159,6 +1159,9 @@ json::Visitor::operator std::string() const {
 }
 
 json::Value *json::Visitor::find(const std::string & obj) const {
+	if (!value) {
+		return 0;
+	}
 	if (value->type != Value::Object) {
 		throw EXCEPTION(4, "find() expects Visitor to wrap an Object");
 	}
