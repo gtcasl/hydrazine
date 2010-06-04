@@ -1166,10 +1166,9 @@ json::Value *json::Visitor::find(const std::string & obj) const {
 		throw EXCEPTION(4, "find() expects Visitor to wrap an Object");
 	}
 	
-		Object *object = static_cast<Object*>(value);
-		if (object->dictionary.find(obj) != object->dictionary.end()) {
-			return object->dictionary[obj];
-		}
+	Object *object = static_cast<Object*>(value);
+	if (object->dictionary.find(obj) != object->dictionary.end()) {
+		return object->dictionary[obj];
 	}
 	return 0;
 }
