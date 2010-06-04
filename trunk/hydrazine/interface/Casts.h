@@ -25,7 +25,7 @@ namespace hydrazine
 	
 	
 	template< typename To, typename From >
-	To bit_cast( From from )
+	To bit_cast( const From & from )
 	{
 		UnionCast< To, From > cast;
 		cast.from = from;
@@ -37,7 +37,6 @@ namespace hydrazine
 	{
 		to = bit_cast<To, From>(from);
 	}
-
 }
 
 #endif
