@@ -35,6 +35,14 @@ namespace hydrazine
 		
 	/*! \brief Compute the next highest power of two */
 	inline unsigned int powerOfTwo( unsigned int value );
+
+	/*! \brief Compute the number of bits set in the operand */
+	template< typename type >
+	unsigned int popc( type value );
+
+	/*! \brief Compute the number of leading zeros in the operand */
+	template< typename type >
+	unsigned int countLeadingZeros( type value );
 	
 	/*! \brief Perform extended precision multiply */
 	template< typename type >
@@ -78,6 +86,39 @@ namespace hydrazine
 		value |= value >> 16;		
 		value++;		
 		return value;		
+	}
+	////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////
+	// Bit Manipulation
+	template< typename type >
+	unsigned int countLeadingZeros( type value )
+	{
+		unsigned int count = 0;
+		unsigned int max = 8 * sizeof( type );
+		type mask = ( ( type ) 1 ) << ( max - 1 );
+		
+		while( count < max && ( ( value & mask ) == 0 ) )
+		{
+			++count;
+			value <<= 1;
+		}
+		
+		return count;	
+	}
+
+	template< typename type >
+	unsigned int popc( type value )
+	{
+		unsigned int count = 0;
+		
+		while( value != 0 )
+		{
+			if( value & 1 ) ++count;
+			value >>= 1;
+		}
+		
+		return count;	
 	}
 	////////////////////////////////////////////////////////////////////////////
 
