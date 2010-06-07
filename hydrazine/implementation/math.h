@@ -36,6 +36,10 @@ namespace hydrazine
 	/*! \brief Compute the next highest power of two */
 	inline unsigned int powerOfTwo( unsigned int value );
 
+	/*! \brief Find the leading bit in the operand */
+	template< typename type >
+	unsigned int bfind( type value, bool shiftAmount );
+
 	/*! \brief Compute the number of bits set in the operand */
 	template< typename type >
 	unsigned int popc( type value );
@@ -119,6 +123,32 @@ namespace hydrazine
 		}
 		
 		return count;	
+	}
+
+	template< typename type >
+	unsigned int bfind( type value, bool shiftAmount )
+	{
+		unsigned int d = -1;
+		unsigned int msb = 8 * sizeof( type ) - 1;
+		
+		for( unsigned int i = msb; i >= 0; --i )
+		{
+			if( value & ( 1 << i ) )
+			{
+				d = i;
+				break;
+			}
+		}
+		
+		if( shiftAmount )
+		{
+			if( d != (unsigned int)-1 )
+			{
+				d = msb - d;
+			}
+		}
+
+		return d;
 	}
 	////////////////////////////////////////////////////////////////////////////
 
