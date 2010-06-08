@@ -129,9 +129,9 @@ namespace hydrazine
 	unsigned int bfind( type value, bool shiftAmount )
 	{
 		unsigned int d = -1;
-		unsigned int msb = 8 * sizeof( type ) - 1;
+		long long int msb = 8 * sizeof( type ) - 1;
 		
-		for( unsigned int i = msb; i >= 0; --i )
+		for( long long int i = msb; i >= 0; --i )
 		{
 			if( value & ( 1 << i ) )
 			{
@@ -142,7 +142,7 @@ namespace hydrazine
 		
 		if( shiftAmount )
 		{
-			if( d != (unsigned int)-1 )
+			if( d != ( unsigned int ) - 1 )
 			{
 				d = msb - d;
 			}
