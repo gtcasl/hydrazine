@@ -36,6 +36,18 @@ namespace hydrazine
 	/*! \brief Compute the next highest power of two */
 	inline unsigned int powerOfTwo( unsigned int value );
 
+	/*! \brief Reverse the bits in the operand */
+	template< typename type >
+	type brev( type value );
+
+	/*! \brief Get a bit at a single position */
+	template< typename type >
+	type bitExtract( type value, unsigned int position );
+
+	/*! \brief Set a bit at a single position */
+	template< typename type >
+	type bitInsert( type value, unsigned int position );
+
 	/*! \brief Find the leading bit in the operand */
 	template< typename type >
 	unsigned int bfind( type value, bool shiftAmount );
@@ -149,6 +161,40 @@ namespace hydrazine
 		}
 
 		return d;
+	}
+
+	template< typename type >
+	type bitExtract( type value, unsigned int position )
+	{
+		value >>= position;
+		value &= 1;
+		value <<= position;
+		return value;
+	}
+
+	template< typename type >
+	type bitInsert( type value, type bit, unsigned int position )
+	{
+		bit &= 1;
+		bit <<= position;
+		type mask = ~bit;
+		value &= mask;
+		value |= bit;
+		return value;
+	}
+
+	template< typename type >
+	type brev( type value )
+	{
+		type msb = sizeof( type ) * 8 - 1;
+		
+		type result = 0;
+		for( unsigned int i = 0; i <= msb; ++i )
+		{
+			result = bitInsert( result, bitExtract( value, msb - i ), i );
+		}
+		
+		return result;
 	}
 	////////////////////////////////////////////////////////////////////////////
 
