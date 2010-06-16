@@ -15,6 +15,7 @@
 
 #include <hydrazine/interface/MetaProgramming.h>
 #include <cassert>
+#include <algorithm>
 
 /*! \brief a namespace for common classes and functions */
 namespace hydrazine
@@ -35,6 +36,32 @@ namespace hydrazine
 		
 	/*! \brief Compute the next highest power of two */
 	inline unsigned int powerOfTwo( unsigned int value );
+
+	/*! \brief Modes for permute instructions */
+	enum PermuteMode
+	{
+		DefaultPermute,
+		ForwardFourExtract,
+		BackwardFourExtract,
+		ReplicateEight,
+		EdgeClampLeft,
+		EdgeClampRight,
+		ReplicateSixteen
+	};
+
+	/*! \brief Read a byte from a 64-bit word depending on the mode */
+	template< PermuteMode mode >
+	unsigned int readBytes( long long unsigned int value, unsigned int control, 
+		unsigned int byte );
+
+	/*! \brief Permute bytes from a pair of 32-bit operands */
+	template< PermuteMode mode >
+	unsigned int permute( unsigned int a, unsigned int b, 
+		unsigned int control );
+
+	/*! \brief Insert a bit-field in an operand */
+	template< typename type >
+	type bitFieldInsert( type a, type b, unsigned int c, unsigned int d);
 
 	/*! \brief Reverse the bits in the operand */
 	template< typename type >
@@ -195,6 +222,102 @@ namespace hydrazine
 		}
 		
 		return result;
+	}
+
+	template< typename type >
+	type bitFieldInsert( type a, type b, 
+		unsigned int position, unsigned int length)
+	{
+		unsigned int msb = sizeof( type ) * 8 - 1;
+		
+		type result = b;
+		
+		for( unsigned int i = 0; i < length && ( i + position ) <= msb; ++i )
+		{
+			result = bitInsert( result, bitExtract( a, i ), i + position );
+		}
+		
+		return result;
+	}
+
+	template< PermuteMode mode >
+	unsigned int readByte( long long unsigned int value, unsigned int control, 
+		unsigned int byte )
+	{
+		long long unsigned int result = value;
+		switch( mode )
+		{
+			case DefaultPermute:
+			{
+				result >>= control * 8;
+				break;
+			}
+			case ForwardFourExtract:
+			{
+				result >>= ( control + byte ) * 8;
+				break;
+			}
+			case BackwardFourExtract:
+			{
+				result >>= ( ( 8 + control - byte ) & 0x7 ) * 8;
+				break;
+			}
+			case ReplicateEight:
+			{
+				result >>= control * 8;
+				break;
+			}
+			case EdgeClampLeft:
+			{
+				result >>= byte * 8;
+				break;
+			}
+			case EdgeClampRight:
+			{
+				result >>= std::min( control, byte ) * 8;
+				break;
+			}
+			case ReplicateSixteen:		
+			{
+				result >>= ( byte & 0x1 ) + ( ( control & 0x1 ) << 1 );
+				break;
+			}
+		}
+		return result & 0xff;
+	}
+
+	template< PermuteMode mode >
+	unsigned int permute( unsigned int a, unsigned int b, unsigned int control )
+	{
+		long long unsigned int extended = 
+			( ( ( long long unsigned int ) b ) << 32 ) 
+			| ( long long unsigned ) a;
+		
+		if( mode == DefaultPermute )
+		{
+			unsigned int control0 = (control >> 0) & 0xf;
+			unsigned int control1 = (control >> 4) & 0xf;
+			unsigned int control2 = (control >> 8) & 0xf;
+			unsigned int control3 = (control >> 12) & 0xf;
+			
+			unsigned int result = readByte< mode >( extended, control0, 0 );
+			result |= readByte< mode >( extended, control1, 1 ) << 8;
+			result |= readByte< mode >( extended, control2, 2 ) << 16;
+			result |= readByte< mode >( extended, control3, 3 ) << 24;
+			
+			return result;
+		}
+		else
+		{
+			control &= 0x3;
+			
+			unsigned int result = readByte< mode >( extended, control, 0 );
+			result |= readByte< mode >( extended, control, 1 ) << 8;
+			result |= readByte< mode >( extended, control, 2 ) << 16;
+			result |= readByte< mode >( extended, control, 3 ) << 24;
+			
+			return result;
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////
 
