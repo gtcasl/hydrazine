@@ -260,7 +260,7 @@ namespace hydrazine
 		Thread* thread = static_cast< Thread* >( argument );	
 		thread->execute();
 		pthread_exit( 0 );
-		
+		return 0;
 	}
 
 	bool Thread::_compare( Id one, Id two )
