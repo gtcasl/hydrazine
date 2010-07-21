@@ -143,7 +143,8 @@ namespace hydrazine
 		pthread_cond_signal( &data.condition );
 		report( " Thread is dead." );
 		pthread_exit( argument );
-			
+		
+		return 0;
 	}
 	////////////////////////////////////////////////////////////////////////////
 
