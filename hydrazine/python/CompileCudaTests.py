@@ -11,11 +11,14 @@ import os
 from optparse import OptionParser
 
 class CudaSource:
-	def __init__(self, path):
+	def __init__(self, path, ptx):
 		self.filename = os.path.abspath(path)
-		self.outfile = self.filename + ".cpp"
+		if ptx:
+			self.outfile = self.filename[:-3] + ".ptx"
+		else:
+			self.outfile = self.filename + ".cpp"
 		
-def getAllCudaSources(path):
+def getAllCudaSources(path, ptx):
 	sources = []
 	for dirpath, dirnames, filenames in os.walk(path):
 		for filename in filenames:
@@ -26,17 +29,17 @@ def getAllCudaSources(path):
 				if len(split) == 2:
 					extension = split[1]
 				if extension == "cu":
-					sources.append(CudaSource(name))
+					sources.append(CudaSource(name, ptx))
 	return sources
 
-def compileSources(commandBase, sources):
+def compileSources(commandBase, sources, continueOnError):
 	for source in sources:
 		if not os.path.isfile(source.outfile):
-			command = commandBase + " -o " + source.outfile \
-				+ " " + source.filename
+			command = commandBase + " -I" + os.path.dirname(source.filename) \
+				+ " -o " + source.outfile + " " + source.filename
 			print command
 			os.system(command)
-			if not os.path.isfile(source.outfile):
+			if not os.path.isfile(source.outfile) and not continueOnError:
 				print 'error - compiling \'' + source.filename \
 					+ '\' failed. aborting...\n'
 				break
@@ -64,6 +67,9 @@ def main():
 	
 	parser.add_option("-d", "--directory", action="store", 
 		default=".", dest="directory", help="The directory to run on.")
+	parser.add_option("-p", "--ptx", action="store_true", 
+		default=False, dest="ptx", 
+		help="Generate PTX rather than .cu.cpp sources.")
 	parser.add_option("-a", "--arguments", action="store", 
 		default="-I ~/checkout/thrust -I ./sdk", dest="arguments", 
 		help="NVCC options.")
@@ -74,16 +80,22 @@ def main():
 	
 	(options, args) = parser.parse_args()
 	
-	command = "nvcc --cuda " + options.arguments
-	path = os.getcwd()
-	sources = getAllCudaSources(options.directory)
-	if options.clean:
-		clean(sources)
-	elif options.sanitize:
-		sanitizeSources(sources)
+	if options.ptx:
+		command = "nvcc --ptx " + options.arguments
 	else:
-		compileSources(command, sources)
-		sanitizeSources(sources)
+		command = "nvcc --cuda " + options.arguments
+	path = os.getcwd()
+	sources = getAllCudaSources(options.directory, options.ptx)
+	if options.ptx:
+		compileSources(command, sources, True)
+	else:
+		if options.clean:
+			clean(sources)
+		elif options.sanitize:
+			sanitizeSources(sources)
+		else:
+			compileSources(command, sources, False)
+			sanitizeSources(sources)
 	
 if __name__ == "__main__":
     main()
