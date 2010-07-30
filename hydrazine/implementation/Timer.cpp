@@ -14,29 +14,18 @@
 
 namespace hydrazine
 {
-
-	////////////////////////////////////////////////////////////////////////////////
-	// Precise Timer
 	std::string Timer::toString() const
 	{
-	
 		std::stringstream stream;
 		
 		#ifdef HAVE_TIME_H
-		
 			stream << seconds() << "s (" << cycles() << " ns)";
-		
 		#else
-		
 			stream << seconds() << "s (" << cycles() << " ticks)";
-		
 		#endif
 		
 		return stream.str();
-	
 	}
-	////////////////////////////////////////////////////////////////////////////////
-
 }
 
 #endif
