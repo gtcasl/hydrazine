@@ -35,105 +35,77 @@
 namespace hydrazine
 {
 
-
 	class LowLevelTimer
 	{
-	
 		public:
-		
-			/*!
-			
-				\brief A type for seconds
-			
-			*/
+			/*! \brief A type for seconds */
 			typedef double Second;
 		
-			/*!
-			
-				\brief A type for representing clock ticks
-			
-			*/			
+			/*! \brief A type for representing clock ticks */			
 			typedef long long unsigned Cycle;
 
 		private:
-			
-			/*! 
-				an integer representing the value of the rdtsc Timer when the 
+			/*! An integer representing the value of the cycle counter when the 
 				last start() function was called
 			*/
 			Cycle beginning;
-			/*! 
-				an integer representing the value of the rdtsc Timer when the 
+			
+			/*! An integer representing the value of the cycle counter when the 
 				last stop() function was called
 			*/
 			Cycle ending;
 			
-			/*! 
-				an integer representing the value of the system clock Timer when the 
-				last start() function was called
+			/*! A floating point number representing the value of the system 
+				clock when the last start() function was called
 			*/
 			Second beginningS;
 
-			/*! 
-				an integer representing the value of the system clock Timer when the 
-				last stop() function was called
+			/*! A floating point number representing the value of the system 
+				clock when the last stop() function was called
 			*/
 			Second endingS;
 			
-			/*! 
-				A collection of assembly instructions to read a 64 bit Timer value 
-				from the rdtsc hardware Timer
+			/*! Read a cycle counter using either assembly or an OS interface.
 				\return a 64 bit value representing the current number of 
 				clock cycles since the last reset
 			*/			
 			static Cycle rdtsc();
 			
-			/*!
-				
-				\brief Is the Timer running?
-			
-			*/
+			/*! \brief Is the Timer running? */
 			bool running;
 			
 		public:
 		
-			/*!
-			
-				\brief The constructor initializes the private variables
+			/*! \brief The constructor initializes the private variables
 				and makes sure that the Timer is not running.
-			
 			*/
 			LowLevelTimer();
 		
-			/*! 
-				A function that is used to set beginning to the value of 
+			/*! A function that is used to set beginning to the value of 
 				the hardware Timer
 			*/
 			void start();
-			/*! 
-				A function that is used to set ending to the value of 
+
+			/*! A function that is used to set ending to the value of 
 				the hardware Timer
 			*/			
 			void stop();
 			
-			/*! 
-				A function that is used to determine the number of clock cycles 
+			/*! A function that is used to determine the number of clock cycles 
 				between the last time start was called and the last time that 
 				end was called.
 				\return the difference between ending and beginning
 			*/				
 			Cycle cycles() const;
 			
-			/*! 
-				A function that is used to determine the number of seconds 
+			/*! A function that is used to determine the number of seconds 
 				between the last time start was called and the last time that 
 				end was called.
 				\return the difference between ending and beginning
 			*/				
 			Second seconds() const;
 			
-			/*!
-				\brief Get the absolute number of seconds elapsed since system
+			/*! \brief Get the absolute number of seconds elapsed since system
 					start
 				\return That time
 			*/
