@@ -14,6 +14,8 @@
 	#include <windows.h>
 #endif
 
+#include <hydrazine/implementation/LowLevelTimer.h>
+
 namespace hydrazine
 {
 
