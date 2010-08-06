@@ -23,7 +23,7 @@ namespace test
 	{
 		if( seed == 0 )
 		{	
-			seed = std::time( 0 );			
+			seed = (unsigned int) std::time( 0 );			
 		}
 		random.seed( seed );
 	}

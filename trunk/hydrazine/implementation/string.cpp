@@ -39,7 +39,7 @@ namespace hydrazine
 			strings.push_back( string.substr( begin, end - begin ) );
 			begin = end + 1;
 		}
-		return std::move( strings );
+		return strings;
 	}
 	
 	std::string strip( const std::string& string, const std::string& delimiter )
@@ -55,7 +55,7 @@ namespace hydrazine
 			begin = end + 1;
 		}
 		
-		return std::move( result );
+		return result;
 	}
 	
 	std::string format( const std::string& input, 
@@ -146,7 +146,7 @@ namespace hydrazine
 				result.push_back( *fi );
 			}	
 		}
-		return std::move(result);
+		return result;
 	}
 	
 	std::string addLineNumbers( const std::string& string )
@@ -168,7 +168,7 @@ namespace hydrazine
 				result << *s;
 			}
 		}
-		return std::move( result.str() );
+		return result.str();
 	}
 
 	std::string dataToString(const void* data, unsigned int size)

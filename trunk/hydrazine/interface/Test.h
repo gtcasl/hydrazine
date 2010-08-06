@@ -30,7 +30,7 @@ namespace test
 		protected:
 			typedef boost::random::mersenne_twister
 			<
-				uint32_t,
+				unsigned int,
 				32,
 				351,
 				175,
