@@ -51,9 +51,8 @@ namespace hydrazine
 		Message result;
 		result.type = Message::Invalid;
 		
+		// lock is implied
 		boost::unique_lock<boost::mutex> lock(_mutex);
-		
-		lock.lock();
 		
 		while( result.type == Message::Invalid )
 		{
@@ -84,8 +83,8 @@ namespace hydrazine
 	{
 		bool found = false;
 	
+		// lock is implied
 		boost::unique_lock<boost::mutex> lock( _mutex );
-		lock.lock();
 		
 		do
 		{
