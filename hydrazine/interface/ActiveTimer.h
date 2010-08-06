@@ -13,7 +13,6 @@
 #ifndef ACTIVE_TIMER_H_INCLUDED
 #define ACTIVE_TIMER_H_INCLUDED
 
-#include <pthread.h>
 #include <hydrazine/implementation/Timer.h>
 #include <map>
 

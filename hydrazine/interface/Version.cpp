@@ -1,13 +1,7 @@
-/*!
-
-	\file Version.cpp
-	
+/*! \file Version.cpp
 	\date Saturday January 17, 2009
-	
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
-
 	\brief The source file for the Version class
-
 */
 
 #ifndef VERSION_CPP_INCLUDED
@@ -128,4 +122,3 @@ namespace hydrazine
 }
 
 #endif
-

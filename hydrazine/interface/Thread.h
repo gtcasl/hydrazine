@@ -7,9 +7,10 @@
 #ifndef HYDRAZINE_THREAD_H_INCLUDED
 #define HYDRAZINE_THREAD_H_INCLUDED
 
-#include <pthread.h>
+#include <boost/thread.hpp>
+#include <hydrazine/interface/WindowsCompatibility.h>
+
 #include <list>
-#include <unordered_map>
 #include <cassert>
 
 #define THREAD_CONTROLLER_ID 0
@@ -90,8 +91,8 @@ namespace hydrazine
 					typedef std::list< Message > MessageQueue;
 				
 				private:
-					pthread_cond_t _condition;
-					pthread_mutex_t _mutex;
+					boost::condition_variable _condition;
+					boost::mutex _mutex;
 			
 				private:
 					MessageQueue _queue;
@@ -109,7 +110,7 @@ namespace hydrazine
 			class Group
 			{
 				private:
-					pthread_mutex_t _mutex;
+					boost::mutex _mutex;
 			
 				public:
 					typedef std::unordered_map< Id, Thread* > ThreadMap;
@@ -165,14 +166,11 @@ namespace hydrazine
 			*/
 			Group* _group;
 			
-			/*! \brief The id of this thread */
+			/*! \brief The thread handle */
+			boost::thread* _thread;
+
+			/*! \brief The thread id */
 			Id _id;
-			
-			/*! \brief Attribute of the thread */
-			pthread_attr_t _attribute;
-					
-			/*! \brief The pthread */
-			pthread_t _handle;
 			
 		protected:
 		
