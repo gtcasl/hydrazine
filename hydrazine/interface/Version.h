@@ -1,13 +1,7 @@
-/*!
-
-	\file Version.h
-	
+/*! \file Version.h
 	\date Saturday January 17, 2009
-	
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
-
 	\brief The header file for the Version class
-
 */
 
 #ifndef VERSION_H_INCLUDED
