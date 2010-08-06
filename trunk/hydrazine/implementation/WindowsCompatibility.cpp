@@ -12,7 +12,7 @@
 #include <hydrazine/interface/WindowsCompatibility.h>
 
 #ifndef WIN32
-// Linux includes
+#include <unistd.h> 
 #include <sys/sysinfo.h>
 #else
 #include <windows.h>
@@ -22,14 +22,14 @@ namespace hydrazine
 {
 	unsigned int getHardwareThreadCount()
 	{
-		#ifdef WIN32
+	#ifdef WIN32
 		SYSTEM_INFO sysinfo;
 		GetSystemInfo( &sysinfo );
 
 		return sysinfo.dwNumberOfProcessors;
-		#else
-			return sysconf(_SC_NPROCESSORS_ONLN);
-		#endif
+	#else
+		return sysconf(_SC_NPROCESSORS_ONLN);
+	#endif
 	}
 }
 
