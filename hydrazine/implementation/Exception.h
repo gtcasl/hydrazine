@@ -18,7 +18,7 @@ namespace hydrazine
 	class Exception : public std::exception
 	{
 		public:
-			Exception( const std::string& message, int code = 0 );
+			Exception( const std::string& message );
 			~Exception() throw();
 			const char* what() const throw();
 
