@@ -21,9 +21,9 @@ namespace hydrazine
 			Exception( const std::string& message, int code = 0 );
 			~Exception() throw();
 			const char* what() const throw();
+
 		private:
-			std::string message;
-		
+			std::string _message;		
 	};
 }
 
