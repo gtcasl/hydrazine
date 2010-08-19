@@ -196,3 +196,6 @@ namespace hydrazine
 #else
 	#define assertM(x,y)
 #endif
+
+#endif
+
