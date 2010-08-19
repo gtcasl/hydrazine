@@ -15,28 +15,24 @@
 
 namespace hydrazine
 {
-
 	const char* Exception::what() const throw()
 	{
-	
-		return message.c_str();
+		return _message.c_str();
 	
 	}
 
 	Exception::~Exception() throw()
 	{
 	
-	
 	}
 
-	Exception::Exception( const std::string& _message, int _code ): 
-		message( _message ), code( _code )
+	Exception::Exception( const std::string& m ) :
+		_message( m )
 	{
 	
 		
 	
 	}
-
 }
 
 #endif
