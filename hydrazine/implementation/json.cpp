@@ -10,11 +10,12 @@
 
 #include <hydrazine/implementation/json.h>
 #include <hydrazine/implementation/Exception.h>
+#include <hydrazine/implementation/debug.h>
 
 #include <math.h>
 #include <sstream>
 
-#define EXCEPTION(code, message) hydrazine::Exception(message, code)
+#define EXCEPTION(message) hydrazine::Exception(message)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 namespace hydrazine {
@@ -41,7 +42,7 @@ int json::Value::as_integer() const {
 			return number->value_integer;
 		}
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 double json::Value::as_real() const {
@@ -51,7 +52,7 @@ double json::Value::as_real() const {
 			return number->value_real;
 		}
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 double json::Value::as_number() const {
@@ -64,7 +65,7 @@ double json::Value::as_number() const {
 			return (double)number->value_integer;
 		}
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 std::string json::Value::as_string() const {
@@ -72,7 +73,7 @@ std::string json::Value::as_string() const {
 		const json::String *element = static_cast<const json::String *>(this);
 		return element->value_string;
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 std::vector< json::Value *> json::Value::as_array() const {
@@ -80,7 +81,7 @@ std::vector< json::Value *> json::Value::as_array() const {
 		const json::Array *element = static_cast<const json::Array *>(this);
 		return element->sequence;
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 std::map< std::string, json::Value *> json::Value::as_object() const {
@@ -88,7 +89,7 @@ std::map< std::string, json::Value *> json::Value::as_object() const {
 		const json::Object *element = static_cast<const json::Object *>(this);
 		return element->dictionary;
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 
@@ -100,7 +101,7 @@ bool json::Value::as_boolean() const {
 	else if (type == Value::False) {
 		return false;
 	}
-	throw EXCEPTION(4, "Invalid cast");
+	throw EXCEPTION("Invalid cast");
 }
 
 //! returns true if the value is null, false if not - doesn't throw exception
@@ -332,7 +333,7 @@ json::Array *json::Parser::parse_array(std::istream &input) {
 						state = value;
 					}
 					else {
-						throw EXCEPTION(4, "json::Parser::parse_array() - unexpected character; expected '['");
+						throw EXCEPTION("json::Parser::parse_array() - unexpected character; expected '['");
 					}
 				}
 				break;
@@ -354,11 +355,11 @@ json::Array *json::Parser::parse_array(std::istream &input) {
 								state = value;
 							}
 							else {
-								throw EXCEPTION(4, "json::Parser::parse_array() - unexpected character; expected ','");
+								throw EXCEPTION("json::Parser::parse_array() - unexpected character; expected ','");
 							}
 						}
 						else {
-							throw EXCEPTION(4, "json::Parser::parse_array() - failed to parse value");
+							throw EXCEPTION("json::Parser::parse_array() - failed to parse value");
 						}
 					}
 				}
@@ -399,7 +400,7 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 						state = open_brace;
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - unexpected character in object");
+						throw EXCEPTION("json::Parser::parse_object() - unexpected character in object");
 					}
 				}
 				break;
@@ -418,7 +419,7 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 						input.putback(ch);
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - unexpected key character found");
+						throw EXCEPTION("json::Parser::parse_object() - unexpected key character found");
 					}
 				}
 				break;
@@ -434,11 +435,11 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 							break;
 						}
 						else {
-							throw EXCEPTION(1, "json::Parser::parse_object() - expected colon after key string");
+							throw EXCEPTION("json::Parser::parse_object() - expected colon after key string");
 						}
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - failed to parse key string");
+						throw EXCEPTION("json::Parser::parse_object() - failed to parse key string");
 					}
 				}
 				break;
@@ -454,11 +455,11 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 							break;
 						}
 						else {
-							throw EXCEPTION(1, "json::Parser::parse_object() - expected colon after key string");
+							throw EXCEPTION("json::Parser::parse_object() - expected colon after key string");
 						}
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - failed to parse key string");
+						throw EXCEPTION("json::Parser::parse_object() - failed to parse key string");
 					}
 				}
 				break;
@@ -486,11 +487,11 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 							state = close_brace;
 						}
 						else {
-							throw EXCEPTION(1, "json::Parser::parse_object() - unexpected char after value");
+							throw EXCEPTION("json::Parser::parse_object() - unexpected char after value");
 						}
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - failed to parse value");
+						throw EXCEPTION("json::Parser::parse_object() - failed to parse value");
 					}
 				}
 				break;
@@ -502,7 +503,7 @@ json::Object *json::Parser::parse_object(std::istream &input) {
 						state = string;
 					}
 					else {
-						throw EXCEPTION(1, "json::Parser::parse_object() - unexpected char after comma");
+						throw EXCEPTION("json::Parser::parse_object() - unexpected char after comma");
 					}
 				}
 				break;
@@ -569,7 +570,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						state = initial;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [initial] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [initial] - unexpected character found");
 					}
 				}
 				break;
@@ -586,7 +587,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						digits_whole ++;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [negativeA] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [negativeA] - unexpected character found");
 					}
 				}
 				break;
@@ -644,7 +645,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						digits_decimal ++;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [decimal] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [decimal] - unexpected character found");
 					}
 				}
 				break;
@@ -678,7 +679,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						state = digitC;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [exponent] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [exponent] - unexpected character found");
 					}
 				}
 				break;
@@ -690,7 +691,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						state = digitC;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [positiveExponent] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [positiveExponent] - unexpected character found");
 					}
 				}
 				break;
@@ -703,7 +704,7 @@ json::Number *json::Parser::parse_number(std::istream &input) {
 						state = digitC;
 					}
 					else {
-						throw EXCEPTION(2, "json::Parser::parse_number() [negativeExponent] - unexpected character found");
+						throw EXCEPTION("json::Parser::parse_number() [negativeExponent] - unexpected character found");
 					}
 				}
 				break;
@@ -807,7 +808,7 @@ json::String *json::Parser::parse_identifier(std::istream &input) {
 				}
 				break;
 			default:
-				throw EXCEPTION(3, "json::Parser::parse_identifier() - invalid state");
+				throw EXCEPTION("json::Parser::parse_identifier() - invalid state");
 		}
 	} while (state != exit);
 	return new String(ss.str());
@@ -837,7 +838,7 @@ json::String *json::Parser::parse_string(std::istream &input) {
 						state = leading_quote;
 					}
 					else {
-						throw EXCEPTION(3, "json::Parser::parse_string() - unexpected character");
+						throw EXCEPTION("json::Parser::parse_string() - unexpected character");
 					}
 				}
 				break;
@@ -1103,7 +1104,7 @@ bool json::Visitor::is_null() const {
 
 json::Visitor json::Visitor::operator[](const char *key) const {
 	if (value->type != Value::Object) {
-		throw EXCEPTION(4, "operator[](const std::string &) expects Visitor to wrap an Object");
+		throw EXCEPTION("operator[](const std::string &) expects Visitor to wrap an Object");
 	}
 	Object *object = static_cast<Object*>(value);
 	return Visitor(object->dictionary[key]);
@@ -1112,7 +1113,7 @@ json::Visitor json::Visitor::operator[](const char *key) const {
 //! assuming value is an Array, returns a Visitor for the indexed value
 json::Visitor json::Visitor::operator[](int index) const {
 	if (value->type != Value::Array) {
-		throw EXCEPTION(4, "operator[](int) expects Visitor to wrap an Array");
+		throw EXCEPTION("operator[](int) expects Visitor to wrap an Array");
 	}
 	Array *array = static_cast<Array*>(value);
 	return Visitor(array->sequence[index]);
@@ -1121,7 +1122,7 @@ json::Visitor json::Visitor::operator[](int index) const {
 //! casts value to boolean, assuming it is either True or False
 json::Visitor::operator bool() const {
 	if (value->type != Value::True && value->type != Value::False) {
-		throw EXCEPTION(4, "operator bool() expects Visitor to wrap True or False");
+		throw EXCEPTION("operator bool() expects Visitor to wrap True or False");
 	}
 	return value->type == Value::True;
 }
@@ -1129,7 +1130,7 @@ json::Visitor::operator bool() const {
 //! casts value to an integer, assuming it is a Number
 json::Visitor::operator int() const {
 	if (value->type != Value::Number) {
-		throw EXCEPTION(4, "operator int() expects Visitor to wrap a Number");
+		throw EXCEPTION("operator int() expects Visitor to wrap a Number");
 	}
 	Number *number = static_cast<Number *>(value);
 	if (number->number_type == Number::Integer) {
@@ -1141,7 +1142,7 @@ json::Visitor::operator int() const {
 //! casts value to a double, assuming it is a Number
 json::Visitor::operator double() const {
 	if (value->type != Value::Number) {
-		throw EXCEPTION(4, "operator int() expects Visitor to wrap a Number");
+		throw EXCEPTION("operator int() expects Visitor to wrap a Number");
 	}
 	Number *number = static_cast<Number *>(value);
 	if (number->number_type == Number::Integer) {
@@ -1153,7 +1154,7 @@ json::Visitor::operator double() const {
 //! casts value to a string, assuming it is a String
 json::Visitor::operator std::string() const {
 	if (value->type != Value::String) {
-		throw EXCEPTION(4, "operator std::string() expects Visitor to wrap a String");
+		throw EXCEPTION("operator std::string() expects Visitor to wrap a String");
 	}
 	return value->as_string();
 }
@@ -1163,7 +1164,7 @@ json::Value *json::Visitor::find(const std::string & obj) const {
 		return 0;
 	}
 	if (value->type != Value::Object) {
-		throw EXCEPTION(4, "find() expects Visitor to wrap an Object");
+		throw EXCEPTION("find() expects Visitor to wrap an Object");
 	}
 	
 	Object *object = static_cast<Object*>(value);
