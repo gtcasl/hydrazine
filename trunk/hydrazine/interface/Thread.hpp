@@ -53,7 +53,7 @@ namespace hydrazine
 		Message message = _group->pull( THREAD_ANY_ID );
 		assert( message.destination == THREAD_CONTROLLER_ID );
 		
-		data = static_cast< T* >( message.payload );
+		data = reinterpret_cast< T* >( message.payload );
 			
 	}
 

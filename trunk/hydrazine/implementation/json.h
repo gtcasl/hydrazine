@@ -24,7 +24,6 @@ namespace json {
 	*/
 	class Value {
 	public:
-
 		enum Type {
 			Object,
 			Array,
