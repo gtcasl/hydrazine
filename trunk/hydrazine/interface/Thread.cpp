@@ -318,7 +318,8 @@ namespace hydrazine
 	
 		if( _group->size() == 1 )
 		{
-			report( "Thread " << _id << " joining group." );
+			report( "Thread " << _id << " joining group with thread "
+				<< t->id() << "." );
 			_group->remove( this );
 			delete _group;
 			_group = t->_group;
@@ -326,8 +327,9 @@ namespace hydrazine
 		}
 		else
 		{
-			report( "Thread " << t->_id << " joining group." );
-			t->_group->remove( this );
+			report( "Thread " << t->id() << " joining group with thread "
+				<< id() << "." );
+			t->_group->remove( t );
 			delete t->_group;
 			t->_group = _group;
 			_group->add( t );
