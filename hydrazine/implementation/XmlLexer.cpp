@@ -315,7 +315,7 @@ namespace hydrazine
 		
 		if( !file.is_open() )
 		{
-			throw Exception ("Could not open XML file " + fileName, 120);
+			throw Exception ("Could not open XML file " + fileName);
 		}
 		
 		_token.column = 0;
