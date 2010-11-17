@@ -94,7 +94,7 @@ namespace hydrazine
 		assert( map->second.count( statistic->id ) == 0 );
 		
 		map->second.insert( std::make_pair( statistic->id, 
-			debug_cast< Statistic* >( statistic->clone( true ) ) ) );
+			static_cast< Statistic* >( statistic->clone( true ) ) ) );
 		++_size;		
 	}
 	
@@ -162,7 +162,7 @@ namespace hydrazine
 		
 		IdMap::iterator statistic = map->second.begin();
 		
-		_aggregate = debug_cast< Statistic* >( ( 
+		_aggregate = static_cast< Statistic* >( ( 
 			statistic->second )->clone( true ) );
 		
 		for( ; statistic != map->second.end(); ++statistic )
