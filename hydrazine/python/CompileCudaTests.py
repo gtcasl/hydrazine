@@ -109,10 +109,18 @@ def getAllCudaSourcesMakefile(path, ptx, automake=False, apps=False):
 #
 #
 #
-def compileSources(commandBase, sources, continueOnError):
+def compileSources(commandBase, sources, continueOnError, inferShaderModel = False):
 	for source in sources:
 		if not os.path.isfile(source.outfile):
-			command = commandBase + " -I" + os.path.dirname(source.filename) + " -I" + os.path.dirname(source.filename) + "/../inc"\
+			archFlags = ""
+			if len(source.filename) > 8 and inferShaderModel:
+				suffix = source.filename[-8:].lower()
+				flags = {'_sm10.cu': '-arch=sm_10', '_sm13.cu': '-arch=sm_13', \
+					'_sm12.cu' : '-arch=sm_12', '_sm20.cu': '-arch=sm_20', '_sm21.cu': '-arch=sm_21' }
+				if suffix in flags.keys():
+					archFlags = ' ' + flags[suffix] + ' '
+			command = commandBase + archFlags + " -I" + os.path.dirname(source.filename) \
+				+ " -I" + os.path.dirname(source.filename) + "/../inc"\
 				+ " -I./inc -Isdk -Ishared " \
 				+ " -o " + source.outfile + " " + source.filename
 			print command
@@ -161,6 +169,8 @@ def main():
 		dest="listapps", help="Print a listing of applications for Makefile.am")
 	parser.add_option("-n", "--nocompile", action="store_true",
 		dest="nocompile", help="Do not compile")
+	parser.add_option("-r", "--shader-model", action="store_true",
+		dest="shadermodel", help="Infers shader model from suffix of filename (e.g. _sm13.cu)")
 	
 	(options, args) = parser.parse_args()
 	
@@ -168,6 +178,7 @@ def main():
 		command = "nvcc --ptx " + options.arguments
 	else:
 		command = "nvcc --cuda " + options.arguments
+	
 	path = os.getcwd()
 	
 	if options.makefile:
@@ -176,7 +187,7 @@ def main():
 		sources = getAllCudaSources(options.directory, options.ptx)
 	
 	if options.ptx:
-		compileSources(command, sources, True)
+		compileSources(command, sources, True, options.shadermodel)
 	else:
 		if options.clean:
 			clean(sources)
@@ -184,7 +195,7 @@ def main():
 			sanitizeSources(sources)
 		else:
 			if not options.nocompile:
-				compileSources(command, sources, False)
+				compileSources(command, sources, False, options.shadermodel)
 			if not options.makefile:
 				sanitizeSources(sources)
 	
