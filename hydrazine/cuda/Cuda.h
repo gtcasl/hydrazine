@@ -8,8 +8,6 @@
 #ifndef CUDA_H_INCLUDED
 #define CUDA_H_INCLUDED
 
-#include <hydrazine/cuda/include/driver_types.h>
-
 #ifndef NUM_BANKS
 #define NUM_BANKS 16
 #endif
