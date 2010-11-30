@@ -160,7 +160,7 @@ namespace hydrazine
 				const std::string& longIdentifier, T& i, const V& starting, 
 				const std::string& string);
 			
-			/*!			    report( " Found " << identifier );
+			/*!
 
 				\brief Create a help message describing the program.
 				\return A help message stored in a string.
