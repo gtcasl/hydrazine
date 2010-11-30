@@ -48,7 +48,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -72,7 +72,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -96,7 +96,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -131,7 +131,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -158,7 +158,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -186,7 +186,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -213,7 +213,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -240,7 +240,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -267,7 +267,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -294,7 +294,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -321,7 +321,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -368,7 +368,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -395,7 +395,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -425,7 +425,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -477,7 +477,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -508,7 +508,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -554,7 +554,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -606,7 +606,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 		if (verbose) {
@@ -725,7 +725,7 @@ public:
 				delete test_object;
 			}
 			catch (hydrazine::Exception &exp) {
-				std::cout << exp.message << std::endl;
+				std::cout << exp.what() << std::endl;
 				std::cout << "\ntesting with:\n" << ss.str() << "\n\n";
 				passes = false;
 			}
@@ -759,7 +759,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 
@@ -787,7 +787,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 
@@ -816,7 +816,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 
@@ -845,7 +845,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 
@@ -864,7 +864,7 @@ public:
 			}
 		}
 		catch (hydrazine::Exception exp) {
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 			passes = false;
 		}
 
@@ -910,7 +910,7 @@ public:
 		catch (hydrazine::Exception &exp) {
 			passes = false;
 			std::cout << "parse failed for visitor test 0\n";
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 		}
 	
 		try {
@@ -969,7 +969,7 @@ public:
 		catch (hydrazine::Exception &exp) {
 			passes = false;
 			std::cout << "parse failed for visitor test 0\n";
-			std::cout << exp.message << std::endl;
+			std::cout << exp.what() << std::endl;
 		}
 	
 		if (verbose) {

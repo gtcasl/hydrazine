@@ -191,6 +191,7 @@ namespace json {
 
 		int get_non_whitespace_char(std::istream &input);
 		int get_char(std::istream &input);
+		void putback(std::istream &input, int ch);
 
 		Value *parse_value(std::istream &input);
 		Array *parse_array(std::istream &input);
