@@ -70,10 +70,10 @@ class Test:
 		self.status = "Did not complete."	
 		for line in message.splitlines():
 			line = line.strip("\n")
-			if( re.search( "Pass/Fail : Pass", line ) != None ):
+			if( re.search( "Pass/Fail : Pass", line ) != None or re.search("PASSED", line) != None):
 				self.passed = True
 				self.status = "Passed"
-			elif ( re.search( "Pass/Fail : Fail", line ) != None ):
+			elif ( re.search( "Pass/Fail : Fail", line ) != None or re.search("FAILED", line) != None):
 				self.passed = False
 				self.status = "Failed"
 				break
