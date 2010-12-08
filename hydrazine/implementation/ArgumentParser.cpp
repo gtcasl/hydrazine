@@ -7,6 +7,9 @@
 
 #include "ArgumentParser.h"
 
+// Standard Library Includes
+#include <cstdlib>
+
 namespace hydrazine
 {
 
@@ -154,7 +157,7 @@ namespace hydrazine
 		if( printHelp )
 		{
 			std::cout << help();
-			exit(0);
+			std::exit(0);
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
