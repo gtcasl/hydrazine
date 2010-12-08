@@ -1,5 +1,4 @@
-/*!
-	\file CudaException.h
+/*! \file CudaException.h
 	\author Gregory Diamos <gregory.diamos@gatech.edu>
 	\date Friday May 8, 2009 
 	\brief The headers for the CUDA Exception clas.
@@ -8,7 +7,7 @@
 #ifndef CUDA_EXCEPTION_H_INCLUDED
 #define CUDA_EXCEPTION_H_INCLUDED
 
-#include <hydrazine/cuda/include/cuda_runtime_api.h>
+#include <ocelot/cuda/interface/cuda_runtime.h>
 #include <exception>
 
 namespace hydrazine
