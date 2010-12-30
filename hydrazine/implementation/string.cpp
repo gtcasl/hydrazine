@@ -174,7 +174,16 @@ namespace hydrazine
 	std::string dataToString(const void* data, unsigned int size)
 	{
 		std::stringstream stream;
-		stream << "0x";
+		
+		while(size > 8)
+		{
+			stream << "0x";
+			stream << std::hex << *((long long unsigned int*) data) << " ";
+			size -= 8;
+			data = ((char*)data + 8);
+		}
+		
+		if(size > 1)  stream << "0x";
 		if(size == 1) stream << std::hex << (int)*((unsigned char*) data);
 		if(size == 2) stream << std::hex << *((unsigned short*) data);
 		if(size == 4) stream << std::hex << *((unsigned int*) data);
