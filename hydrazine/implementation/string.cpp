@@ -175,19 +175,14 @@ namespace hydrazine
 	{
 		std::stringstream stream;
 		
-		while(size > 8)
+		while(size > 0)
 		{
 			stream << "0x";
-			stream << std::hex << *((long long unsigned int*) data) << " ";
-			size -= 8;
-			data = ((char*)data + 8);
+			stream << std::hex << (int)*((char*) data) << " ";
+			size--;
+			data = ((char*)data + 1);
 		}
-		
-		if(size > 1)  stream << "0x";
-		if(size == 1) stream << std::hex << (int)*((unsigned char*) data);
-		if(size == 2) stream << std::hex << *((unsigned short*) data);
-		if(size == 4) stream << std::hex << *((unsigned int*) data);
-		if(size == 8) stream << std::hex << *((long long unsigned int*) data);
+
 		return stream.str();
 	}
 
