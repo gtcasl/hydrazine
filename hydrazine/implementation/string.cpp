@@ -178,7 +178,8 @@ namespace hydrazine
 		while(size > 0)
 		{
 			stream << "0x";
-			stream << std::hex << (int)*((char*) data) << " ";
+			stream.width(2);
+			stream << std::hex << (int)*((unsigned char*) data) << " ";
 			size--;
 			data = ((char*)data + 1);
 		}
