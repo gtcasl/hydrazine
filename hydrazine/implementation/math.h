@@ -119,7 +119,7 @@ namespace hydrazine
 		return value1 & ( value - 1 );
 	}
 	
-	inline unsigned int powerOfTwo( unsigned int value )
+	inline unsigned int nextPowerOfTwo( unsigned int value )
 	{	
 		value--;		
 		value |= value >> 1;		
