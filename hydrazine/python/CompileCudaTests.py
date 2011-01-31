@@ -182,7 +182,8 @@ def main():
 	path = os.getcwd()
 	
 	if options.makefile:
-		sources = getAllCudaSourcesMakefile(options.directory, options.ptx, options.makefile, options.listapps)
+		sources = getAllCudaSourcesMakefile(options.directory, options.ptx,
+			options.makefile, options.listapps)
 	else:
 		sources = getAllCudaSources(options.directory, options.ptx)
 	
