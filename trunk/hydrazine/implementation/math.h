@@ -402,6 +402,18 @@ namespace hydrazine
 		lo = loResult;
 	}
 
+	template< typename type >
+	void add(type& result, type& carry, type r1, type r0, type cIn)
+	{
+		typedef typename SignedToUnsigned< type >::type utype;
+		utype uR0 = r0;
+		utype uR1 = r1;
+		
+		utype loResult = uR0 + uR1 + cIn;
+		carry = (loResult < uR0 || loResult < uR1) ? 1 : 0;
+		
+		result = loResult;
+	}
 	////////////////////////////////////////////////////////////////////////////
 
 }
