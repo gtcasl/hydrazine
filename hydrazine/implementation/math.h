@@ -170,9 +170,13 @@ namespace hydrazine
 		unsigned int d = -1;
 		long long int msb = 8 * sizeof( type ) - 1;
 		
+		bool invert = value < 0;
+		
+		value = invert ? -value : value;
+		
 		for( long long int i = msb; i >= 0; --i )
 		{
-			if( value & ( 1 << i ) )
+			if( value & ( 1ULL << i ) )
 			{
 				d = i;
 				break;
@@ -195,7 +199,6 @@ namespace hydrazine
 	{
 		value >>= position;
 		value &= 1;
-		value <<= position;
 		return value;
 	}
 
@@ -204,7 +207,7 @@ namespace hydrazine
 	{
 		bit &= 1;
 		bit <<= position;
-		type mask = ~bit;
+		type mask = ~((type)1 << position);
 		value &= mask;
 		value |= bit;
 		return value;
@@ -249,7 +252,18 @@ namespace hydrazine
 		{
 			case DefaultPermute:
 			{
-				result >>= control * 8;
+				result >>= (control & 0x7) * 8;
+				if((control >> 3) & 1)
+				{
+					if(((result & 0xff) >> 7) & 1)
+					{
+						result = 0xff;
+					}
+					else
+					{
+						result = 0x0;
+					}					
+				}
 				break;
 			}
 			case ForwardFourExtract:
@@ -269,7 +283,7 @@ namespace hydrazine
 			}
 			case EdgeClampLeft:
 			{
-				result >>= byte * 8;
+				result >>= std::max( control, byte ) * 8;
 				break;
 			}
 			case EdgeClampRight:
@@ -279,7 +293,7 @@ namespace hydrazine
 			}
 			case ReplicateSixteen:		
 			{
-				result >>= ( byte & 0x1 ) + ( ( control & 0x1 ) << 1 );
+				result >>= (( byte & 0x1 ) + ( ( control & 0x1 ) << 1 )) * 8;
 				break;
 			}
 		}
