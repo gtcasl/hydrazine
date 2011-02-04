@@ -165,14 +165,35 @@ namespace hydrazine
 	}
 
 	template< typename type >
+	class InvertIfNegative
+	{
+	public:
+		type invert(const type& t) { return t; }
+	};
+
+	template< >
+	class InvertIfNegative<int>
+	{
+	public:
+		int invert(const int& t) { return t < 0 ? -t : t; }
+	};
+
+	template< >
+	class InvertIfNegative<long long int>
+	{
+	public:
+		long long int invert(const long long int& t) { return t < 0 ? -t : t; }
+	};
+
+	template< typename type >
 	unsigned int bfind( type value, bool shiftAmount )
 	{
 		unsigned int d = -1;
 		long long int msb = 8 * sizeof( type ) - 1;
 		
-		bool invert = value < 0;
+		InvertIfNegative< type > inverter;
 		
-		value = invert ? -value : value;
+		value = inverter.invert( value );
 		
 		for( long long int i = msb; i >= 0; --i )
 		{
