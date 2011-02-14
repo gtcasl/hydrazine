@@ -1162,6 +1162,63 @@ json::Visitor::operator double() const {
 	return number->value_real;
 }
 
+json::Array::iterator json::Visitor::begin_array() {
+	if (value->type != Value::Array) {
+		throw EXCEPTION("begin_array() expects Visitor to wrap a Number");
+	}
+	return (static_cast<json::Array*>(value)->begin());
+}
+
+json::Array::const_iterator json::Visitor::begin_array() const {
+	if (value->type != Value::Array) {
+		throw EXCEPTION("begin_array() expects Visitor to wrap a Number");
+	}
+	return (static_cast<const json::Array*>(value)->begin());
+}
+
+json::Array::iterator json::Visitor::end_array() {
+	if (value->type != Value::Array) {
+		throw EXCEPTION("begin_array() expects Visitor to wrap a Number");
+	}
+	return (static_cast<json::Array*>(value)->end());
+}
+
+json::Array::const_iterator json::Visitor::end_array() const {
+	if (value->type != Value::Array) {
+		throw EXCEPTION("begin_array() expects Visitor to wrap a Number");
+	}
+	return (static_cast<const json::Array*>(value)->end());
+}
+
+
+json::Object::iterator json::Visitor::begin_object() {
+	if (value->type != Value::Object) {
+		throw EXCEPTION("begin_object() expects Visitor to wrap an Object");
+	}
+	return (static_cast<json::Object*>(value)->begin());
+}
+
+json::Object::const_iterator json::Visitor::begin_object() const {
+	if (value->type != Value::Object) {
+		throw EXCEPTION("begin_object() expects Visitor to wrap an Object");
+	}
+	return (static_cast<const json::Object*>(value)->begin());
+}
+
+json::Object::iterator json::Visitor::end_object() {
+	if (value->type != Value::Object) {
+		throw EXCEPTION("end_object() expects Visitor to wrap an Object");
+	}
+	return (static_cast<json::Object*>(value)->end());
+}
+
+json::Object::const_iterator json::Visitor::end_object() const {
+	if (value->type != Value::Object) {
+		throw EXCEPTION("begin_object() expects Visitor to wrap an Object");
+	}
+	return (static_cast<const json::Object*>(value)->end());
+}
+
 //! casts value to a string, assuming it is a String
 json::Visitor::operator std::string() const {
 	if (value->type != Value::String) {
