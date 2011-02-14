@@ -116,15 +116,18 @@ namespace json {
 
 		typedef std::vector< Value * > ValueVector;
 
+		typedef ValueVector::iterator iterator;
+		typedef ValueVector::const_iterator const_iterator;
+		
 	public:
 		Array();
 		Array(const ValueVector &values);
 		virtual ~Array();
 
-		ValueVector::iterator begin();
-		ValueVector::const_iterator begin() const;
-		ValueVector::iterator end();
-		ValueVector::const_iterator end() const;
+		iterator begin();
+		const_iterator begin() const;
+		iterator end();
+		const_iterator end() const;
 
 		virtual Value *clone() const;
 
@@ -156,15 +159,19 @@ namespace json {
 	public:
 		typedef std::pair< std::string, Value *> KeyValuePair;
 		typedef std::map< std::string, Value *> Dictionary;
+		
+		typedef Dictionary::iterator iterator;
+		typedef Dictionary::const_iterator const_iterator;
+		
 	public:
 		Object();
 		Object(const Dictionary &object);
 		virtual ~Object();
 
-		Dictionary::iterator begin();
-		Dictionary::const_iterator begin() const;
-		Dictionary::iterator end();
-		Dictionary::const_iterator end() const;
+		iterator begin();
+		const_iterator begin() const;
+		iterator end();
+		const_iterator end() const;
 
 		virtual Value *clone() const;
 
@@ -271,8 +278,19 @@ namespace json {
 		
 		//! casts value to a string, assuming it is a String
 		operator std::string() const;
+		
+		Array::iterator begin_array();
+		Array::const_iterator begin_array() const;
+		Array::iterator end_array();
+		Array::const_iterator end_array() const;
+		
+		Object::iterator begin_object();
+		Object::const_iterator begin_object() const;
+		Object::iterator end_object();
+		Object::const_iterator end_object() const;
+		
 
-		template <typename T> T parse(const char *key, T defaultValue) {
+		template <typename T> T parse(const char *key, T defaultValue) const {
 			if (find(key)) {
 				return (T)(*this)[key];
 			}
