@@ -97,8 +97,8 @@ namespace hydrazine
             uint64_t elapsednano = absolute_time * (info.numer / info.denom);
             
             timespec spec;
-            spec.tv_sec = elapsednano * 1e-9;
-            spec.tv_nsec = elapsednano - (tp.tv_sec * 1e9);
+            spec.tv_sec  = elapsednano * 1e-9;
+            spec.tv_nsec = elapsednano - (spec.tv_sec * 1e9);
 			return spec.tv_nsec + (Cycle)spec.tv_sec * 1e9;
 #else
 			timespec spec;

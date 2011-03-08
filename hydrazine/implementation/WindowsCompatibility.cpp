@@ -11,14 +11,14 @@
 // Hydrazine includes
 #include <hydrazine/interface/WindowsCompatibility.h>
 
-#ifndef WIN32
-#include <unistd.h> 
-#include <sys/sysinfo.h>
+#ifdef WIN32
+#include <windows.h>
 #elif __APPLE__
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #else
-#include <windows.h>
+#include <unistd.h> 
+#include <sys/sysinfo.h>
 #endif
 
 namespace hydrazine
@@ -31,31 +31,26 @@ namespace hydrazine
 
 		return sysinfo.dwNumberOfProcessors;
 	#elif __APPLE__
-		int mib[4];
-		size_t len = sizeof(numCPU); 
-		int numCPU = 0;
+		int nm[ 2 ];
+	    size_t len = 4;
+	    uint32_t count;
 
-		/* set the mib for hw.ncpu */
-		mib[0] = CTL_HW;
-		mib[1] = HW_AVAILCPU;  // alternatively, try HW_NCPU;
+	    nm[ 0 ] = CTL_HW;
+	    nm[ 1 ] = HW_AVAILCPU;
+	    sysctl( nm, 2, &count, &len, NULL, 0 );
 
-		/* get the number of CPUs from the system */
-		sysctl( mib, 2, &numCPU, &len, NULL, 0 );
-
-		if( numCPU < 1 ) 
-		{
-			mib[1] = HW_NCPU;
-			sysctl( mib, 2, &numCPU, &len, NULL, 0 );
-
-			if( numCPU < 1 )
-			{
-				numCPU = 1;
-			}
-		}
-		
-		return numCPU;
+	    if( count < 1 )
+	    {
+	        nm[ 1 ] = HW_NCPU;
+	        sysctl( nm, 2, &count, &len, NULL, 0 );
+	        if( count < 1 )
+	        {
+	        	count = 1;
+	        }
+	    }
+	    return count;
 	#else
-		return sysconf(_SC_NPROCESSORS_ONLN);
+		return sysconf( _SC_NPROCESSORS_ONLN );
 	#endif
 	}
 }
