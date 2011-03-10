@@ -8,7 +8,7 @@
 #define HYDRAZINE_THREAD_H_INCLUDED
 
 #include <boost/thread.hpp>
-#include <hydrazine/interface/WindowsCompatibility.h>
+#include <hydrazine/interface/SystemCompatibility.h>
 
 #include <list>
 #include <cassert>
