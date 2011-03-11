@@ -8,8 +8,14 @@
 #define VERSION_CPP_INCLUDED
 
 #include "Version.h"
-#include <configure.h>
 #include <cassert>
+
+#ifdef HAVE_CONFIGURE_H
+#include <configure.h>
+#else
+#define PACKAGE_VERSION 0.0.0
+#endif
+
 
 namespace hydrazine
 {
