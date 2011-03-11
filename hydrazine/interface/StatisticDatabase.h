@@ -9,7 +9,7 @@
 #define STATISTIC_DATABSE_H_INCLUDED
 
 #include <hydrazine/interface/Clonable.h>
-#include <hydrazine/interface/WindowsCompatibility.h>
+#include <hydrazine/interface/SystemCompatibility.h>
 
 #define STATISTIC_INVALID_TYPE 0xffffffff
 #define STATISTIC_INVALID_ID 0xffffffff
