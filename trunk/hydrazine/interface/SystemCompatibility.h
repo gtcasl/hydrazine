@@ -8,6 +8,8 @@
 #ifndef SYSTEM_COMPATIBILITY_H_INCLUDED
 #define SYSTEM_COMPATIBILITY_H_INCLUDED
 
+// Standard Library Includes
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 
