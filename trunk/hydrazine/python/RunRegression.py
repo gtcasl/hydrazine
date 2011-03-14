@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 ################################################################################
 ##
 ##
@@ -161,11 +163,12 @@ class TestThread(Thread):
 
 class RunRegression:
 	
-	def __init__( self, logFile, testFile, debug ):
+	def __init__( self, logFile, testFile, debug, testDirectory ):
 		self.logFile = os.path.abspath( logFile )
 		self.testFile = os.path.abspath( testFile )
 		self.baseDirectory = os.getcwd()
 		self.createLogFile( debug )
+		self.testDirectory = testDirectory
 		self.parseTestFile( )
 	
 	def createLogFile( self, debug ):
@@ -190,7 +193,10 @@ class RunRegression:
 		self.failed = {}
 		self.noTest = set()
 		lock = Lock()
-		testBase = os.path.dirname( self.testFile )
+		if len( self.testDirectory ) == 0:
+			testBase = os.path.dirname( self.testFile )
+		else:
+			testBase = self.testDirectory
 		logging.debug( "Changing directory to " + testBase )
 		os.chdir( testBase )
 		logging.info( "Reading in test file " + self.testFile )
@@ -241,13 +247,15 @@ class RunRegression:
 		for ( path, test ) in self.passed.iteritems():
 			string += " (%3.3f" % test.time + "s) : " + test.path + " : " \
 				+ test.status + "\n"
-		string += "\nFailing tests:\n"
-		for ( path, test ) in self.failed.iteritems():
-			string += " (%3.3f" % test.time + "s) : " + test.path + " : " \
-				+ test.status + "\n"
-		string += "\nNon-Existent tests:\n"
-		for test in self.noTest:
-			string += " " + test + "\n" 
+		if len( self.failed ) != 0:
+			string += "\nFailing tests:\n"
+			for ( path, test ) in self.failed.iteritems():
+				string += " (%3.3f" % test.time + "s) : " + test.path + " : " \
+					+ test.status + "\n"
+		if len( self.noTest ) != 0:
+			string += "\nNon-Existent tests:\n"
+			for test in self.noTest:
+				string += " " + test + "\n" 
 		logging.info( string )
 		if( verbose ):
 			print string
@@ -268,11 +276,11 @@ def main():
 	parser.add_option( "-v", "--verbose", default = False, \
 		action = "store_true" )
 	parser.add_option( "-d", "--debug", default = False, action = "store_true" )
-	
+	parser.add_option( "-p", "--test_path", default="" )	
 	( options, arguments ) = parser.parse_args()
 	
 	regression = RunRegression( options.logFile, options.testFile, \
-		options.debug )
+		options.debug, options.test_path )
 	regression.run()
 	regression.report( options.verbose )	
 
