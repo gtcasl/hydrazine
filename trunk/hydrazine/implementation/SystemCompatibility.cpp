@@ -11,9 +11,6 @@
 // Hydrazine includes
 #include <hydrazine/interface/SystemCompatibility.h>
 
-// Standard Library Includes
-#include <string>
-
 #ifdef WIN32
 	#include <windows.h>
 #elif __APPLE__
