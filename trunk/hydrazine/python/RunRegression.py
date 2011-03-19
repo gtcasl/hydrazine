@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+import sys
+
+if sys.version_info >= (3, 0):
+    raise "Python version 3.0 or higher not supported"
+
 ################################################################################
 ##
 ##

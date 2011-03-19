@@ -32,13 +32,11 @@ typedef uint32 Elf32_Word;
 
 typedef uint64 Elf64_Addr;
 typedef uint64 Elf64_Off;
-typedef int32  Elf64_Shalf;
 typedef int32  Elf64_Sword;
 typedef uint32 Elf64_Word;
 typedef int64  Elf64_Sxword;
 typedef uint64 Elf64_Xword;
-typedef uint32 Elf64_Half;
-typedef uint16 Elf64_Quarter;
+typedef uint16 Elf64_Half;
 
 // Object file magic string.
 static const char ElfMagic[] = { 0x7f, 'E', 'L', 'F', '\0' };
@@ -79,24 +77,19 @@ struct Elf32_Ehdr {
 // types (see above).
 struct Elf64_Ehdr {
   unsigned char e_ident[EI_NIDENT];
-  Elf64_Quarter e_type;
-  Elf64_Quarter e_machine;
-  Elf64_Half    e_version;
+  Elf64_Half    e_type;
+  Elf64_Half    e_machine;
+  Elf64_Word    e_version;
   Elf64_Addr    e_entry;
   Elf64_Off     e_phoff;
   Elf64_Off     e_shoff;
-  Elf64_Half    e_flags;
-  Elf64_Quarter e_ehsize;
-  Elf64_Quarter e_phentsize;
-  Elf64_Quarter e_phnum;
-  Elf64_Quarter e_shentsize;
-  Elf64_Quarter e_shnum;
-  Elf64_Quarter e_shstrndx;
-  bool checkMagic() const {
-    return (memcmp(e_ident, ElfMagic, strlen(ElfMagic))) == 0;
-  }
-  unsigned char getFileClass() const { return e_ident[EI_CLASS]; }
-  unsigned char getDataEncoding() const { return e_ident[EI_DATA]; }
+  Elf64_Word    e_flags;
+  Elf64_Half    e_ehsize;
+  Elf64_Half    e_phentsize;
+  Elf64_Half    e_phnum;
+  Elf64_Half    e_shentsize;
+  Elf64_Half    e_shnum;
+  Elf64_Half    e_shstrndx;
 };
 
 // File types
@@ -146,14 +139,14 @@ struct Elf32_Shdr {
 
 // Section header for ELF64
 struct Elf64_Shdr {
-  Elf64_Half  sh_name;
-  Elf64_Half  sh_type;
+  Elf64_Word  sh_name;
+  Elf64_Word  sh_type;
   Elf64_Xword sh_flags;
   Elf64_Addr  sh_addr;
   Elf64_Off   sh_offset;
   Elf64_Xword sh_size;
-  Elf64_Half  sh_link;
-  Elf64_Half  sh_info;
+  Elf64_Word  sh_link;
+  Elf64_Word  sh_info;
   Elf64_Xword sh_addralign;
   Elf64_Xword sh_entsize;
 };
@@ -217,16 +210,6 @@ struct Elf32_Sym {
   unsigned char st_info;  // Symbol's type and binding attributes
   unsigned char st_other; // Must be zero; reserved
   Elf32_Half    st_shndx; // Which section (header table index) it's defined in
-
-  // These accessors and mutators correspond to the ELF32_ST_BIND,
-  // ELF32_ST_TYPE, and ELF32_ST_INFO macros defined in the ELF specification:
-  unsigned char getBinding() const { return st_info >> 4; }
-  unsigned char getType() const { return st_info & 0x0f; }
-  void setBinding(unsigned char b) { setBindingAndType(b, getType()); }
-  void setType(unsigned char t) { setBindingAndType(getBinding(), t); }
-  void setBindingAndType(unsigned char b, unsigned char t) {
-    st_info = (b << 4) + (t & 0x0f);
-  }
 };
 
 // Symbol table entries for ELF64.
@@ -237,16 +220,6 @@ struct Elf64_Sym {
   Elf64_Half      st_shndx; // Which section (header table index) it's defined in
   Elf64_Addr      st_value; // Value or address associated with the symbol
   Elf64_Xword     st_size;  // Size of the symbol
-
-  // These accessors and mutators are identical to those defined for ELF32
-  // symbol table entries.
-  unsigned char getBinding() const { return st_info >> 4; }
-  unsigned char getType() const { return st_info & 0x0f; }
-  void setBinding(unsigned char b) { setBindingAndType(b, getType()); }
-  void setType(unsigned char t) { setBindingAndType(getBinding(), t); }
-  void setBindingAndType(unsigned char b, unsigned char t) {
-    st_info = (b << 4) + (t & 0x0f);
-  }
 };
 
 // Symbol bindings.
@@ -273,16 +246,6 @@ enum {
 struct Elf32_Rel {
   Elf32_Addr r_offset; // Location (file byte offset, or program virtual addr)
   Elf32_Word r_info;   // Symbol table index and type of relocation to apply
-
-  // These accessors and mutators correspond to the ELF32_R_SYM, ELF32_R_TYPE,
-  // and ELF32_R_INFO macros defined in the ELF specification:
-  Elf32_Word getSymbol() const { return (r_info >> 8); }
-  unsigned char getType() const { return (unsigned char) (r_info & 0x0ff); }
-  void setSymbol(Elf32_Word s) { setSymbolAndType(s, getType()); }
-  void setType(unsigned char t) { setSymbolAndType(getSymbol(), t); }
-  void setSymbolAndType(Elf32_Word s, unsigned char t) {
-    r_info = (s << 8) + t;
-  }
 };
 
 // Relocation entry with explicit addend.
@@ -290,34 +253,12 @@ struct Elf32_Rela {
   Elf32_Addr  r_offset; // Location (file byte offset, or program virtual addr)
   Elf32_Word  r_info;   // Symbol table index and type of relocation to apply
   Elf32_Sword r_addend; // Compute value for relocatable field by adding this
-
-  // These accessors and mutators correspond to the ELF32_R_SYM, ELF32_R_TYPE,
-  // and ELF32_R_INFO macros defined in the ELF specification:
-  Elf32_Word getSymbol() const { return (r_info >> 8); }
-  unsigned char getType() const { return (unsigned char) (r_info & 0x0ff); }
-  void setSymbol(Elf32_Word s) { setSymbolAndType(s, getType()); }
-  void setType(unsigned char t) { setSymbolAndType(getSymbol(), t); }
-  void setSymbolAndType(Elf32_Word s, unsigned char t) {
-    r_info = (s << 8) + t;
-  }
 };
 
 // Relocation entry, without explicit addend.
 struct Elf64_Rel {
   Elf64_Addr r_offset; // Location (file byte offset, or program virtual addr).
   Elf64_Xword r_info;   // Symbol table index and type of relocation to apply.
-
-  // These accessors and mutators correspond to the ELF64_R_SYM, ELF64_R_TYPE,
-  // and ELF64_R_INFO macros defined in the ELF specification:
-  Elf64_Xword getSymbol() const { return (r_info >> 32); }
-  unsigned char getType() const {
-    return (unsigned char) (r_info & 0xffffffffL);
-  }
-  void setSymbol(Elf32_Word s) { setSymbolAndType(s, getType()); }
-  void setType(unsigned char t) { setSymbolAndType(getSymbol(), t); }
-  void setSymbolAndType(Elf64_Xword s, unsigned char t) {
-    r_info = (s << 32) + (t&0xffffffffL);
-  }
 };
 
 // Relocation entry with explicit addend.
@@ -325,18 +266,6 @@ struct Elf64_Rela {
   Elf64_Addr  r_offset; // Location (file byte offset, or program virtual addr).
   Elf64_Xword  r_info;   // Symbol table index and type of relocation to apply.
   Elf64_Sxword r_addend; // Compute value for relocatable field by adding this.
-
-  // These accessors and mutators correspond to the ELF64_R_SYM, ELF64_R_TYPE,
-  // and ELF64_R_INFO macros defined in the ELF specification:
-  Elf64_Xword getSymbol() const { return (r_info >> 32); }
-  unsigned char getType() const {
-    return (unsigned char) (r_info & 0xffffffffL);
-  }
-  void setSymbol(Elf64_Xword s) { setSymbolAndType(s, getType()); }
-  void setType(unsigned char t) { setSymbolAndType(getSymbol(), t); }
-  void setSymbolAndType(Elf64_Xword s, unsigned char t) {
-    r_info = (s << 32) + (t&0xffffffffL);
-  }
 };
 
 // Program header for ELF32.
@@ -373,7 +302,7 @@ enum {
   PT_SHLIB   = 5, // Reserved.
   PT_PHDR    = 6, // The program header table itself.
   PT_LOOS    = 0x60000000, // env specific use.
-  PT_HIOS    = 0x6fffffff  // env specific use.
+  PT_HIOS    = 0x6fffffff,  // env specific use.
   PT_LOPROC  = 0x70000000, // Lowest processor-specific program hdr entry type.
   PT_HIPROC  = 0x7fffffff  // Highest processor-specific program hdr entry type.
 };
@@ -383,7 +312,7 @@ enum {
   PF_X        = 1,         // Execute
   PF_W        = 2,         // Write
   PF_R        = 4,         // Read
-  PF_MASKOS   = 0x00ff0000 // Unspecified
+  PF_MASKOS   = 0x00ff0000, // Unspecified
   PF_MASKPROC = 0xff000000 // Unspecified
 };
 
