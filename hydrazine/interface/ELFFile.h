@@ -10,6 +10,10 @@
 // Hydrazine Includes
 #include <hydrazine/interface/ELF.h>
 
+// Standard Library Includes
+#include <vector>
+#include <ostream>
+
 namespace hydrazine
 {
 
@@ -22,7 +26,7 @@ public:
 	{
 	public:
 		/*! \brief Create a new header from a header data struct */
-		Header(void* data = 0, long long unsigned int byte = 0,
+		Header(const void* data = 0,
 			const elf::Elf64_Ehdr& header = elf::Elf64_Ehdr());
 	
 	public:
@@ -35,6 +39,9 @@ public:
 	public:
 		/*! \brief Easier access to the underlying data (section count) */
 		unsigned int sectionHeaders() const;
+
+		/*! \brief Easier access to the underlying data (program count) */
+		unsigned int programHeaders() const;
 		
 	private:
 		/*! \brief The raw data */
@@ -45,13 +52,17 @@ public:
 	class SymbolHeader
 	{
 	public:
-		SectionHeader(void* data = 0, long long unsigned int byte = 0,
+		SymbolHeader(const void* data = 0, long long unsigned int byte = 0,
 			const elf::Elf64_Sym& header = elf::Elf64_Sym());
 	
 	public:
 		/*! \brief Get access to the raw header data */
 		const elf::Elf64_Sym& header() const;
-		
+	
+	public:
+		/*! \brief Get the type */
+		int type() const;
+	
 	private:
 		/*! \brief The raw header data */
 		elf::Elf64_Sym _header;
@@ -61,7 +72,7 @@ public:
 	class SectionHeader
 	{
 	public:
-		SectionHeader(void* data = 0, long long unsigned int byte = 0,
+		SectionHeader(const void* data = 0, long long unsigned int byte = 0,
 			const elf::Elf64_Shdr& header = elf::Elf64_Shdr());
 	
 	public:
@@ -77,7 +88,7 @@ public:
 	class ProgramHeader
 	{
 	public:
-		ProgramHeader(void* data = 0, long long unsigned int byte = 0,
+		ProgramHeader(const void* data = 0, long long unsigned int byte = 0,
 			const elf::Elf64_Phdr& header = elf::Elf64_Phdr());
 	
 	public:
@@ -92,7 +103,7 @@ public:
 
 public:
 	/*! \brief Create a new ELF, bind it to a mmapped or in-memory file */
-	ELFFile(void* fileData = 0);
+	ELFFile(const void* fileData = 0);
 
 public:
 	/*! \brief Get a reference to the header */
@@ -111,8 +122,36 @@ public:
 	ProgramHeader& programHeader(unsigned int header);
 
 public:
+	/*! \brief Get end of the elf file */
+	const void* endOfFile();
+
+public:
+	/*! \brief Get the number of non-null symbols in the ELF file */
+	unsigned int symbols();
+	/*! \brief Get a specific symbol header (the null symbol is skipped) */
+	SymbolHeader& symbolHeader(unsigned int header);
+
+public:
 	/*! \brief Get access to a string within the string table (in range) */
-	const char* getStringAtOffset(long long unsigned int offset) const;
+	const char* getSectionHeaderStringAtOffset(long long unsigned int offset);
+	/*! \brief Get access to a string within the string table (in range) */
+	const char* getSymbolStringAtOffset(long long unsigned int offset);
+
+public:
+	/*! \brief Write out the elf file in a human-readale format */
+	void write(std::ostream& stream); 
+
+public:
+	/*! \brief Get a string representation of a program type */
+	static std::string programTypeToString(int type);
+	/*! \brief Get a string representation of a section type */
+	static std::string sectionTypeToString(int type);
+	/*! \brief Does this section type have a link? */
+	static bool sectionTypeHasLink(int type);
+	/*! \brief Get a string representation of a section linkage */
+	static std::string sectionLinkToString(int type);
+	/*! \brief Get a string representation of a symbol type */
+	static std::string symbolTypeToString(int type);
 
 private:
 	/*! \brief A vector of section headers */
@@ -121,19 +160,46 @@ private:
 	typedef std::vector<ProgramHeader> ProgramHeaderVector;
 	/*! \brief A vector of program headers */
 	typedef std::vector<SymbolHeader> SymbolHeaderVector;
+	/*! \brief A vector of program headers */
+	typedef std::vector<bool> BitVector;
+
+private:
+	/*! \brief Load a program from the header table at the given index */
+	void _loadProgram(unsigned int header);
+	/*! \brief Load a section from the header table at the given index */
+	void _loadSection(unsigned int header);
+	/*! \brief Load a symbol from the symbol table at the given index */
+	void _loadSymbol(unsigned int header);
+	/*! \brief Find the symbol table, set the value of the offset */
+	void _findSymbolTable();
 
 private:
 	/*! \brief A reference to the file data for lazy access */
-	void* _elfdata;
+	const void* _elfdata;
 	/*! \brief The ELF file header */
 	Header _header;
 	/*! \brief The set of sections in the file */
 	SectionHeaderVector _sections;
 	/*! \brief The set of programs in the file */
 	ProgramHeaderVector _programs;
+	/*! \brief Keeps track of the program headers that have been loaded */
+	BitVector _loadedPrograms;
+	/*! \brief Keeps track of the program headers that have been loaded */
+	BitVector _loadedSections;
+	/*! \brief The symbol table */
+	SymbolHeaderVector _symbols;
+	/*! \brief A vector of symbol headers */
+	BitVector _loadedSymbols;
+	/*! \brief The symbol table offset or -1 if unknown */
+	long long unsigned int _symbolTableOffset;
+	/*! \brief The string table for the symbol table */
+	long long unsigned int _symbolStringTableOffset;
+	
 };
 
 }
+
+std::ostream& operator<<(std::ostream& out, hydrazine::ELFFile& elf);
 
 #endif
 
