@@ -10,12 +10,7 @@
 #include "Version.h"
 #include <cassert>
 
-#ifdef HAVE_CONFIGURE_H
 #include <configure.h>
-#else
-#define PACKAGE_VERSION "0.0.0"
-#endif
-
 
 namespace hydrazine
 {
