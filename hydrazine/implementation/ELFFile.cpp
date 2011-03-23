@@ -121,7 +121,7 @@ ELFFile::ELFFile(const void* d)
 	_programs.resize(programs());
 
 	_loadedSections.resize(sections(), false);
-	_sections.resize(sections(), false);
+	_sections.resize(sections());
 
 	report("Loading ELF file: \n" << *this);
 }
