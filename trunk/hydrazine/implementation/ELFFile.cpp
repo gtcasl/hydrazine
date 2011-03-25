@@ -32,9 +32,9 @@ ELFFile::Header::Header(const void* d, const elf::Elf64_Ehdr& h)
 		std::memcpy(&_header, d, sizeof(elf::Elf64_Ehdr));
 	}
 	
-	assertM(_header.e_type == elf::ELFCLASS64,
+	assertM(!checkMagic() || _header.e_type == elf::ELFCLASS64,
 		"Only 64-bit ELF files are supported for now.");
-	assertM(_header.e_ident[5] == elf::ELFDATA2LSB,
+	assertM(!checkMagic() || _header.e_ident[5] == elf::ELFDATA2LSB,
 		"No support for big-endian ELF files." );
 }
 
