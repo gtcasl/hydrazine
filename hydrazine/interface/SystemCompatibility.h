@@ -40,6 +40,8 @@ namespace hydrazine
 	unsigned int getHardwareThreadCount();
 	/*! \brief Get the full path to the named executable */
 	std::string getExecutablePath(const std::string& executableName);
+	/*! \brief The the amount of free physical memory */
+	long long unsigned int getFreePhysicalMemory();
 }
 
 #endif
