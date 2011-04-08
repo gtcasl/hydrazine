@@ -42,6 +42,8 @@ namespace hydrazine
 	std::string getExecutablePath(const std::string& executableName);
 	/*! \brief The the amount of free physical memory */
 	long long unsigned int getFreePhysicalMemory();
+	/*! \brief Has there been an OpenGL context bound to this process */
+	bool isAnOpenGLContextAvailable();
 }
 
 #endif
