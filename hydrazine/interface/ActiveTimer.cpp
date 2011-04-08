@@ -82,11 +82,9 @@ namespace hydrazine
 		}
 		else
 		{
-		
 			//report( " Unlocking mutex, yielding." );
 			mutex.unlock();
-			pthread_yield();
-		
+			boost::this_thread::yield();
 		}
 		
 	}
