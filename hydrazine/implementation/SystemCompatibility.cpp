@@ -5,43 +5,104 @@
 		compilaiton
 */
 
-#ifndef SYSTEM_COMPATIBILITY_H_INCLUDED
-#define SYSTEM_COMPATIBILITY_H_INCLUDED
+#ifndef SYSTEM_COMPATIBILITY_CPP_INCLUDED
+#define SYSTEM_COMPATIBILITY_CPP_INCLUDED
 
-// Standard Library Includes
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
+// Hydrazine includes
+#include <hydrazine/interface/SystemCompatibility.h>
 
-/*****************************************************************************\
-	Standard Library Includes 
-\*****************************************************************************/
-// this is a really horrible hack because unordered_map is declared in std::tr1
-// in visual studio
 #ifdef WIN32
-namespace std
-{
-	template<typename T1, typename T2>
-	class unordered_map : public std::tr1::unordered_map<T1, T2> {};	
-
-	template<typename T1>
-	class unordered_set : public std::tr1::unordered_set<T1> {};
-
-	template<typename T1>
-	T1 move(const T1& t) { return t; }
-}
-
-#else
+	#include <windows.h>
+#elif __APPLE__
+	#include <sys/types.h>
+	#include <sys/sysctl.h>
+#elif __GNUC__
+	#include <GL/glx.h>
+	#include <unistd.h> 
+	#include <sys/sysinfo.h>
+#else 
+	#error "Unknown system/compiler (WIN32, APPLE, and GNUC are supported)."
 #endif
 
 namespace hydrazine
 {
-	/*! \brief Get the number of hardware threads */
-	unsigned int getHardwareThreadCount();
-	/*! \brief Get the full path to the named executable */
-	std::string getExecutablePath(const std::string& executableName);
-	/*! \brief The the amount of free physical memory */
-	long long unsigned int getFreePhysicalMemory();
+	unsigned int getHardwareThreadCount()
+	{
+	#ifdef WIN32
+		SYSTEM_INFO sysinfo;
+		GetSystemInfo(&sysinfo);
+
+		return sysinfo.dwNumberOfProcessors;
+	#elif __APPLE__
+		int nm[2];
+	    size_t len = 4;
+	    uint32_t count;
+
+	    nm[0] = CTL_HW;
+	    nm[1] = HW_AVAILCPU;
+	    sysctl(nm, 2, &count, &len, NULL, 0);
+
+	    if(count < 1)
+	    {
+	        nm[1] = HW_NCPU;
+	        sysctl(nm, 2, &count, &len, NULL, 0);
+	        if(count < 1)
+	        {
+	        	count = 1;
+	        }
+	    }
+	    return count;
+	#elif __GNUC__
+		return sysconf(_SC_NPROCESSORS_ONLN);
+	#endif
+	}
+	
+	std::string getExecutablePath(const std::string& executableName)
+	{
+		#ifdef  __GNUC__
+			return executableName;
+		#else
+			#error "getExecutablePath not implemented for your compiler."
+		#endif
+	}
+	
+	long long unsigned int getFreePhysicalMemory()
+	{
+		#ifdef WIN32
+			MEMORYSTATUSEX status;
+			status.dwLength = sizeof(status);
+			GlobalMemoryStatusEx(&status);
+			return status.ullTotalPhys;
+		#elif __APPLE__
+			int mib[2]; 
+			uint64_t physical_memory; 
+			size_t length; 
+			// Get the Physical memory size 
+			mib[0] = CTL_HW; 
+			mib[1] = HW_USERMEM; // HW_MEMSIZE -> physical memory 
+			length = sizeof(uint64_t); 
+			sysctl(mib, 2, &physical_memory, &length, NULL, 0); 
+			return physical_memory;
+		#elif __GNUC__
+			return get_avphys_pages() * getpagesize();
+		#endif
+	}
+	
+	bool isAnOpenGLContextAvailable()
+	{
+		#ifdef WIN32
+			// TODO fill this in
+			return false;
+		#elif __APPLE__
+			// TODO fill this in
+			return false;
+		#elif __GNUC__
+			GLXContext openglContext = glXGetCurrentContext();
+			return (openglContext != 0);
+		#endif
+	}
+
 }
 
 #endif
+
