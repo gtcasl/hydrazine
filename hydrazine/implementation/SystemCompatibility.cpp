@@ -11,13 +11,17 @@
 // Hydrazine includes
 #include <hydrazine/interface/SystemCompatibility.h>
 
+#include <configure.h>
+
 #ifdef WIN32
 	#include <windows.h>
 #elif __APPLE__
 	#include <sys/types.h>
 	#include <sys/sysctl.h>
 #elif __GNUC__
+	#if HAVE_GLEW
 	#include <GL/glx.h>
+	#endif
 	#include <unistd.h> 
 	#include <sys/sysinfo.h>
 #else 
@@ -97,8 +101,12 @@ namespace hydrazine
 			// TODO fill this in
 			return false;
 		#elif __GNUC__
+			#if HAVE_GLEW
 			GLXContext openglContext = glXGetCurrentContext();
 			return (openglContext != 0);
+			#else
+			return false;
+			#endif
 		#endif
 	}
 
