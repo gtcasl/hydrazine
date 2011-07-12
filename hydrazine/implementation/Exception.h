@@ -19,8 +19,8 @@ namespace hydrazine
 	{
 		public:
 			Exception( const std::string& message );
-			~Exception() throw();
-			const char* what() const throw();
+			virtual ~Exception() throw();
+			virtual const char* what() const throw();
 
 		private:
 			std::string _message;		
