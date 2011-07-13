@@ -5,7 +5,7 @@
 #	\author Gregory Diamos <gregory.diamos@gatech.edu>
 #	\date Wednesday May 12, 2010
 #	\brief A script that performs CUDA to C++ conversion
-##
+################################################################################
 
 import os
 from optparse import OptionParser
