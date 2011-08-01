@@ -10,7 +10,7 @@
 #ifndef LOW_LEVEL_TIMER_CPP_INCLUDED
 #define LOW_LEVEL_TIMER_CPP_INCLUDED
 
-#ifdef WIN32
+#ifdef _WIN32
 	#include <windows.h>
 #elif __APPLE__
 	#include <mach/mach_time.h>
@@ -82,7 +82,7 @@ namespace hydrazine
 	{
 		LowLevelTimer::Cycle LowLevelTimer::rdtsc()
 		{
-#ifdef WIN32
+#ifdef _WIN32
 			Cycle cycles = 0;
 			Cycle frequency = 0;
 			QueryPerformanceFrequency((LARGE_INTEGER*) &frequency);
