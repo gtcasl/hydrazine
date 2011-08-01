@@ -63,11 +63,7 @@ namespace hydrazine
 	
 	std::string getExecutablePath(const std::string& executableName)
 	{
-		#ifdef  __GNUC__
-			return executableName;
-		#else
-			#error "getExecutablePath not implemented for your compiler."
-		#endif
+		return executableName;
 	}
 	
 	long long unsigned int getFreePhysicalMemory()
