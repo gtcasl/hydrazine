@@ -91,8 +91,8 @@ namespace hydrazine
 	bool isAnOpenGLContextAvailable()
 	{
 		#ifdef _WIN32
-			// TODO fill this in
-			return false;
+			HGLRC handle = wglGetCurrentContext();
+			return (handle != NULL);
 		#elif __APPLE__
 			// TODO fill this in
 			return false;
