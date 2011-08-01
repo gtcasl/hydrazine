@@ -13,7 +13,7 @@
 
 #include <configure.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 	#include <windows.h>
 #elif __APPLE__
 	#include <sys/types.h>
@@ -32,7 +32,7 @@ namespace hydrazine
 {
 	unsigned int getHardwareThreadCount()
 	{
-	#ifdef WIN32
+	#ifdef _WIN32
 		SYSTEM_INFO sysinfo;
 		GetSystemInfo(&sysinfo);
 
@@ -72,7 +72,7 @@ namespace hydrazine
 	
 	long long unsigned int getFreePhysicalMemory()
 	{
-		#ifdef WIN32
+		#ifdef _WIN32
 			MEMORYSTATUSEX status;
 			status.dwLength = sizeof(status);
 			GlobalMemoryStatusEx(&status);
@@ -94,7 +94,7 @@ namespace hydrazine
 	
 	bool isAnOpenGLContextAvailable()
 	{
-		#ifdef WIN32
+		#ifdef _WIN32
 			// TODO fill this in
 			return false;
 		#elif __APPLE__
