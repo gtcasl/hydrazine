@@ -28,6 +28,7 @@ namespace hydrazine
 	To bit_cast( const From & from )
 	{
 		UnionCast< To, From > cast;
+		cast.to = 0;
 		cast.from = from;
 		return cast.to;
 	}
