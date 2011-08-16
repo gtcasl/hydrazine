@@ -14,6 +14,7 @@
 #define XML_ARGUMENT_PARSER_H_INCLUDED
 
 #include "XmlParser.h"
+#include <sstream>
 
 namespace hydrazine
 {
