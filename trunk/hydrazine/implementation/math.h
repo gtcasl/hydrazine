@@ -7,6 +7,7 @@
 *	\date : 9/27/2007
 *	\date : 10/24/2007 : added exceptions
 *	\date : 5/27/2010 : added extended precision multiply
+*   \date : 8/26/2011 : added fenv
 *
 */
 
