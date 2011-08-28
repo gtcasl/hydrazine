@@ -16,21 +16,6 @@
 /*****************************************************************************\
 	Standard Library Includes 
 \*****************************************************************************/
-// this is a really horrible hack because unordered_map is declared in std::tr1
-// in visual studio 2008
-#if defined(_WIN32) && defined(_MSV_VER) && _MSV_VER<1600
-namespace std
-{
-	template<typename T1, typename T2>
-	class unordered_map : public std::tr1::unordered_map<T1, T2> {};	
-
-	template<typename T1>
-	class unordered_set : public std::tr1::unordered_set<T1> {};
-
-	template<typename T1>
-	T1 move(const T1& t) { return t; }
-}
-#endif
 
 namespace hydrazine
 {
@@ -45,3 +30,4 @@ namespace hydrazine
 }
 
 #endif
+
