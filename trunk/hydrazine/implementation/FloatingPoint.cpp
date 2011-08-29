@@ -81,7 +81,25 @@ float nearbyintf(float value)
 	#endif
 }
 
+double nearbyintf(double value)
+{
+	#ifndef _WIN32
+	return std::nearbyint(value);
+	#else
+	return value; // TODO fix this
+	#endif
+}
+
 float trunc(float value)
+{
+	#ifndef _WIN32
+	return std::trunc(value);
+	#else
+	return value; // TODO fix this
+	#endif
+}
+
+double trunc(double value)
 {
 	#ifndef _WIN32
 	return std::trunc(value);
