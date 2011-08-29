@@ -38,8 +38,12 @@ namespace hydrazine
 
 	/*! \brief Round to nearest int */
 	float nearbyintf(float value);
+	/*! \brief Round to nearest int */
+	double nearbyintf(double value);
 	/*! \brief Round to negative infinity */
 	float trunc(float value);
+	/*! \brief Round to negative infinity */
+	double trunc(double value);
 
 	/*! \brief two to the power of */
 	float exp2f(float value);
