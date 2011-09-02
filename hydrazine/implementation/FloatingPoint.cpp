@@ -68,7 +68,7 @@ bool isnormal(float value)
 	#ifndef _WIN32
 	return std::isnormal(value);
 	#else
-	return ::_fpclass(x) & (_FPCLASS_NN | _FPCLASS_PN);
+	return ::_fpclass(value) & (_FPCLASS_NN | _FPCLASS_PN);
 	#endif
 }
 
@@ -122,7 +122,7 @@ float log2f(float value)
 	#ifndef _WIN32
 	return std::log2f(value);
 	#else
-	return ::logf(x) * 1.44269504088896340736f;
+	return ::logf(value) * 1.44269504088896340736f;
 	#endif
 }
 
