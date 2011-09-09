@@ -404,13 +404,12 @@ namespace hydrazine
 		else
 		{	
 			#ifdef WIN_32
-			unsigned int code = 0;
+			DWORD code = 0;
 			GetExitCodeThread(_thread->native_handle(), &code)
 			return code != STILL_ACTIVE;
 			#else
 			return false;
 			#endif
-			return boost::thread::id() == _thread->get_id();
 		}
 	}
 	
