@@ -72,7 +72,7 @@ namespace hydrazine
 			{
 				_condition.wait( lock );
 			}
-			}
+		}
 			
 		lock.unlock();
 		
@@ -389,6 +389,18 @@ namespace hydrazine
 	bool Thread::started() const
 	{
 		return _running;
+	}
+	
+	bool Thread::killed() const
+	{
+		if(!started())
+		{
+			return true;
+		}
+		else
+		{	
+			return boost::thread::id() == _thread->get_id();
+		}
 	}
 	
 	Thread* Thread::find( Thread::Id id )

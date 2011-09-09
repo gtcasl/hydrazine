@@ -307,6 +307,12 @@ namespace hydrazine
 			*/
 			bool started() const;
 			
+			/*! \brief Was the thread killed?
+			
+				\return true if it has been killed
+			*/
+			bool killed() const;
+			
 			/*! \brief Get a pointer to a thread in the group associated with a 
 				specific id.
 				
