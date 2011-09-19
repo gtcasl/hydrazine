@@ -16,7 +16,7 @@
 #include <hydrazine/implementation/debug.h>
 #include <hydrazine/implementation/Exception.h>
 
-#ifdef WIN_32
+#ifdef _WIN32
 #include <windows.h>
 #endif
 
