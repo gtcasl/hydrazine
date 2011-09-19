@@ -403,9 +403,9 @@ namespace hydrazine
 		}
 		else
 		{	
-			#ifdef WIN_32
+			#ifdef _WIN32
 			DWORD code = 0;
-			GetExitCodeThread(_thread->native_handle(), &code)
+			GetExitCodeThread(_thread->native_handle(), &code);
 			return code != STILL_ACTIVE;
 			#else
 			return false;
