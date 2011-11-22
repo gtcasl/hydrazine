@@ -25,7 +25,7 @@ namespace hydrazine
 	void ArgumentParser::description( const std::string& d )
 	{
 		std::string desc = " Description: ";
-		std::stringstream stream( d );
+		std::stringstream stream( d );	
 		int repetition = MESSAGE_OFFSET - ( int )desc.size();
 		std::string prefix( MAX( repetition, 0 ), ' ' );
 		std::string regularPrefix( MESSAGE_OFFSET, ' ' );
