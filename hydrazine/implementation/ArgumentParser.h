@@ -207,6 +207,10 @@ namespace hydrazine
 			            }
 			        }
 			    }
+			    else
+			    {
+			    	continue;
+			    }
 			}
 			
 			report( "Searching for " << identifier << " in " << str );
