@@ -76,11 +76,15 @@ namespace hydrazine
 	template< typename type >
 	type bitInsert( type value, unsigned int position );
 
-	/*! \brief Find the leading bit in the operand */
+	/*! \brief Extract a bit field */
+	template< typename type >
+	type bfe( type value, unsigned int position, unsigned int length, bool isSigned );
+
+    /*! \brief Compute the number of bits set in the operand */
 	template< typename type >
 	unsigned int bfind( type value, bool shiftAmount );
-
-	/*! \brief Compute the number of bits set in the operand */
+	
+    /*! \brief Compute the number of bits set in the operand */
 	template< typename type >
 	unsigned int popc( type value );
 
@@ -248,6 +252,31 @@ namespace hydrazine
 		
 		return result;
 	}
+	
+    template< typename type >
+    type bfe( type value , unsigned int pos, unsigned int len, bool isSigned)
+    {
+      pos = pos & 0xff;
+      len = len & 0xff;
+      type result = 0;
+      unsigned int msb = sizeof( type ) * 8 - 1;
+      unsigned int spos = ((pos + len - 1) > msb) ? msb : pos + len - 1;
+      type sbit = (!isSigned || (len==0)) ? 0 : bitExtract(value,spos);
+
+      for(unsigned int i = 0 ; i<=msb; ++i)
+      {
+        if(i < len && (pos + i)<=msb) 
+        {
+          result = bitInsert(result, bitExtract(value,pos + i),i);
+        }
+        else
+        {
+          result = bitInsert(result, sbit, i); 
+        }
+      }
+
+      return result;
+    }
 
 	template< typename type >
 	type bitFieldInsert( type a, type b, 
