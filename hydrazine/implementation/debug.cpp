@@ -13,7 +13,7 @@
 #ifndef DEBUG_CPP_INCLUDED
 #define DEBUG_CPP_INCLUDED
 
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 
 #include <configure.h>
 #ifdef HAVE_MPICXX

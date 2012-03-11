@@ -14,9 +14,9 @@
 #define XML_PARSER_CPP_INCLUDED
 
 #include "XmlParser.h"
-#include <hydrazine/implementation/Exception.h>
+#include <hydrazine/interface/Exception.h>
 
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE

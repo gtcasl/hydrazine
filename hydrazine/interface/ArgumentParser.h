@@ -14,7 +14,7 @@
 #include "macros.h"
 #include <cassert>
 #include "debug.h"
-#include <hydrazine/interface/string.h>
+#include <hydrazine/implementation/string.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE 

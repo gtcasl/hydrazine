@@ -7,8 +7,8 @@
 #ifndef STRING_CPP_INCLUDED
 #define STRING_CPP_INCLUDED
 
-#include <hydrazine/implementation/string.h>
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/string.h>
+#include <hydrazine/interface/debug.h>
 
 namespace hydrazine
 {
