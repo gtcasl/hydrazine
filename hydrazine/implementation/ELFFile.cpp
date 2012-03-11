@@ -9,7 +9,7 @@
 
 // Hydrazine Includes
 #include <hydrazine/interface/ELFFile.h>
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 
 // Standard Library Includes
 #include <cstring>

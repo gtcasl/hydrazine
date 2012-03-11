@@ -14,10 +14,10 @@
 #define XML_LEXER_CPP_INCLUDED
 
 #include "XmlLexer.h"
-#include <hydrazine/implementation/Exception.h>
+#include <hydrazine/interface/Exception.h>
 #include <cstring>
 
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE

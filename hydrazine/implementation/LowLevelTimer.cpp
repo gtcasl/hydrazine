@@ -16,7 +16,7 @@
 	#include <mach/mach_time.h>
 #endif
 
-#include <hydrazine/implementation/LowLevelTimer.h>
+#include <hydrazine/interface/LowLevelTimer.h>
 
 namespace hydrazine
 {
