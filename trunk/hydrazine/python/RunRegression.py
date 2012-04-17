@@ -211,7 +211,7 @@ class RunRegression:
 			parameters = currentTest.split();
 			if len( parameters ) == 0 :
 				continue
-			if parameters[0] != "" and parameters[0] != "#":
+			if parameters[0] != "" and parameters[0][0] != '#':
 				logging.info( "  " + os.path.abspath( parameters[0] ) )
 				if( os.path.isfile( os.path.abspath( parameters[0] ) ) ):
 					self.tests.add( Test( os.path.abspath( parameters[0] ), \
