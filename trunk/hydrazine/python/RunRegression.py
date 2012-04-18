@@ -70,6 +70,8 @@ class Test:
 		for parameter in self.parameters:
 			if parameter.find("CUDA_SDK_STYLE") != -1:
 				self.style = "CUDA_SDK_STYLE"
+			elif parameter.find("PARBOIL_STYLE") != -1:
+				self.style = "PARBOIL_STYLE"
 			else:
 				self.arguments += parameter + " "
 				
@@ -105,9 +107,21 @@ class Test:
 				self.status = "Failed"
 				break
 	
+	def parseParboilStyle( self, message ):
+		self.status = "Did not complete."
+		self.passed = False
+		
+		for line in message.splitlines():
+			line = line.strip("\n")
+			if( re.search( "GPU:", line ) != None ):
+				self.passed = True
+				self.status = "Passed"
+	
 	def parseResult( self, message ):
 		if self.style == "CUDA_SDK_STYLE":
 			self.parseCudaSdkStyle(message)
+		elif self.style == "PARBOIL_STYLE":
+			self.parseParboilStyle(message)
 		else:
 			self.parseDefault(message)
 							
@@ -119,7 +133,7 @@ class Test:
 			+ " " + self.arguments )
 		tempName = self.randomString() + ".tmp"
 		command = "echo \"\u001b\" | " + self.path + " " + self.arguments
-		if self.style != "CUDA_SDK_STYLE":
+		if self.style != "CUDA_SDK_STYLE" and self.style != "PARBOIL_STYLE":
 			command += " -v"
 		command += " >" + tempName + " 2>&1"
 		logging.debug( "The command was " + command )
