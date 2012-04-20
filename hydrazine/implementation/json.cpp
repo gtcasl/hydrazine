@@ -302,11 +302,11 @@ json::Value *json::Parser::parse_value(std::istream &input) {
 			putback(input, ch);
 			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch == '_')) {
 				json::String *identifier = parse_identifier(input);
-				if (identifier->as_string() == "true") {
+				if (identifier->as_string() == "true" || identifier->as_string() == "True") {
 					delete identifier;
 					return new Value(Value::True);
 				}
-				else if (identifier->as_string() == "false") {
+				else if (identifier->as_string() == "false" || identifier->as_string() == "False") {
 					delete identifier;
 					return new Value(Value::False);
 				}
