@@ -13,6 +13,8 @@
 // Standard Library Includes
 #include <cfloat>
 #include <cmath>
+#include <cstdint>
+#include <cassert>
 
 namespace hydrazine
 {
@@ -76,7 +78,7 @@ float nearbyintf(float value)
 {
 	float result = 0.0f;
 	
-	if(0.5f == (value – (float)int64_t(value)))
+	if(0.5f == (value - (float)int64_t(value)))
 	{
 		// Round up if odd, down if even
 		result = (int64_t(value) & 1) ?  /* if odd */
@@ -90,7 +92,7 @@ float nearbyintf(float value)
 	}
 	
 	#ifndef _WIN32
-	return assert(result == std::nearbyintf(value));
+	assert(result == std::nearbyintf(value));
 	#endif
 	
 	return result;
