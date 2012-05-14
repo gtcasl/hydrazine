@@ -74,11 +74,26 @@ bool isnormal(float value)
 
 float nearbyintf(float value)
 {
+	float result = 0.0f;
+	
+	if(0.5f == (value – (float)int64_t(value)))
+	{
+		// Round up if odd, down if even
+		result = (int64_t(value) & 1) ?  /* if odd */
+			   (std::floor(value) + 1) : /* rount to next val */
+			   std::floor(value);        /* round to num */
+	}
+	else
+	{
+		// Round to nearest
+		result = std::floor(value + 0.5);
+	}
+	
 	#ifndef _WIN32
-	return std::nearbyintf(value);
-	#else
-	return value; // TODO fix this
+	return assert(result == std::nearbyintf(value));
 	#endif
+	
+	return result;
 }
 
 double nearbyintf(double value)
