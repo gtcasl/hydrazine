@@ -9,12 +9,12 @@
 
 // Hydrazine Includes
 #include <hydrazine/interface/FloatingPoint.h>
+#include <hydrazine/interface/debug.h>
 
 // Standard Library Includes
 #include <cfloat>
 #include <cmath>
 #include <cstdint>
-#include <cassert>
 
 namespace hydrazine
 {
@@ -99,7 +99,9 @@ float nearbyintf(float value)
 	}
 	
 	#ifndef _WIN32
-	assert(result == std::nearbyintf(value));
+	assertM(result == std::nearbyintf(value) << "For nearbyintf(" << value
+		<< ") - this implementation produced " << result
+		<< " while std::nearbyintf procued " << std::nearbyintf(value));
 	#endif
 	
 	return result;
