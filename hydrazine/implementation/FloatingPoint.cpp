@@ -99,7 +99,7 @@ float nearbyintf(float value)
 	}
 	
 	#ifndef _WIN32
-	assertM(result == std::nearbyintf(value) << "For nearbyintf(" << value
+	assertM(result == std::nearbyintf(value), "For nearbyintf(" << value
 		<< ") - this implementation produced " << result
 		<< " while std::nearbyintf procued " << std::nearbyintf(value));
 	#endif
