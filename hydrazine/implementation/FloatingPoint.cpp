@@ -81,14 +81,14 @@ float nearbyintf(float value)
 	if(0.5f == (value - std::floor(value)))
 	{
 		// Round up if odd, down if even
-		result = (std::floor(value) & 1) ?     /* if odd */
+		result = (uint64_t(std::floor(value)) & 1) ?     /* if odd */
 			   (std::floor(value) + 1.0f) : /* rount to next val */
 			   std::floor(value);           /* round to num */
 	}
 	else if(-0.5 == (value + std::ceil(value)))
 	{
 		// Round down if odd, up if even
-		result = (std::ceil(value) & 1) ?    /* if odd */
+		result = (uint64_t(std::ceil(value)) & 1) ?    /* if odd */
 			   (std::ceil(value) - 1.0f) : /* rount to next val */
 			   std::ceil(value);           /* round to num */
 	}
