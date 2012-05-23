@@ -7,6 +7,8 @@
 #ifndef META_PROGRAMMING_H_INCLUDED
 #define META_PROGRAMMING_H_INCLUDED
 
+#include <cstdint>
+
 namespace hydrazine
 {
 
@@ -19,31 +21,31 @@ class SignedToUnsigned
 };
 
 template<>
-class SignedToUnsigned<char>
+class SignedToUnsigned<int8_t>
 {
 	public:
-		typedef unsigned char type;
+		typedef uint8_t type;
 };
 
 template<>
-class SignedToUnsigned<short>
+class SignedToUnsigned<int16_t>
 {
 	public:
-		typedef unsigned short type;
+		typedef uint16_t type;
 };
 
 template<>
-class SignedToUnsigned<int>
+class SignedToUnsigned<int32_t>
 {
 	public:
-		typedef unsigned int type;
+		typedef uint32_t type;
 };
 
 template<>
-class SignedToUnsigned<long long int>
+class SignedToUnsigned<int64_t>
 {
 	public:
-		typedef long long unsigned int type;
+		typedef uint64_t type;
 };
 
 /*! \brief Determine if an integer type is negative */
