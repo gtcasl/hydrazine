@@ -141,6 +141,10 @@ namespace hydrazine
 			{
 				result.push_back( ']' );
 			}
+			else if( *fi == '|' )
+			{
+				result.push_back( '/' );
+			}
 			else 
 			{
 				result.push_back( *fi );

@@ -95,7 +95,14 @@ float nearbyintf(float value)
 	else
 	{
 		// Round to nearest
-		result = std::floor(value + 0.5);
+		if(value < 0.0f)
+		{
+			result = std::ceil(value - 0.5);
+		}
+		else
+		{
+			result = std::floor(value + 0.5);
+		}
 	}
 	
 	#ifndef _WIN32
