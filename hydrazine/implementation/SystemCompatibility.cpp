@@ -24,6 +24,7 @@
 	#endif
 	#include <unistd.h> 
 	#include <sys/sysinfo.h>
+	#include <cxxabi.h>
 #else 
 	#error "Unknown system/compiler (WIN32, APPLE, and GNUC are supported)."
 #endif
@@ -103,6 +104,27 @@ namespace hydrazine
 			#else
 			return false;
 			#endif
+		#endif
+	}
+	
+	std::string demangleCXXString(const std::string& string)
+	{
+		#ifdef _WIN32
+			// TODO fill this in
+			return string;
+		#elif __APPLE__
+			// TODO fill this in
+			return string;
+		#elif __GNUC__
+			int status = 0;
+			std::string name = abi::__cxa_demangle(string.c_str(),
+				0, 0, &status);
+			if(status < 0)
+			{
+				name = string;
+			}
+			
+			return name;
 		#endif
 	}
 
