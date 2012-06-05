@@ -27,6 +27,9 @@ namespace hydrazine
 	long long unsigned int getFreePhysicalMemory();
 	/*! \brief Has there been an OpenGL context bound to this process */
 	bool isAnOpenGLContextAvailable();
+	/*! \brief Demangle a string */
+	std::string demangleCXXString(const std::string& string);
+
 }
 
 #endif
