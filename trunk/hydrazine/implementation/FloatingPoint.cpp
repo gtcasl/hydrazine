@@ -78,6 +78,9 @@ float nearbyintf(float value)
 {
 	float result = 0.0f;
 	
+	#ifndef _WIN32
+	result = std::nearbyintf(value);
+	#else
 	if(0.5f == (value - std::floor(value)))
 	{
 		// Round up if odd, down if even
@@ -104,11 +107,7 @@ float nearbyintf(float value)
 			result = std::floor(value + 0.5);
 		}
 	}
-	
-	#ifndef _WIN32
-	assertM(result == std::nearbyintf(value), "For nearbyintf(" << value
-		<< ") - this implementation produced " << result
-		<< " while std::nearbyintf procued " << std::nearbyintf(value));
+
 	#endif
 	
 	return result;
