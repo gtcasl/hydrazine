@@ -177,30 +177,30 @@ namespace hydrazine
 	};
 
 	template< >
-	class InvertIfNegative<int>
+	class InvertIfNegative<int32_t>
 	{
 	public:
-		int invert(const int& t) { return t < 0 ? -t : t; }
+		int32_t invert(const int32_t& t) { return t < 0 ? -t : t; }
 	};
 
 	template< >
-	class InvertIfNegative<long long int>
+	class InvertIfNegative<int64_t>
 	{
 	public:
-		long long int invert(const long long int& t) { return t < 0 ? -t : t; }
+		int64_t invert(const int64_t& t) { return t < 0 ? -t : t; }
 	};
 
 	template< typename type >
 	unsigned int bfind( type value, bool shiftAmount )
 	{
 		unsigned int d = -1;
-		long long int msb = 8 * sizeof( type ) - 1;
+		int64_t msb = 8 * sizeof( type ) - 1;
 		
 		InvertIfNegative< type > inverter;
 		
 		value = inverter.invert( value );
 		
-		for( long long int i = msb; i >= 0; --i )
+		for( int64_t i = msb; i >= 0; --i )
 		{
 			if( value & ( 1ULL << i ) )
 			{
