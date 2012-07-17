@@ -14,7 +14,7 @@
 #define ACTIVE_TIMER_H_INCLUDED
 
 #include <boost/thread.hpp>
-#include <hydrazine/implementation/Timer.h>
+#include <hydrazine/interface/Timer.h>
 #include <map>
 
 #ifndef ACTIVE_TIMER_STACK_SIZE

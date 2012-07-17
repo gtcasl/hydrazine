@@ -13,8 +13,8 @@
 
 #include "Thread.h"
 
-#include <hydrazine/implementation/debug.h>
-#include <hydrazine/implementation/Exception.h>
+#include <hydrazine/interface/debug.h>
+#include <hydrazine/interface/Exception.h>
 
 #ifdef _WIN32
 #include <windows.h>

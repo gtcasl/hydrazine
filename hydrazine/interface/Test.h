@@ -8,8 +8,9 @@
 #ifndef TEST_H_INCLUDED
 #define TEST_H_INCLUDED
 
-#include <hydrazine/implementation/Timer.h>
+#include <hydrazine/interface/Timer.h>
 #include <cassert>
+#include <sstream>
 #include <boost/random/mersenne_twister.hpp>
 
 /*! \brief A namespace for creating test programs for individual classes. */

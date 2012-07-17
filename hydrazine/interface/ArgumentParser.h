@@ -11,10 +11,10 @@
 #define SCREEN_WIDTH 80
 
 #include <sstream>
-#include "macros.h"
+#include <hydrazine/interface/macros.h>
 #include <cassert>
 #include "debug.h"
-#include <hydrazine/implementation/string.h>
+#include <hydrazine/interface/string.h>
 
 #ifdef REPORT_BASE
 #undef REPORT_BASE 

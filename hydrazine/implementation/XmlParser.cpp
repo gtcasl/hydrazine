@@ -13,7 +13,7 @@
 #ifndef XML_PARSER_CPP_INCLUDED
 #define XML_PARSER_CPP_INCLUDED
 
-#include "XmlParser.h"
+#include <hydrazine/interface/XmlParser.h>
 #include <hydrazine/interface/Exception.h>
 
 #include <hydrazine/interface/debug.h>
