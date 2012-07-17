@@ -24,7 +24,6 @@
 #include <implementation/XmlTree.h>
 
 #include <interface/Configurable.h>
-#include <interface/Stringable.h>
 #include <interface/Test.h>
 #include <interface/Thread.h>
 #include <interface/Version.h>

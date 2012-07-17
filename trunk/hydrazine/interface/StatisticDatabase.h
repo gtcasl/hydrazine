@@ -8,7 +8,6 @@
 #ifndef STATISTIC_DATABSE_H_INCLUDED
 #define STATISTIC_DATABSE_H_INCLUDED
 
-#include <hydrazine/interface/Clonable.h>
 #include <hydrazine/interface/SystemCompatibility.h>
 
 #define STATISTIC_INVALID_TYPE 0xffffffff
@@ -21,12 +20,12 @@ namespace hydrazine
 		\brief A collection of different type of statistics to support 
 			aggregation across different types.	
 	*/
-	class StatisticDatabase : public Stringable
+	class StatisticDatabase
 	{
 	
 		public:		
 			/*!	\brief A collection of information of a given type */
-			class Statistic : public Clonable
+			class Statistic
 			{			
 				public:				
 					/*!	\brief A unique type for a derived class of Statistic */
@@ -59,7 +58,7 @@ namespace hydrazine
 					virtual void aggregate( const Statistic& statistic );
 					
 				public:
-					virtual hydrazine::Clonable* clone( bool copy = true ) const; 
+					virtual Statistic* clone( bool copy = true ) const; 
 			
 			};
 			

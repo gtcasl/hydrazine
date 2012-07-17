@@ -12,7 +12,6 @@
 #define TIMER_H_INCLUDED
 
 #include <hydrazine/implementation/LowLevelTimer.h>
-#include <hydrazine/interface/Stringable.h>
 
 /*!
 	\brief a namespace for hydrazine classes and functions
@@ -21,7 +20,7 @@ namespace hydrazine
 {
 
 
-	class Timer : public LowLevelTimer, public Stringable
+	class Timer : public LowLevelTimer
 	{
 		public:	
 			std::string toString() const;
