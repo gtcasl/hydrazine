@@ -9,6 +9,7 @@
 
 #include "Version.h"
 #include <cassert>
+#include <sstream>
 
 #include <configure.h>
 

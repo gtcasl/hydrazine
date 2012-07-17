@@ -8,7 +8,6 @@
 #ifndef TEST_H_INCLUDED
 #define TEST_H_INCLUDED
 
-#include "Stringable.h"
 #include <hydrazine/implementation/Timer.h>
 #include <cassert>
 #include <boost/random/mersenne_twister.hpp>

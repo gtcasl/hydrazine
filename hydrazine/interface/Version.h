@@ -7,13 +7,13 @@
 #ifndef VERSION_H_INCLUDED
 #define VERSION_H_INCLUDED
 
-#include "Stringable.h"
+#include <string>
 
 namespace hydrazine
 {
 
 	/*!	\brief A class to represent a version of a package */
-	class Version : public Stringable
+	class Version
 	{
 	
 		public:
