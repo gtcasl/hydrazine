@@ -11,8 +11,8 @@
 #define STATISTIC_DATABSE_CPP_INCLUDED
 
 #include <hydrazine/interface/StatisticDatabase.h>
-#include <hydrazine/implementation/macros.h>
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/macros.h>
+#include <hydrazine/interface/debug.h>
 #include <cassert>
 
 #ifdef REPORT_BASE

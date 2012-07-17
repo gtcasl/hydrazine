@@ -13,15 +13,15 @@
 #ifndef LIB_COMMON_H_INCLUDED
 #define LIB_COMMON_H_INCLUDED
 
-#include <implementation/ArgumentParser.h>
-#include <implementation/Exception.h>
-#include <implementation/debug.h>
-#include <implementation/macros.h>
-#include <implementation/Timer.h>
-#include <implementation/XmlArgumentParser.h>
-#include <implementation/XmlLexer.h>
-#include <implementation/XmlParser.h>
-#include <implementation/XmlTree.h>
+#include <interface/ArgumentParser.h>
+#include <interface/Exception.h>
+#include <interface/debug.h>
+#include <interface/macros.h>
+#include <interface/Timer.h>
+#include <interface/XmlArgumentParser.h>
+#include <interface/XmlLexer.h>
+#include <interface/XmlParser.h>
+#include <interface/XmlTree.h>
 
 #include <interface/Configurable.h>
 #include <interface/Test.h>
