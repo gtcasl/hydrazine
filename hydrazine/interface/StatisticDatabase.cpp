@@ -48,6 +48,11 @@ namespace hydrazine
 	
 	}
 	
+	std::string	StatisticDatabase::Statistic::toString() const
+	{
+		return "";
+	}
+	
 	StatisticDatabase::Generator::Generator( StatisticDatabase& database ) : 
 		_database( database ), _databaseRegistered( &database != 0 )
 	{
