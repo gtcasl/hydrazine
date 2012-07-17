@@ -10,7 +10,7 @@
 #ifndef EXCEPTION_CPP_INCLUDED
 #define EXCEPTION_CPP_INCLUDED
 
-#include "Exception.h"
+#include <hydrazine/interface/Exception.h>
 
 
 namespace hydrazine

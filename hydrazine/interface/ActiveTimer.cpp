@@ -14,7 +14,7 @@
 #define ACTIVE_TIMER_CPP_INCLUDED
 
 #include "ActiveTimer.h"
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 #include <cassert>
 
 #ifdef REPORT_BASE

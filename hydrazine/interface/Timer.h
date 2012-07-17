@@ -11,7 +11,8 @@
 #ifndef TIMER_H_INCLUDED
 #define TIMER_H_INCLUDED
 
-#include <hydrazine/implementation/LowLevelTimer.h>
+#include <hydrazine/interface/LowLevelTimer.h>
+#include <string>
 
 /*!
 	\brief a namespace for hydrazine classes and functions
