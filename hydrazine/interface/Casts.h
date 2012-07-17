@@ -8,7 +8,7 @@
 #ifndef CASTS_H_INCLUDED
 #define CASTS_H_INCLUDED
 
-#include <hydrazine/implementation/debug.h>
+#include <hydrazine/interface/debug.h>
 
 namespace hydrazine
 {
