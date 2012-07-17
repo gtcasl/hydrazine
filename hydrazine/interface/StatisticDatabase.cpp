@@ -40,7 +40,8 @@ namespace hydrazine
 	
 	}
 	
-	hydrazine::Clonable* StatisticDatabase::Statistic::clone( bool copy ) const
+	hydrazine::StatisticDatabase::Statistic*
+		StatisticDatabase::Statistic::clone( bool copy ) const
 	{
 	
 		return new Statistic( type, id );
@@ -94,8 +95,8 @@ namespace hydrazine
 		assert( map->second.count( statistic->id ) == 0 );
 		
 		map->second.insert( std::make_pair( statistic->id, 
-			static_cast< Statistic* >( statistic->clone( true ) ) ) );
-		++_size;		
+			statistic->clone( true ) ) );
+		++_size;
 	}
 	
 	const StatisticDatabase::IdMap& 
