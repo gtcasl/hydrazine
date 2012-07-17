@@ -13,7 +13,7 @@
 #ifndef XML_LEXER_CPP_INCLUDED
 #define XML_LEXER_CPP_INCLUDED
 
-#include "XmlLexer.h"
+#include <hydrazine/interface/XmlLexer.h>
 #include <hydrazine/interface/Exception.h>
 #include <cstring>
 

@@ -10,7 +10,8 @@
 #ifndef TIMER_CPP_INCLUDED
 #define TIMER_CPP_INCLUDED
 
-#include "Timer.h"
+#include <hydrazine/interface/Timer.h>
+#include <sstream>
 
 namespace hydrazine
 {

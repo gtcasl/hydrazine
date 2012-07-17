@@ -13,7 +13,7 @@
 #ifndef XML_ARGUMENT_PARSER_CPP_INCLUDED
 #define XML_ARGUMENT_PARSER_CPP_INCLUDED
 
-#include "XmlArgumentParser.h"
+#include <hydrazine/interface/XmlArgumentParser.h>
 
 namespace hydrazine
 {

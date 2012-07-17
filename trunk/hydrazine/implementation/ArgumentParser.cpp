@@ -5,7 +5,7 @@
 #ifndef ARGUMENT_PARSER_CPP_INCLUDED
 #define ARGUMENT_PARSER_CPP_INCLUDED
 
-#include "ArgumentParser.h"
+#include <hydrazine/interface/ArgumentParser.h>
 
 // Standard Library Includes
 #include <cstdlib>

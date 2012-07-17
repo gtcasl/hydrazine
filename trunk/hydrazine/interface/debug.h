@@ -16,7 +16,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
-#include <hydrazine/implementation/Timer.h>
+#include <hydrazine/interface/Timer.h>
 
 namespace hydrazine
 {
