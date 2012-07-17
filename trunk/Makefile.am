@@ -34,9 +34,7 @@ libhydralize_a_SOURCES = \
 	hydrazine/implementation/json.cpp \
 	hydrazine/interface/Configurable.cpp \
 	hydrazine/interface/Test.cpp \
-	hydrazine/interface/Stringable.cpp \
 	hydrazine/interface/ActiveTimer.cpp \
-	hydrazine/interface/Clonable.cpp \
 	hydrazine/interface/Thread.cpp \
 	hydrazine/interface/Version.cpp \
 	hydrazine/implementation/SystemCompatibility.cpp
