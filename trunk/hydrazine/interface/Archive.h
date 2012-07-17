@@ -8,7 +8,7 @@
 #ifndef ARCHIVE_H_INCLUDED
 #define ARCHIVE_H_INCLUDED
 
-#include <hydrazine/implementation/SerializationBuffer.h>
+#include <hydrazine/interface/SerializationBuffer.h>
 #include <hydrazine/interface/Serializable.h>
 #include <iostream>
 #include <unordered_map>

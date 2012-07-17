@@ -8,8 +8,8 @@
 #ifndef BTREE_H_INCLUDED
 #define BTREE_H_INCLUDED
 
-#include <hydrazine/implementation/debug.h>
-#include <hydrazine/implementation/macros.h>
+#include <hydrazine/interface/debug.h>
+#include <hydrazine/interface/macros.h>
 #include <hydrazine/interface/ValueCompare.h>
 
 #ifdef REPORT_BASE
