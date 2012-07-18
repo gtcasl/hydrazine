@@ -59,6 +59,7 @@ namespace hydrazine
 					
 				public:
 					virtual Statistic* clone( bool copy = true ) const; 
+					std::string toString() const;
 			
 			};
 			
