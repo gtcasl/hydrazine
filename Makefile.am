@@ -32,11 +32,11 @@ libhydralize_a_SOURCES = \
 	hydrazine/implementation/XmlTree.cpp \
 	hydrazine/implementation/string.cpp \
 	hydrazine/implementation/json.cpp \
-	hydrazine/interface/Configurable.cpp \
-	hydrazine/interface/Test.cpp \
-	hydrazine/interface/ActiveTimer.cpp \
-	hydrazine/interface/Thread.cpp \
-	hydrazine/interface/Version.cpp \
+	hydrazine/implementation/Configurable.cpp \
+	hydrazine/implementation/Test.cpp \
+	hydrazine/implementation/ActiveTimer.cpp \
+	hydrazine/implementation/Thread.cpp \
+	hydrazine/implementation/Version.cpp \
 	hydrazine/implementation/SystemCompatibility.cpp
 ################################################################################
 

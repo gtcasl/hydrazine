@@ -7,7 +7,7 @@
 #ifndef VERSION_CPP_INCLUDED
 #define VERSION_CPP_INCLUDED
 
-#include "Version.h"
+#include <hydrazine/interface/Version.h>
 #include <cassert>
 #include <sstream>
 

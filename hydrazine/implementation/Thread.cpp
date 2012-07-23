@@ -11,7 +11,7 @@
 #ifndef THREAD_CPP_INCLUDED
 #define THREAD_CPP_INCLUDED
 
-#include "Thread.h"
+#include <hydrazine/interface/Thread.h>
 
 #include <hydrazine/interface/debug.h>
 #include <hydrazine/interface/Exception.h>
