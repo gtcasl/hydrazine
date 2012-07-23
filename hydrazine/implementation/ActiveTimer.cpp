@@ -13,7 +13,7 @@
 #ifndef ACTIVE_TIMER_CPP_INCLUDED
 #define ACTIVE_TIMER_CPP_INCLUDED
 
-#include "ActiveTimer.h"
+#include <hydrazine/interface/ActiveTimer.h>
 #include <hydrazine/interface/debug.h>
 #include <cassert>
 

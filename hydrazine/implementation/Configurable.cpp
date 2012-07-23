@@ -13,7 +13,7 @@
 #ifndef CONFIGURABLE_CPP_INCLUDED
 #define CONFIGURABLE_CPP_INCLUDED
 
-#include "Configurable.h"
+#include <hydrazine/interface/Configurable.h>
 
 namespace hydrazine
 {

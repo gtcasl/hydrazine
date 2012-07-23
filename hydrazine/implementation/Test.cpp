@@ -8,7 +8,7 @@
 #ifndef TEST_CPP_INCLUDED
 #define TEST_CPP_INCLUDED
 
-#include "Test.h"
+#include <hydrazine/interface/Test.h>
 #include <ctime>
 #include <hydrazine/interface/string.h>
 
