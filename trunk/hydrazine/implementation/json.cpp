@@ -407,6 +407,17 @@ json::Value *json::Parser::parse_array(std::istream &input) {
 								static_cast<Number*>(active_value)->number_type == Number::Integer) {
 								
 								denseSequence.push_back(active_value->as_integer());
+								
+								ch = get_non_whitespace_char(input);
+								if (ch == ']') {
+									state = exit;
+								}
+								else if (ch == ',') {
+									state = value;
+								}
+								else {
+									throw_EXCEPTION_line(line_number, "json::Parser::parse_array() - unexpected character; expected ','");
+								}
 							}
 							else {
 								if (isDense) {
