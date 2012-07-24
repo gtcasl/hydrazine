@@ -212,6 +212,13 @@ json::DenseArray::IntVector::const_iterator json::DenseArray::end() const {
 	return sequence.end();
 }
 
+json::Value* json::DenseArray::number(int index) {
+	_temp = json::Number(sequence[index]);
+	
+	return &_temp;
+}
+
+
 json::Value *json::DenseArray::clone() const {
 	return 0;
 }
@@ -416,7 +423,7 @@ json::Value *json::Parser::parse_array(std::istream &input) {
 									state = value;
 								}
 								else {
-									throw_EXCEPTION_line(line_number, "json::Parser::parse_array() - unexpected character; expected ','");
+									throw_EXCEPTION_line(line_number, "json::Parser::parse_array() - unexpected '" << (char)ch << "'; expected ','");
 								}
 							}
 							else {
@@ -455,7 +462,7 @@ json::Value *json::Parser::parse_array(std::istream &input) {
 		}
 	} while (state != exit);
 	
-	if (isDense) {
+	if (isDense && !denseSequence.empty()) {
 		return new json::DenseArray(denseSequence);
 	}
 	else {
@@ -1224,9 +1231,16 @@ json::Visitor json::Visitor::operator[](const char *key) const {
 
 //! assuming value is an Array, returns a Visitor for the indexed value
 json::Visitor json::Visitor::operator[](int index) const {
-	if (value->type != Value::Array) {
+	if (value->type != Value::Array && value->type != Value::DenseArray) {
 		throw EXCEPTION("operator[](int) expects Visitor to wrap an Array");
 	}
+
+	if (value->type == Value::DenseArray) {
+		DenseArray *denseArray = static_cast<DenseArray*>(value);
+		
+		return Visitor(denseArray->number(index));
+	}
+
 	Array *array = static_cast<Array*>(value);
 	return Visitor(array->sequence[index]);
 }

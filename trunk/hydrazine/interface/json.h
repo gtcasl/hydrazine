@@ -141,7 +141,7 @@ namespace json {
 	};
 
 	/*!
-		Represents an ordered list of values
+		Represents an ordered list of integer values
 	*/
 	class DenseArray : public Value {
 	public:
@@ -161,11 +161,15 @@ namespace json {
 		iterator end();
 		const_iterator end() const;
 
+		Value* number(int index);
+
 		virtual Value *clone() const;
 
 	public:
-
 		IntVector sequence;
+
+	private:
+		json::Number _temp;
 	};
 
 	/*!
