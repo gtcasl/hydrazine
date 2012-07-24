@@ -71,7 +71,7 @@ double json::Value::as_number() const {
 	throw EXCEPTION("Invalid cast");
 }
 
-std::string json::Value::as_string() const {
+const std::string& json::Value::as_string() const {
 	if (type == Value::String) {
 		const json::String *element = static_cast<const json::String *>(this);
 		return element->value_string;
@@ -79,7 +79,7 @@ std::string json::Value::as_string() const {
 	throw EXCEPTION("Invalid cast");
 }
 
-std::vector< json::Value *> json::Value::as_array() const {
+const std::vector< json::Value *>& json::Value::as_array() const {
 	if (type == Value::Array) {
 		const json::Array *element = static_cast<const json::Array *>(this);
 		return element->sequence;
@@ -87,7 +87,15 @@ std::vector< json::Value *> json::Value::as_array() const {
 	throw EXCEPTION("Invalid cast");
 }
 
-std::map< std::string, json::Value *> json::Value::as_object() const {
+const std::vector< int >& json::Value::as_dense_array() const {
+	if (type == Value::DenseArray) {
+		const json::DenseArray *element = static_cast<const json::DenseArray *>(this);
+		return element->sequence;
+	}
+	throw EXCEPTION("Invalid cast");
+}
+
+const std::map< std::string, json::Value *>& json::Value::as_object() const {
 	if (type == Value::Object) {
 		const json::Object *element = static_cast<const json::Object *>(this);
 		return element->dictionary;
@@ -170,6 +178,41 @@ json::Array::ValueVector::const_iterator json::Array::end() const {
 }
 
 json::Value *json::Array::clone() const {
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+json::DenseArray::DenseArray(): Value(Value::DenseArray) {
+
+}
+
+json::DenseArray::DenseArray(const json::DenseArray::IntVector &values): Value(Value::DenseArray), 
+	sequence(values) {
+
+}
+
+json::DenseArray::~DenseArray() {
+
+}
+
+json::DenseArray::IntVector::iterator json::DenseArray::begin() {
+	return sequence.begin();
+}
+
+json::DenseArray::IntVector::const_iterator json::DenseArray::begin() const {
+	return sequence.begin();
+}
+
+json::DenseArray::IntVector::iterator json::DenseArray::end() {
+	return sequence.end();
+}
+
+json::DenseArray::IntVector::const_iterator json::DenseArray::end() const {
+	return sequence.end();
+}
+
+json::Value *json::DenseArray::clone() const {
 	return 0;
 }
 
@@ -323,8 +366,9 @@ json::Value *json::Parser::parse_value(std::istream &input) {
 	return 0;
 }
 
-json::Array *json::Parser::parse_array(std::istream &input) {
+json::Value *json::Parser::parse_array(std::istream &input) {
 	Array::ValueVector sequence;
+	DenseArray::IntVector denseSequence;
 	enum States {
 		initial,
 		open_bracket,
@@ -335,6 +379,8 @@ json::Array *json::Parser::parse_array(std::istream &input) {
 		invalid
 	};
 	States state = initial;
+	bool isDense = true;
+	
 	do {
 		int ch = get_non_whitespace_char(input);
 		switch (state) {
@@ -357,16 +403,32 @@ json::Array *json::Parser::parse_array(std::istream &input) {
 						putback(input, ch);
 						json::Value *active_value = parse_value(input);
 						if (active_value) {
-							sequence.push_back(active_value);
-							ch = get_non_whitespace_char(input);
-							if (ch == ']') {
-								state = exit;
-							}
-							else if (ch == ',') {
-								state = value;
+							if (active_value->type == Value::Number &&
+								static_cast<Number*>(active_value)->number_type == Number::Integer) {
+								
+								denseSequence.push_back(active_value->as_integer());
 							}
 							else {
-								throw_EXCEPTION_line(line_number, "json::Parser::parse_array() - unexpected character; expected ','");
+								if (isDense) {
+									isDense = false;
+									
+									for (auto i = denseSequence.begin();
+										i != denseSequence.end(); ++i) {
+										sequence.push_back(new Number(*i));
+									}
+								}
+								
+								sequence.push_back(active_value);
+								ch = get_non_whitespace_char(input);
+								if (ch == ']') {
+									state = exit;
+								}
+								else if (ch == ',') {
+									state = value;
+								}
+								else {
+									throw_EXCEPTION_line(line_number, "json::Parser::parse_array() - unexpected character; expected ','");
+								}
 							}
 						}
 						else {
@@ -381,7 +443,13 @@ json::Array *json::Parser::parse_array(std::istream &input) {
 				break;
 		}
 	} while (state != exit);
-	return new json::Array(sequence);
+	
+	if (isDense) {
+		return new json::DenseArray(denseSequence);
+	}
+	else {
+		return new json::Array(sequence);
+	}
 }
 
 json::Object *json::Parser::parse_object(std::istream &input) {
@@ -1062,6 +1130,24 @@ void json::Emitter::emit_array_pretty(std::ostream &output, const Array *object,
 	output << "]";
 }
 
+void json::Emitter::emit_dense_array_pretty(std::ostream &output, const DenseArray *object, int indents) {
+	output << "[\n";
+	int n = 0;
+
+	output << std::hex;
+	for (json::DenseArray::IntVector::const_iterator val_it = object->sequence.begin(); 
+		val_it != object->sequence.end(); ++val_it, ++n) {
+		if (n) {
+			output << ",\n";
+		}
+		emit_indents(output, indents+1);
+		output << *val_it;
+	}
+	output << std::dec << "\n";
+	emit_indents(output, indents);
+	output << "]";
+}
+
 void json::Emitter::emit_pretty(std::ostream &output, const json::Value *value, int indent_level) {
 	switch (value->type) {
 		case Value::Null:
@@ -1090,6 +1176,10 @@ void json::Emitter::emit_pretty(std::ostream &output, const json::Value *value, 
 
 		case Value::Array:
 			emit_array_pretty(output, static_cast<const Array*>(value), indent_level);
+			break;
+
+		case Value::DenseArray:
+			emit_dense_array_pretty(output, static_cast<const DenseArray*>(value), indent_level);
 			break;
 
 		default:

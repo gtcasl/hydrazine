@@ -27,6 +27,7 @@ namespace json {
 		enum Type {
 			Object,
 			Array,
+			DenseArray,
 			Number,
 			String,
 			True,
@@ -60,14 +61,17 @@ namespace json {
 		double as_number() const;
 
 		//! returns a string representation if the value is a String
-		std::string as_string() const;
+		const std::string& as_string() const;
 
 		//! returns a vector of values if the value is an array
-		std::vector< Value *> as_array() const;
-
+		const std::vector< Value *>& as_array() const;
+		
+		//! returns a vector of integers if the value is a dense array
+		const std::vector< int >& as_dense_array() const;
+		
 		//! returns a dictionary of values if the value is an object
-		std::map< std::string, Value *> as_object() const;
-
+		const std::map< std::string, Value *>& as_object() const;
+		
 		//! returns true or false if the value is true or false respectively
 		bool as_boolean() const;
 
@@ -137,6 +141,34 @@ namespace json {
 	};
 
 	/*!
+		Represents an ordered list of values
+	*/
+	class DenseArray : public Value {
+	public:
+
+		typedef std::vector< int > IntVector;
+
+		typedef IntVector::iterator iterator;
+		typedef IntVector::const_iterator const_iterator;
+		
+	public:
+		DenseArray();
+		DenseArray(const IntVector &values);
+		virtual ~DenseArray();
+
+		iterator begin();
+		const_iterator begin() const;
+		iterator end();
+		const_iterator end() const;
+
+		virtual Value *clone() const;
+
+	public:
+
+		IntVector sequence;
+	};
+
+	/*!
 			Represents a string scalar value
 	*/
 	class String : public Value {
@@ -201,7 +233,7 @@ namespace json {
 		void putback(std::istream &input, int ch);
 
 		Value *parse_value(std::istream &input);
-		Array *parse_array(std::istream &input);
+		Value *parse_array(std::istream &input);
 		Object *parse_object(std::istream &input);
 		Number *parse_number(std::istream &input);
 		String *parse_string(std::istream &input);
@@ -225,6 +257,7 @@ namespace json {
 		void emit_compact(std::ostream &output, const Value *value);
 
 		void emit_array_pretty(std::ostream &output, const Array *object, int indent_level=0);
+		void emit_dense_array_pretty(std::ostream &output, const DenseArray *object, int indent_level=0);
 		void emit_object_pretty(std::ostream &output, const Object *object, int indent_level=0);
 		void emit_number(std::ostream &output, const Number *number);
 		void emit_string(std::ostream &output, const std::string &str);
