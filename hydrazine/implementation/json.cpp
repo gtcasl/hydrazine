@@ -14,6 +14,7 @@
 
 #include <math.h>
 #include <sstream>
+#include <deque>
 
 #define EXCEPTION(message) hydrazine::Exception(message)
 
@@ -374,8 +375,11 @@ json::Value *json::Parser::parse_value(std::istream &input) {
 }
 
 json::Value *json::Parser::parse_array(std::istream &input) {
+	typedef std::deque<int> FastIntVector;
+	
+	FastIntVector denseSequence;
+	
 	Array::ValueVector sequence;
-	DenseArray::IntVector denseSequence;
 	enum States {
 		initial,
 		open_bracket,
@@ -463,7 +467,8 @@ json::Value *json::Parser::parse_array(std::istream &input) {
 	} while (state != exit);
 	
 	if (isDense && !denseSequence.empty()) {
-		return new json::DenseArray(denseSequence);
+		return new json::DenseArray(json::DenseArray::IntVector(
+			denseSequence.begin(), denseSequence.end()));
 	}
 	else {
 		return new json::Array(sequence);
