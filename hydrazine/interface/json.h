@@ -52,7 +52,7 @@ namespace json {
 		*/
 
 		//! returns an integer if the value is a Number and an integer
-		int as_integer() const;
+		unsigned long long int as_integer() const;
 
 		//! returns a double if the value is a Number and a real
 		double as_real() const;
@@ -109,7 +109,7 @@ namespace json {
 
 		double value_real;
 
-		int value_integer;
+		unsigned long long int value_integer;
 	};
 
 	/*!
@@ -132,6 +132,8 @@ namespace json {
 		const_iterator begin() const;
 		iterator end();
 		const_iterator end() const;
+
+		size_t size() const;
 
 		virtual Value *clone() const;
 
@@ -320,6 +322,7 @@ namespace json {
 		Array::const_iterator begin_array() const;
 		Array::iterator end_array();
 		Array::const_iterator end_array() const;
+		size_t size_array() const;
 		
 		Object::iterator begin_object();
 		Object::const_iterator begin_object() const;
