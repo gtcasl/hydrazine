@@ -437,6 +437,8 @@ json::Value *json::Parser::parse_array(std::istream &input) {
 								
 								denseSequence.push_back(active_value->as_integer());
 								
+								delete active_value;
+								
 								ch = get_non_whitespace_char(input);
 								if (ch == ']') {
 									state = exit;
