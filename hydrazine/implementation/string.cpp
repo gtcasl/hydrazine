@@ -36,9 +36,14 @@ namespace hydrazine
 		while( end != std::string::npos )
 		{
 			end = string.find( delimiter, begin );
-			strings.push_back( string.substr( begin, end - begin ) );
+			if(end > begin)
+			{
+				strings.push_back( string.substr( begin, end - begin ) );
+			}
+			
 			begin = end + 1;
 		}
+
 		return strings;
 	}
 	

@@ -135,19 +135,20 @@ class Plot:
 		elements = [ ]
 		identifier = string.split(' ', 1)
 		data = [ identifier[ 0 ] ]
-		for word in identifier[1].split():
-			if inElement:
-				if word == ']':
-					inElement = False
-					data.append( numpy.mean( numpy.array( elements ) ) )
-					del elements[:]
+		if len(identifier) > 1:
+			for word in identifier[1].split():
+				if inElement:
+					if word == ']':
+						inElement = False
+						data.append( numpy.mean( numpy.array( elements ) ) )
+						del elements[:]
+					else:
+						elements.append( float( word ) )
 				else:
-					elements.append( float( word ) )
-			else:
-				if word == '[':
-					inElement = True
-				else:
-					data.append( float( word ) )
+					if word == '[':
+						inElement = True
+					else:
+						data.append( float( word ) )
 		if self.normalize:
 			factor = data[1]
 			for i in range(1, len(data)):
@@ -209,7 +210,8 @@ class Plot:
 				self.size = len( items ) - 1
 			if self.size != len( items ) - 1:
 				raise Exception, "Label " + items[ 0 ] + " only has " \
-					+ str( len( items ) - 1 ) + " elements"
+					+ str( len( items ) - 1 ) + " elements, expecting " \
+					+ str( self.size )
 			for i in range( 1, len( items ) ):
 				self.names[ count ][ items[ 0 ] ].append( \
 					Element( float( items[ i ] ), float( error[ i - 1 ] ) ) )
