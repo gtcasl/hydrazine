@@ -33,13 +33,13 @@ namespace hydrazine
 		size_t end = 0;
 		StringVector strings;
 		
-		while( end != std::string::npos )
+		while( true )
 		{
 			end = string.find( delimiter, begin );
-			if(end > begin)
-			{
-				strings.push_back( string.substr( begin, end - begin ) );
-			}
+
+			if( end == std::string::npos ) break;
+
+			strings.push_back( string.substr( begin, end - begin ) );
 			
 			begin = end + 1;
 		}
