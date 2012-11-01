@@ -60,7 +60,7 @@ namespace hydrazine
 		{
 			end = string.find( delimiter, begin );
 			result += string.substr( begin, end - begin );
-			begin = end + 1;
+			begin = end + delimiter.size();
 		}
 		
 		return result;
