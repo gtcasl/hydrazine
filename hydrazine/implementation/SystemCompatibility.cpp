@@ -107,6 +107,11 @@ namespace hydrazine
 		#endif
 	}
 	
+	bool isMangledCXXString(const std::string& string)
+	{
+		return string.find("_Z") == 0;
+	}
+	
 	std::string demangleCXXString(const std::string& string)
 	{
 		#ifdef _WIN32
