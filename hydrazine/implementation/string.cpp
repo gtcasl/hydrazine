@@ -161,9 +161,8 @@ namespace hydrazine
 		return result;
 	}
 	
-	std::string addLineNumbers( const std::string& string )
+	std::string addLineNumbers( const std::string& string, unsigned int line )
 	{
-		unsigned int line = 1;
 		std::stringstream result;
 		
 		result << line++ << " ";
