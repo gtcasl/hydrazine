@@ -44,7 +44,6 @@ void decompress(void* output, uint64_t& outputSize, const void* input,
 	UncompressFunction uncompress = hydrazine::bit_cast<UncompressFunction>(
 		dlsym(libz, "uncompress"));
 	
-	outputSize = 0;
 	int result = uncompress((uint8_t*)output, (unsigned long*)&outputSize,
 		(const uint8_t*)input, (unsigned long) inputSize);
 	
