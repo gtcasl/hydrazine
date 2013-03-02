@@ -130,7 +130,7 @@ namespace hydrazine
 	*/
 	static NullStream nullstream;
 	
-	std::ostream& log(const std::string& path)
+	inline std::ostream& log(const std::string& path)
 	{
 		#if 1
 			return nullstream;
