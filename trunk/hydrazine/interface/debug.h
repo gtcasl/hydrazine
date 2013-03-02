@@ -117,16 +117,17 @@ namespace hydrazine
 		std::string result = string.substr(found+1);
 		return result;
 	}
-	
+
 	struct NullStream : std::ostream {};
 
+	/*
 	// Swallow all types
 	template <typename T>
 	NullStream & operator<<(NullStream & s, T const &) {return s;}
 
 	// Swallow manipulator templates
 	NullStream & operator<<(NullStream & s, std::ostream &(std::ostream&)) {return s;}
-
+	*/
 	static NullStream nullstream;
 	
 	std::ostream& log(const std::string& path)
