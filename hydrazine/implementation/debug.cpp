@@ -63,6 +63,41 @@ namespace hydrazine
 		stream << std::left << lineColon.str();
 		return stream.str();
 	}
+	
+	/*! \brief Global logging infrastructure */
+	class LogDatabase
+	{		
+	public:
+		LogDatabase();
+		
+	public:
+		bool enableAll;
+	};
+	
+	LogDatabase::LogDatabase()
+	: enableAll(false)
+	{
+	
+	}
+	
+	static LogDatabase logDatabase;
+	
+	void enableAllLogs()
+	{
+		logDatabase.enableAll = true;
+	}
+	
+	std::ostream& _getStream(const std::string& name)
+	{
+		if(logDatabase.enableAll)
+		{
+			std::cout << "(" << _debugTime() << "): " << name << ": ";
+			
+			return std::cout;
+		}
+		
+		return nullstream;
+	}
 
 }
 #endif
