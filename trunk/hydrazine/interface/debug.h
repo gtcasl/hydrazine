@@ -28,9 +28,6 @@ namespace hydrazine
 	/*! \brief Return a string representing the current system time */
 	extern std::string _debugTime();
 
-	/*! \brief Return a string representing the current system time */
-	extern std::ostream& _getStream(const std::string& name);
-
 	/*! \brief Return a formatted line number and file name. */
 	extern std::string _debugFile( const std::string& file, unsigned int line );
 
@@ -120,25 +117,39 @@ namespace hydrazine
 
 	struct NullStream : std::ostream {};
 
-	/*
-	// Swallow all types
-	template <typename T>
-	NullStream & operator<<(NullStream & s, T const &) {return s;}
-
-	// Swallow manipulator templates
-	NullStream & operator<<(NullStream & s, std::ostream &(std::ostream&)) {return s;}
-	*/
 	static NullStream nullstream;
 	
+	/*! \brief Return the stream with the current name */
+	extern std::ostream& _getStream(const std::string& name);
+	
+	#if 0
 	inline std::ostream& log(const std::string& path)
 	{
-		#if 1
 			return nullstream;
-		#else
-			return _getStream(path);
-		#endif
 	}
+	#else
+	inline std::ostream& log(const std::string& path)
+	{
+			return _getStream(path);
+	}		
+	#endif
+	
+	extern void enableAllLogs();
+	
+}
 
+// Swallow all types
+template <typename T>
+hydrazine::NullStream & operator<<(hydrazine::NullStream & s, T const &)
+{
+	return s;
+}
+
+// Swallow manipulator templates
+inline hydrazine::NullStream & operator<<(hydrazine::NullStream & s,
+	std::ostream &(std::ostream&))
+{
+	return s;
 }
 
 /*!
