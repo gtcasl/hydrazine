@@ -189,7 +189,7 @@ class RunRegression:
 		self.createLogFile( debug )
 		self.testDirectory = testDirectory
 		self.parseTestFile( )
-		self.jobs = jobs
+		self.jobs = int(jobs)
 	
 	def createLogFile( self, debug ):
 		if debug:
