@@ -182,13 +182,14 @@ class TestThread(Thread):
 
 class RunRegression:
 	
-	def __init__( self, logFile, testFile, debug, testDirectory ):
+	def __init__( self, logFile, testFile, debug, testDirectory, jobs ):
 		self.logFile = os.path.abspath( logFile )
 		self.testFile = os.path.abspath( testFile )
 		self.baseDirectory = os.getcwd()
 		self.createLogFile( debug )
 		self.testDirectory = testDirectory
 		self.parseTestFile( )
+		self.jobs = jobs
 	
 	def createLogFile( self, debug ):
 		if debug:
@@ -246,7 +247,7 @@ class RunRegression:
 		for test in self.tests:
 			queue.put(test, False)		
 		threads = []	
-		threadCount = detectCPUs()
+		threadCount = min(detectCPUs(), self.jobs)
 		for i in range( threadCount ):
 			thread = TestThread( queue )
 			threads.append( thread )
@@ -295,11 +296,12 @@ def main():
 	parser.add_option( "-v", "--verbose", default = False, \
 		action = "store_true" )
 	parser.add_option( "-d", "--debug", default = False, action = "store_true" )
+	parser.add_option( "-j", "--jobs", default = 1024 )
 	parser.add_option( "-p", "--test_path", default="" )	
 	( options, arguments ) = parser.parse_args()
 	
 	regression = RunRegression( options.logFile, options.testFile, \
-		options.debug, options.test_path )
+		options.debug, options.test_path, options.jobs )
 	regression.run()
 	regression.report( options.verbose )	
 
