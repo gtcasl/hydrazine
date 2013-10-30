@@ -71,7 +71,18 @@ namespace hydrazine
 		LogDatabase();
 		
 	public:
+		typedef std::unordered_set<std::string> StringSet;	
+	
+	public:
 		bool enableAll;
+		StringSet enabledLogs;
+
+
+	public:
+		bool isEnabled(const std::string& logName) const
+		{
+			return enableAll || (enabledLogs.count(logName) != 0);
+		}
 	};
 	
 	LogDatabase::LogDatabase()
@@ -87,16 +98,27 @@ namespace hydrazine
 		logDatabase.enableAll = true;
 	}
 	
+	void enableLog(const std::string& name)
+	{
+		logDatabase.enabledLogs.insert(name);
+	}
+    
+    #ifdef __APPLE__
+    static NullStream* nullstream = new NullStream;
+    #else
+	static std::unique_ptr<NullStream> nullstream(new NullStream);
+    #endif
+
 	std::ostream& _getStream(const std::string& name)
 	{
-		if(logDatabase.enableAll)
+		if(logDatabase.isEnabled(name))
 		{
 			std::cout << "(" << _debugTime() << "): " << name << ": ";
 			
 			return std::cout;
 		}
-		
-		return nullstream;
+
+		return *nullstream;
 	}
 
 }

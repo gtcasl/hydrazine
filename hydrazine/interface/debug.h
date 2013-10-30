@@ -114,15 +114,14 @@ namespace hydrazine
 		std::string result = string.substr(found+1);
 		return result;
 	}
-
 	struct NullStream : std::ostream {};
 
-	static NullStream nullstream;
-	
 	/*! \brief Return the stream with the current name */
 	extern std::ostream& _getStream(const std::string& name);
 	
 	#if 0
+	extern NullStream nullstream;
+	
 	inline std::ostream& log(const std::string& path)
 	{
 			return nullstream;
@@ -135,6 +134,7 @@ namespace hydrazine
 	#endif
 	
 	extern void enableAllLogs();
+	extern void enableLog(const std::string& logName);
 	
 }
 
