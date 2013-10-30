@@ -14,6 +14,7 @@
 #define DEBUG_CPP_INCLUDED
 
 #include <hydrazine/interface/debug.h>
+#include <unordered_set>
 
 #include <configure.h>
 #ifdef HAVE_MPICXX
