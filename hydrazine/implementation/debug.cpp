@@ -15,6 +15,7 @@
 
 #include <hydrazine/interface/debug.h>
 #include <unordered_set>
+#include <memory>
 
 #include <configure.h>
 #ifdef HAVE_MPICXX
