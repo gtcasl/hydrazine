@@ -239,7 +239,7 @@ namespace hydrazine
 					        ++pos;
 				        }
 					}
-					if( identifier == str.size() )
+					if( identifier == str )
 					{
 						found = true;
 						str = str.substr( pos );
