@@ -36,4 +36,4 @@ Interface for std::vector where the vector object is manipulated on the host, bu
 
 #Contact
 ##Authors
-Gregory Diamos [email]{solusstultus@gmail.com}
+Gregory Diamos [email](mailto::solusstultus@gmail.com)
