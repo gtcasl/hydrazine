@@ -11,6 +11,7 @@
 #include <hydrazine/interface/Test.h>
 #include <ctime>
 #include <hydrazine/interface/string.h>
+#include <iostream>
 
 #ifdef HAVE_MPICXX
 #include <mpi.h>
